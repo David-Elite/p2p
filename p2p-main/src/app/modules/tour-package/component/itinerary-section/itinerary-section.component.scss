@@ -1,0 +1,50 @@
+section{
+    width: 90%;
+    margin:auto;
+}
+
+.destination{
+    height: 40px;
+}
+.destination-container{
+    width: 767px;
+}
+.para-box{
+    margin-left: 2rem;
+    margin-bottom: 3.5rem;
+ 
+}
+.para-box:last-child{
+    border-bottom: 1px solid #d6d1d1;
+}
+
+.light{
+    font: normal normal normal 16px/26px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+}
+
+//
+.title-section{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border-width: 2px;
+    border-style: solid;
+    border-image: 
+      linear-gradient(
+        to bottom, 
+        #EA4D2C, 
+        #FFA62E
+      ) 1 100%;
+      border-right: none;
+}
+
+.title-section h4{
+    font: normal normal bold 30px/37px Montserrat;
+    color: #3A3A3A;
+    width: 650px;
+    padding: 1rem;
+    height: 60px;
+    padding-top: 0;
+  }

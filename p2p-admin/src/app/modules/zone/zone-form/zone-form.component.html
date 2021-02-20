@@ -1,0 +1,204 @@
+<div id="zone" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/zone/list-zone'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="zone-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="zone.images[0]" [src]="zone.images[0].url">
+                    <img *ngIf="!zone.images[0]" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{zone.title}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Location
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Location Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-zone-button" [disabled]="zoneForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addZone()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-zone-button"
+                [disabled]="zoneForm.invalid || zoneForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveZone()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="zoneForm" [formGroup]="zoneForm" class="zone w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Zone Title</mat-label>
+                                    <input matInput placeholder="Location Name" name="name" formControlName="title"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Zone Type</mat-label>
+                                    <mat-select formControlName="zoneType">
+                                        <mat-option value="Continent">Continent</mat-option>
+                                        <mat-option value="Country">Country</mat-option>
+                                        <mat-option value="State">State</mat-option>
+                                        <mat-option value="City">City</mat-option>
+                                        <mat-option value="Region">Region</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p"
+                                        *ngIf="(zoneValue === 'Country' ||
+                                                zoneValue === 'State' ||
+                                                zoneValue === 'City' ||
+                                                zoneValue === 'Region')">
+                                    <mat-label>Continent</mat-label>
+                                    <mat-select formControlName="continent">
+                                        <mat-option *ngFor="let c of zones | zoneFilter : 'Continent'" [value]="c.id">
+                                         {{c.title}}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="zoneValue === 'State' || zoneValue === 'City' || zoneValue === 'Region'">
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let c of zones | zoneFilter : 'Country' : 'continent' : zoneForm.get('continent').value" [value]="c.id">
+                                         {{c.title}}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="zoneValue === 'City' || zoneValue === 'Region'">
+                                    <mat-label>State</mat-label>
+                                    <mat-select formControlName="state">
+                                        <mat-option *ngFor="let s of zones | zoneFilter : 'State' : 'country' : zoneForm.get('country').value" [value]="s.id">
+                                         {{s.title}}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="zoneValue === 'Region'">
+                                    <mat-label>City</mat-label>
+                                    <mat-select formControlName="city">
+                                        <mat-option *ngFor="let c of zones | zoneFilter : 'City' : 'state' : zoneForm.get('state').value" [value]="c.id">
+                                         {{c.title}}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field>
+                                
+                                
+
+                                <!-- <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Parent</mat-label>
+                                    <mat-select formControlName="parent">
+                                        <mat-option *ngFor="let z of zones" [value]="z.id">
+                                            {{z.zone === 'Continent' ? '' : 
+                                                z.zone === 'Country' ? '-' :
+                                                    z.zone === 'State' ? '--' :
+                                                        z.zone === 'City' ? '---' :
+                                                            z.zone === 'Region' ? '----' : ''}}{{z.title}}
+                                        </mat-option>
+                                      </mat-select>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Tags</mat-label>
+
+                                    <mat-chip-list #tagList name="tags" formControlName="tags">
+                                        <mat-chip *ngFor="let tag of zone.tags" [removable]="true"
+                                            (removed)="zone.removeTag(tag)">
+                                            {{tag}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="tagList" [matChipInputAddOnBlur]="true"
+                                            (matChipInputTokenEnd)="zone.addTag($event)" />
+
+                                    </mat-chip-list>
+
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Zone Images" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Choose file</mat-label>
+                                    <input matInput [value]="selectedImages.length > 0 ? selectedImages.length + ' Images Selected' : 'Choose Images'" disabled>
+                                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                    <input hidden (change)="uploadImages($event)" #fileInput type="file" id="file" accept=".png,.jpg" multiple="true">
+                                </mat-form-field>
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                    <div *ngIf="zone.images.length === 0" class="zone-image" fxlayout="row"
+                                        fxLayoutAlign="center center">
+                                        <img class="media"
+                                            [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                                    </div>
+
+                                    <div *ngFor="let image of zone.images">
+                                        <div *ngIf="zone.images.length > 0" class="zone-image" fxlayout="row"
+                                            fxLayoutAlign="center center">
+                                            <img class="media" [src]="image">
+                                            <button mat-icon-button matRipple class="remove-btn" (click) = "removeImage(image.id)"><mat-icon>delete</mat-icon></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

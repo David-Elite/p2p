@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+// @font-face {
+//     font-family: 'Gloss And Bloom Regular';
+//     font-style: normal;
+//     font-weight: normal;
+//     src: local('Gloss And Bloom Regular'), url('../src/font/Gloss_And_Bloom.woff') format('woff');
+//     }
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-size: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+body div {
+	font-size: 1.5rem;
+}
+
+body p{
+    font-size: 1.5rem;
+}
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,21 @@
+<section>
+    <div class="title-section title-dest">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="title-tours">{{subTitle}}</span>
+    </div>
+    <div class="city-details">
+        <span *ngFor="let locTab of locationTab">{{locTab.title}}</span>
+    </div>
+    <div class="city-container2">
+        <div *ngFor="let locdetails of locationDetails">
+            <div class="city-img">
+                <img src='assets/img/architectural-design-architecture-building-1588032.png' alt="architectural">
+            </div>
+            <div class="cityimg-title">
+                <p>{{locdetails.title}}</p>
+                <p>{{locdetails.price}}</p>
+            </div>
+        </div>
+    </div>
+    <button class="viewall-btn">View All</button>
+</section>

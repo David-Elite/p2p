@@ -1,0 +1,14 @@
+<section>
+<div class="destination-container">
+    <div class="title-section destination">
+        <h4>Photos</h4>
+    </div>
+    <owl-carousel-o [options]="sliderone">
+        <ng-template carouselSlide *ngFor="let i of images">
+            <div class="slider-photo">
+                <img src={{i.url}} alt="slider-photos">
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>
+</section>

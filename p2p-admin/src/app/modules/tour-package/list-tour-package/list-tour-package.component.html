@@ -1,0 +1,151 @@
+<div id="tour-packages" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    tour
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Tour Packages
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Search for a Tour Package">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="'/tour-package/tour-package-form/new'"
+                class="add-tour-package-button fuse-white mt-24 mt-md-0">
+                <span>ADD NEW PACKAGE</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="tour-packages-table" #table [dataSource]="dataSource" matSort
+                [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="text-truncate">{{tourPackage.id}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Image Column -->
+                <ng-container matColumnDef="image">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <img class="tour-package-image" *ngIf="tourPackage.image" [alt]="tourPackage.name"
+                            [src]="tourPackage.image" />
+                        <img *ngIf="!tourPackage.image" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Title Column -->
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Title</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="text-truncate">{{tourPackage.title}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Duration Column -->
+                <ng-container matColumnDef="duration">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Duration</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" fxHide fxShow.gt-md [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="duration text-truncate">
+                            {{tourPackage.duration}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Category Column -->
+                <ng-container matColumnDef="category">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Category</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" fxHide fxShow.gt-md [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="category text-truncate">
+                            {{tourPackage.category}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Place Column -->
+                <ng-container matColumnDef="place">
+                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Place</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" fxHide fxShow.gt-md [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="place text-truncate">
+                            {{tourPackage.place}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Price Column -->
+                <ng-container matColumnDef="priceWithTax">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage" fxHide fxShow.gt-xs [routerLink]="'/tour-package/tour-package-form/'+tourPackage.id">
+                        <p class="price text-truncate">
+                            {{tourPackage.priceWithTax}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Active Column -->
+                <ng-container matColumnDef="active">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage">
+                        <mat-icon *ngIf="tourPackage.active" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!tourPackage.active" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="more" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let tourPackage">
+                        <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item>Copy</button>
+                            <button mat-menu-item>Delete</button>
+                        </mat-menu>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let tourPackage; columns: displayedColumns;" class="tour-package" matRipple>
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

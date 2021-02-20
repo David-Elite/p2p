@@ -1,0 +1,67 @@
+<div>
+    <div class="title-section">
+        <h4>{{title}}</h4>
+    </div>
+    <div class="container-box">
+        <div class="column-box">
+            <div class="img-box2" *ngFor="let packages of packages">
+                <div class="img-div">
+                    <img src="../../../assets/img/tour_amsterdam_2.png" alt="tour-img">
+                </div>
+                <div class="title-div">
+                    <h5>{{packages.title}}</h5>
+
+                    <div class="title-box1">
+                        <span><i class="far fa-clock"></i>{{packages.date}}</span>
+                        <span><i class="fas fa-map-marker-alt"></i>{{packages.location}}i</span>
+                    </div>
+                    <div class="title-box2">
+                        <p>
+                           {{packages.details}}
+                        </p>
+                    </div>
+                    <div>
+                        <span class="red">Read Less</span>
+                    </div>
+                </div>
+                <div class="price-div">
+                    <div class="content-1"><span>{{packages.comparePrice}}</span></div>
+                    <div class="content-2"><span>{{packages.price}}</span></div>
+                    <div class="content-3"> <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                    </div>
+                    <div class="content-4"><span>{{packages.reviews1}}</span><span>{{packages.reviews2}}</span></div>
+                    <div class="content-5"><button>Send Enquiry</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="enquiry-box">
+            <div class="enquiry-price">
+                <span>{{comparePrice}}</span>
+                <span>{{price}}</span>
+            </div>
+            <div>
+                <input type="text" placeholder="Name" />
+            </div>
+            <div>
+                <input type="text" placeholder="Email">
+            </div>
+            <div>
+                <input type="text" placeholder="Enter Your Mobile Number">
+            </div>
+            <div>
+                <input type="text" placeholder="Travel Date">
+            </div>
+            <div>
+                <input type="text" placeholder="No of People">
+            </div>
+            <div>
+                <textarea name="yourenquiry" id="yourenquiry" placeholder="Your Enquiry..."></textarea>
+            </div>
+            <div class="enqbtn-box">
+                <button class="enq-btn">Enquiry Now</button>
+            </div>
+        </div>
+    </div>
+</div>

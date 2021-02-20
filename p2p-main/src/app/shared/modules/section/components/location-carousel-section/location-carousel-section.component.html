@@ -1,0 +1,15 @@
+<section>
+    <div class="title-section title-s">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="view-all">View All</span>
+    </div>
+    <div class="city-container">
+        <owl-carousel-o [options]="sliderfour">
+            <ng-template carouselSlide *ngFor="let location of locationCarousel"> 
+                <div><img src="../../../assets/img/noun_Taj Mahal_2092469.png" alt="slideimg1">
+                    <h1>{{location.title}}</h1>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</section>

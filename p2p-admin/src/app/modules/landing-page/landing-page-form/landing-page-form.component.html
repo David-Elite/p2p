@@ -1,0 +1,697 @@
+<div id="landing-page" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/landing-page/list-landing-page'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="landing-page-image mr-8 mr-sm-16"
+                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="landingPage.images.length > 0" [src]="landingPage.images[0].url">
+                    <img *ngIf="landingPage.images.length === 0"
+                        [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{landingPage.title}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Landing Page
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Page Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-landing-page-button" [disabled]="landingPageForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addLandingPage()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-landing-page-button"
+                [disabled]="landingPageForm.invalid || landingPageForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveLandingPage()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="landing-page-form" [formGroup]="landingPageForm" class="landing-page w-100-p"
+                    fxLayout="column" fxFlex>
+
+                    <mat-tab-group (selectedTabChange)="handleTabChange($event)">
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Page Title</mat-label>
+                                    <input matInput placeholder="Page Title" name="title" formControlName="title"
+                                        required>
+                                </mat-form-field>
+
+                                <app-editor formControlName="description">
+                                </app-editor>
+                            </div>
+
+                        </mat-tab>
+
+                        <!-- <mat-tab label="Location">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Continent</mat-label>
+                                    <mat-select formControlName="continent">
+                                        <mat-option *ngFor="let z of zones | arrFilter : filterContinent"
+                                            [value]="z.id">
+                                            {{z.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Country</mat-label>
+                                    <mat-select formControlName="country">
+                                        <mat-option *ngFor="let z of zones | arrFilter : filterCountry" [value]="z.id">
+                                            {{z.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>State</mat-label>
+                                    <mat-select formControlName="state">
+                                        <mat-option *ngFor="let z of zones | arrFilter : filterCountry" [value]="z.id">
+                                            {{z.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>City</mat-label>
+                                    <mat-select formControlName="city">
+                                        <mat-option *ngFor="let z of zones | arrFilter : filterCountry" [value]="z.id">
+                                            {{z.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Region</mat-label>
+                                    <mat-select formControlName="region">
+                                        <mat-option *ngFor="let z of zones | arrFilter : filterCountry" [value]="z.id">
+                                            {{z.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="More Info">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Ribbon Tag</mat-label>
+                                    <input matInput type="text" placeholder="Ribbon Tag" name="ribbonTag"
+                                        formControlName="ribbonTag">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Tags</mat-label>
+
+                                    <mat-chip-list #tagList name="tags" formControlName="tags">
+
+                                        <mat-chip *ngFor="let tag of landingPage.tags" [removable]="true"
+                                            (removed)="landingPage.removeTag(tag, landingPageForm.get('tags'))">
+                                            {{tag}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="tagList" [matChipInputAddOnBlur]="true"
+                                            (matChipInputTokenEnd)="landingPage.addTag($event, landingPageForm.get('tags'))" />
+
+                                    </mat-chip-list>
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Highlights</mat-label>
+
+                                    <mat-chip-list #hltList name="tags" formControlName="highlights">
+
+                                        <mat-chip *ngFor="let hlt of landingPage.highlights" [removable]="true"
+                                            (removed)="landingPage.removeHighlights(hlt, landingPageForm.get('highlights'))">
+                                            {{hlt}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="hltList" [matChipInputAddOnBlur]="true"
+                                            (matChipInputTokenEnd)="landingPage.addHighlights($event, landingPageForm.get('highlights'))" />
+
+                                    </mat-chip-list>
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Aminities</mat-label>
+                                    <mat-select formControlName="aminities">
+                                        <mat-option *ngFor="let a of aminities" [value]="a.id">
+                                            {{a.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-checkbox formControlName="bookingForm">Booking Form</mat-checkbox>&nbsp;&nbsp;
+                                <mat-checkbox formControlName="inquiryForm">Inquiry Form</mat-checkbox><br><br><br>
+                                <mat-slide-toggle formControlName="active">Active</mat-slide-toggle>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Pricing">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Price (W/O Tax)</mat-label>
+                                    <input matInput type="number" placeholder="Price" name="price"
+                                        formControlName="price" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Tax Percentage</mat-label>
+                                    <input matInput type="number" placeholder="Tax %" name="taxPercent"
+                                        formControlName="taxPercent">
+                                    <mat-label matSuffix>%</mat-label>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Price (Incl. Tax)</mat-label>
+                                    <input matInput type="number" placeholder="Price (Incl. Tax)" name="priceWithTax"
+                                        formControlName="priceWithTax" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Compared Price</mat-label>
+                                    <input matInput type="number" placeholder="Compared Price" name="comparedPrice"
+                                        formControlName="comparedPrice">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Price Unit</mat-label>
+                                    <input matInput type="text" placeholder="Price Unit" name="priceUnit"
+                                        formControlName="priceUnit">
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Description">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <app-editor *ngIf="active == 4" formControlName="description">
+                                </app-editor>
+                            </div>
+                        </mat-tab> -->
+
+                        <mat-tab label="SEO" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Handle</mat-label>
+                                    <span matPrefix>https://plans2pick.com/</span>
+                                    <input matInput placeholder="Handle" name="handle" formControlName="handle"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Meta Title</mat-label>
+                                    <input matInput placeholder="Meta Title" name="metaTitle"
+                                        formControlName="metaTitle">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Meta Description</mat-label>
+                                    <textarea matInput placeholder="Meta Description" name="metaDesc"
+                                        formControlName="metaDesc" rows="5" maxlength="160">
+                                    </textarea>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Meta Keywords</mat-label>
+
+                                    <mat-chip-list #keyList name="metaKeywords" formControlName="metaKeywords">
+
+                                        <mat-chip *ngFor="let meta of landingPage.metaKeywords" [removable]="true"
+                                            (removed)="landingPage.removeKeywords(meta, landingPageForm.get('metaKeywords'))">
+                                            {{meta}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="keyList" [matChipInputAddOnBlur]="true"
+                                            (matChipInputTokenEnd)="landingPage.addKeywords($event, landingPageForm.get('metaKeywords'))" />
+
+                                    </mat-chip-list>
+
+                                </mat-form-field>
+
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Page Images" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Choose file</mat-label>
+                                    <input matInput
+                                        [value]="selectedImages.length > 0 ? selectedImages.length + ' Images Selected' : 'Choose Images'"
+                                        disabled>
+                                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                    <input hidden (change)="uploadImages($event)" #fileInput type="file" id="file"
+                                        accept=".png,.jpg" multiple="true">
+                                </mat-form-field>
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                    <div *ngIf="landingPage.images.length === 0" class="landing-page-image"
+                                        fxlayout="row" fxLayoutAlign="center center">
+                                        <img class="media"
+                                            [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                                    </div>
+
+                                    <div *ngFor="let image of landingPage.images">
+                                        <div class="landing-page-image" fxlayout="row" fxLayoutAlign="center center">
+                                            <img class="media" [src]="image.url">
+                                            <button mat-icon-button matRipple class="remove-btn"
+                                                (click)="removeImage(image.id)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                        <div class="cover-btn">
+                                            <button *ngIf="landingPageForm.get('coverImage').value !== image.id"
+                                                mat-raised-button matRipple (click)="makeCoverImage(image.id)">
+                                                Cover Image
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Sections" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div cdkDropList class="section-list"
+                                    (cdkDropListDropped)="updateSectionSequence($event)">
+                                    <div class="section-box" *ngFor="let sec of landingPage.section" cdkDrag>
+                                        <div class="title">
+                                            <h2>{{sec.title}}</h2>
+                                            <span>{{sec.subtitle ? sec.subtitle + ' - ' : '' }}{{sec.contentType}} -
+                                                {{sec.displayType}}</span>
+                                        </div>
+                                        <div class="action">
+                                            <button mat-mini-fab (click)="editSection(sec.id, sectionEditor)"
+                                                class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteSection(sec.id)"
+                                                class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br><br><br><br>
+                                <div #sectionEditor>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Section Title</mat-label>
+                                        <input matInput placeholder="Section Title" name="sectionTitle"
+                                            [(ngModel)]="sectionTitle" [ngModelOptions]="{standalone: true}">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Section Sub Title</mat-label>
+                                        <input matInput placeholder="Section Sub Title" name="sectionsubtitle"
+                                            [(ngModel)]="sectionSubtitle" [ngModelOptions]="{standalone: true}">
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline"
+                                        floatLabel="always" class="w-100-p">
+                                        <mat-label>Content Type</mat-label>
+                                        <mat-select [(ngModel)]="sectionContentType"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option value="Package">
+                                                Package
+                                            </mat-option>
+                                            <mat-option value="Link">
+                                                Link
+                                            </mat-option>
+                                            <mat-option value="Zone">
+                                                Zone
+                                            </mat-option>
+                                            <mat-option value="Blog">
+                                                Blog
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline"
+                                        floatLabel="always" class="w-100-p">
+                                        <mat-label>Display Type</mat-label>
+                                        <mat-select [(ngModel)]="sectionDisplayType"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option value="Table" *ngIf="sectionContentType === 'Package'">
+                                                Table
+                                            </mat-option>
+                                            <mat-option value="Carousel" *ngIf="sectionContentType === 'Package'
+                                                || sectionContentType === 'Link'">
+                                                Carousel
+                                            </mat-option>
+                                            <mat-option value="List" *ngIf="sectionContentType === 'Package'">
+                                                List
+                                            </mat-option>
+                                            <mat-option value="Grid" *ngIf="sectionContentType === 'Blog'">
+                                                Grid
+                                            </mat-option>
+                                            <mat-option value="Link" *ngIf="sectionContentType === 'Link'">
+                                                Link List
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="links" *ngIf="sectionId !== '' && sectionContentType === 'Link'">
+                                        <div class="grid-display"
+                                            *ngIf="section && section.links && section.links.length > 0">
+                                            <div class="grid-det" *ngFor="let s of section?.links">
+                                                <img class="grid-img" *ngIf="s.icon && s.icon !== ''" [src]="s.icon">
+                                                <img class="grid-img" *ngIf="!s.icon || s.icon === ''"
+                                                    src="assets/images/ecommerce/product-image-placeholder.png">
+                                                <span class="grid-title">
+                                                    <h3>{{ s.title }}</h3>
+                                                    <button mat-mini-fab (click)="editLink(s.id)"
+                                                        class="list-icon-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                    &nbsp;&nbsp;
+                                                    <button mat-mini-fab (click)="deleteLink(s.id)"
+                                                        class="list-icon-button">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </span>
+                                                <span class="grid-url">
+                                                    <h5>https://plans2pick.com/{{ s.url }}</h5>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <h2 *ngIf="!section.links || section.links.length == 0">No Links Created</h2>
+                                        <div class="list-actions">
+                                            <button mat-raised-button class="save-list-button" (click)="openAddLink()">
+                                                <span>Create New Link</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="pkgs" *ngIf="sectionId !== '' && sectionContentType === 'Package'">
+
+                                        <div class="pkg-list">
+                                            <mat-form-field floatLabel="always" class="w-100-p">
+                                                <input matInput placeholder="Search" name="searchPkg"
+                                                    [(ngModel)]="searchPkg" (ngModelChange)="filterPackages()"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </mat-form-field>
+                                            <cdk-virtual-scroll-viewport itemSize="50" class="scroll-pkg-list">
+                                                <div *cdkVirtualFor="let pkg of dispPkgList" class="pkg-item">
+                                                    <div class="pkg-img">
+                                                        <img *ngIf="pkg.image && pkg.image !== ''" [src]="pkg.image">
+                                                        <img *ngIf="!pkg.image || pkg.image === ''"
+                                                            src="assets/images/ecommerce/product-image-placeholder.png">
+                                                    </div>
+                                                    <div class="pkg-title">
+                                                        <h2>{{pkg.title}}</h2>
+                                                        <span>
+                                                            <h4>
+                                                                <i class="fas fa-star"></i>
+                                                                {{ pkg.reviewCount > 0 ? pkg.reviewPoints : 'No Review'
+                                                                }}
+                                                                {{ pkg.reviewCount > 0 ? ' |' + pkg.reviewCount + '
+                                                                Reviews' : ''}}
+                                                            </h4>
+                                                            <h4>INR {{ pkg.priceWithTax }}{{pkg.priceUnit ? '/' +
+                                                                pkg.priceUnit : '' }} </h4>
+                                                        </span>
+                                                    </div>
+                                                    <div class="pkg-action">
+                                                        <button *ngIf="!isSelectedPkg(pkg.id)" mat-icon-button
+                                                            (click)="addToSelection(pkg.id)">
+                                                            <mat-icon>add</mat-icon>
+                                                        </button>
+                                                        <mat-icon *ngIf="isSelectedPkg(pkg.id)"
+                                                            class="active-icon green-600 s-16">check</mat-icon>
+                                                    </div>
+                                                </div>
+                                            </cdk-virtual-scroll-viewport>
+                                        </div>
+                                        <div class="sel-pkg">
+                                            <div cdkDropList class="sel-pkg-list"
+                                                (cdkDropListDropped)="updateProductSequence($event)">
+                                                <div class="sel-pkg-box" *ngFor="let p of selectedPkgs" cdkDrag>
+                                                    <div class="title">
+                                                        <h4>{{p.title}}</h4>
+                                                    </div>
+                                                    <div class="action">
+                                                        <button mat-mini-fab (click)="removePkgFromSelection(p.id)"
+                                                            class="list-icon-button">
+                                                            <mat-icon>delete</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="zone">
+
+                                    </div>
+                                    <div class="list-actions">
+                                        <button mat-raised-button class="save-list-button" (click)="addSection()"
+                                            [disabled]="sectionTitle === '' ||
+                                                    (sectionId === '' && sectionContentType === '') ||
+                                                    (sectionId === '' && sectionDisplayType === '')">
+                                            <span>SAVE</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="FAQ" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <div class="list-display">
+                                    <div class="list-det" *ngFor="let f of landingPage.faq">
+                                        <span class="list-title">
+                                            <h2>{{ f.ques }}</h2>
+                                            <button mat-mini-fab (click)="editFAQ(f.id)" class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteFAQ(f.id)" class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </span>
+
+                                        <p [innerHTML]="f.ans"></p>
+                                    </div>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>FAQ Question</mat-label>
+                                    <input matInput placeholder="FAQ Question" name="faqQues" [(ngModel)]="faqQues"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <app-editor *ngIf="active == 8" [(ngModel)]="faqAns"
+                                    [ngModelOptions]="{standalone: true}">
+                                </app-editor>
+
+                                <div class="list-actions">
+                                    <button mat-raised-button class="clear-list-button" (click)="clearFAQ()"
+                                        *ngIf="faqId !== '' && faqId !== null">
+                                        <span>CLEAR</span>
+                                    </button>
+                                    <button mat-raised-button class="save-list-button" (click)="saveFAQ()"
+                                        [disabled]="faqQues === '' || faqAns === ''">
+                                        <span>SAVE</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Miscelaneous" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <div class="list-display">
+                                    <div class="list-det" *ngFor="let m of landingPage.misc">
+                                        <span class="list-title">
+                                            <h2>{{ m.title }}</h2>
+                                            <button mat-mini-fab (click)="editMisc(m.id)" class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteMisc(m.id)" class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </span>
+
+                                        <p [innerHTML]="m.content"></p>
+                                    </div>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Misc Title</mat-label>
+                                    <input matInput placeholder="Title" name="miscTitle" [(ngModel)]="miscTitle"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <app-editor *ngIf="active == 9" [(ngModel)]="miscContent"
+                                    [ngModelOptions]="{standalone: true}">
+                                </app-editor>
+
+                                <div class="list-actions">
+                                    <button mat-raised-button class="clear-list-button" (click)="clearMisc()"
+                                        *ngIf="miscId !== '' && miscId !== null">
+                                        <span>CLEAR</span>
+                                    </button>
+                                    <button mat-raised-button class="save-list-button" (click)="saveMisc()"
+                                        [disabled]="miscTitle === '' || miscContent === ''">
+                                        <span>SAVE</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+
+<ng-template #addLink>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link Title</mat-label>
+            <input matInput placeholder="Link Title" name="linkTitle" [(ngModel)]="linkTitle"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="form-link-icon">
+            <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Choose Icon</mat-label>
+                <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                <button mat-icon-button matSuffix (click)="iconInput.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file" accept=".png,.svg">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link URL</mat-label>
+            <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="linkTitle === '' || linkUrl === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addZone>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Zone Type</mat-label>
+            <mat-select [(ngModel)]="zoneType" [ngModelOptions]="{standalone: true}">
+                <mat-option value="Continent">Continent</mat-option>
+                <mat-option value="Country">Country</mat-option>
+                <mat-option value="State">State</mat-option>
+                <mat-option value="City">City</mat-option>
+                <mat-option value="Region">Region</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Box Heading</mat-label>
+            <mat-select formControlName="continent">
+                <mat-option *ngFor="let c of zones | zoneFilter : zoneType" [value]="c.id">
+                    {{c.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="form-link-icon">
+            <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Choose Icon</mat-label>
+                <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                <button mat-icon-button matSuffix (click)="iconInput.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file" accept=".png,.svg">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link URL</mat-label>
+            <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="linkTitle === '' || linkUrl === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>

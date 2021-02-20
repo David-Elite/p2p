@@ -1,0 +1,78 @@
+section{
+    width: 95%;
+    margin: auto;
+}
+.icons-container{
+    padding: 3.5rem 0;
+} 
+
+.icon-container{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-evenly;
+   flex-wrap: wrap;
+   margin-bottom: 3.5rem;
+}
+
+.icon-containerr{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.title-partner h1{
+    width: 135px;
+height: 74px;
+}
+// 
+.title-section{
+    width:91%;
+    padding-left: 3.5rem;
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+}
+
+.head-title{
+    max-width: 544px;
+    color:rgb(66, 64, 64);
+    // margin-left: 8.5rem;
+    font-size: 32px;
+    font-weight: bold;
+    border-left: 2px solid rgb(245, 65, 33); 
+     font: normal normal bold 30px/37px Montserrat; 
+    letter-spacing: 0px;
+    color: #3A3A3A;
+    opacity: 1; 
+    padding-left: 1.3rem;
+}
+
+.title-tours{
+    padding-bottom: 2rem;
+    text-align: left;
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #969696;
+    opacity: 1;
+    padding-left: 1.3rem;
+}
+.view-alls{
+    font: normal normal normal 20px/24px Montserrat;
+    color: rgb(245, 65, 33); 
+    text-decoration: underline;
+    margin-bottom: 2rem;
+    padding-left: 1.3rem;
+}
+.title-s h1{
+    width: 311px;
+    height: 74px;
+}
+.view-all,.title-tour{
+    text-decoration: none;
+    color: rgb(245, 65, 33); 
+    margin-bottom: 2rem;
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #F96939;
+    opacity: 1;
+    padding-left: 1.3rem;
+}

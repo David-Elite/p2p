@@ -1,0 +1,125 @@
+<app-image-section [title]="package.title"  video="Video"
+    [highlights]="package.highlights" review="5.0 | 40 Reviews" price1="From ₹ 19,999"
+    price2="₹ 15,999" [days]="package.days" [nights]="package.nights" [price]="package.price" [images]="package.images" [coverImage]="package.cover_image" [comparedPrice]="package.compared_price" [reviewCount]="package.review_count"></app-image-section>
+<section>
+    <div class="navbar-container">
+        <div class="navbar-box">
+            <div class="nav-bar" [class.form_change]="form_variable">
+                <!-- <h3 *ngFor="let n of nav">{{n.title}}</h3> -->
+                <div (click)="navToElement(details)">
+                    <h3>Details</h3>
+                    <div class="login-border" *ngIf="activeNav === details"></div>
+                </div>
+                <div (click)="navToElement(itr)">
+                    <h3>Itinerary</h3>
+                    <div class="login-border" *ngIf="activeNav === itr"></div>
+                </div>
+                <div (click)="navToElement(photos)">
+                    <h3>Photos</h3>
+                    <div class="login-border" *ngIf="activeNav === photos"></div>
+                </div>
+                <div (click)="navToElement(reviews)">
+                    <h3>Reviews</h3>
+                    <div class="login-border" *ngIf="activeNav === reviews"></div>
+                </div>
+                <div (click)="navToElement(faq)">
+                    <h3>FAQ</h3>
+                    <div class="login-border" *ngIf="activeNav === faq"></div>
+                </div>
+            </div>
+
+            <div class="title-section">
+                <h4>{{package.title}}</h4>
+            </div>
+            <div #review class="review-title margin">
+                <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i>5.0 | 40 Reviews</span>
+            </div>
+            <div class="tour-details margin">
+                <span><i class="far fa-clock"></i>6 Days 7 Nights</span>
+                <span><i class="fal fa-plane-departure"></i>Airport Pickup</span>
+                <span><i class="fas fa-wifi"></i>Wi-Fi Available</span>
+            </div>
+            <div class="title-section top-review">
+                <h4>Top Reviews</h4>
+                <span>View All</span>
+            </div>
+            <div class="reviews-container">
+                <div class="review-container">
+                    <img src='assets/img/Ellipse 202.png' alt="review">
+                    <p class="review-name">Adam Levin</p>
+                    <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star white"></i><i class="fas fa-star white"></i></span>
+                    <p class="review-title">9 Dec, 2020 - Solo Traveller</p>
+                    <span class="review-para">Price match within 48 hours of order confirmationPrice match within 48
+                        hours of order confirmationPrice match within 48 hours of order confirmation</span>
+                    <span class="readmore">Read Less</span>
+                </div>
+                <div class="review-container">
+                    <img src='assets/img/Ellipse 202.png' alt="review">
+                    <p class="review-name">Adam Levin</p>
+                    <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star white"></i><i class="fas fa-star white"></i></span>
+                    <p class="review-title">9 Dec, 2020 - Solo Traveller</p>
+                    <span class="review-para">Price match within 48 hours of order confirmationPrice match within 48
+                        hours of order confirmationPrice match within 48 hours of order confirmation</span>
+                    <span class="readmore">Read Less</span>
+                </div>
+            </div>
+        </div>
+        <div class="enquiry-box" >
+            <div class="enquiry-price">
+                <span>From ₹{{package.compared_price}}</span>
+                <span>₹{{package.price}}</span>
+            </div>
+            <div>
+                <input type="text" placeholder="Name" />
+            </div>
+            <div>
+                <input type="text" placeholder="Email">
+            </div>
+            <div>
+                <input type="text" placeholder="Enter Your Mobile Number">
+            </div>
+            <div>
+                <input type="text" placeholder="Travel Date">
+            </div>
+            <div>
+                <input type="text" placeholder="No of People">
+            </div>
+            <div>
+                <textarea name="yourenquiry" id="yourenquiry" placeholder="Your Enquiry..."></textarea>
+            </div>
+            <div class="enqbtn-box">
+                <button class="enq-btn">Enquiry Now</button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- <app-nav-section price1="From ₹ 19,999" price2="₹ 15,999"  title='10 Days Ladakh Tour Manali To Leh Tour With Tsomoriri' [review]="review"></app-nav-section> -->
+<div #details>
+    <app-about-section title="About the Destination" [para1]="package.description" [metaTitle]="package.meta_title"></app-about-section>
+</div>
+<div #itr>
+    <app-itinerary-section [itinerary]="package.itinerary"></app-itinerary-section>
+</div>
+<div #photos>
+    <app-image-carousel-section [images]="package.images"></app-image-carousel-section>
+</div>
+
+<div #reviews>
+    <app-review-section></app-review-section>
+</div>
+
+<section>
+    <div class="destination-container" #faq>
+        <app-faq-section [faq]="package.faq"></app-faq-section>
+    </div>
+</section>
+<app-product-carousel-section [noOfPackages]="noOfPackages" title="Some Title" subtitle="sub title"
+    [packages]="homePackages"></app-product-carousel-section>
+<section>
+    <div class="location-tab">
+        <app-location-tab-section [location]="location" [link]="package.link"></app-location-tab-section>
+    </div>
+</section>

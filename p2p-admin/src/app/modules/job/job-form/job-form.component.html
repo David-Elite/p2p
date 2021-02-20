@@ -1,0 +1,140 @@
+<div id="job" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/jobs/list-job'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="job-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="job.images[0]" [src]="job.images[0].url">
+                    <img *ngIf="!job.images[0]" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{job.title}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Job
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Job Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-job-button" [disabled]="jobForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addJob()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-job-button"
+                [disabled]="jobForm.invalid || jobForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveJob()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="jobForm" [formGroup]="jobForm" class="job w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Job Title</mat-label>
+                                    <input matInput placeholder="Job Title" name="title" formControlName="title"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Job Description</mat-label>
+                                    <input matInput placeholder="Job Description" name="desc"
+                                        formControlName="desc" required>
+                                </mat-form-field>
+
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Job Overview</mat-label>
+                                    <input matInput placeholder="Job Overview" name="overview"
+                                        formControlName="overview" required>
+                                </mat-form-field>
+
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Job Roles & Responsibility</mat-label>
+                                    <input matInput placeholder="Job Rnr" name="rnr"
+                                        formControlName="rnr" required>
+                                </mat-form-field>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Job Images" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Choose file</mat-label>
+                                    <input matInput [value]="selectedImages.length > 0 ? selectedImages.length + ' Images Selected' : 'Choose Images'" disabled>
+                                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                    <input hidden (change)="uploadImages($event)" #fileInput type="file" id="file" accept=".png,.jpg" multiple="true">
+                                </mat-form-field>
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                    <div *ngIf="job.images.length === 0" class="job-image" fxlayout="row"
+                                        fxLayoutAlign="center center">
+                                        <img class="media"
+                                            [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                                    </div>
+
+                                    <div *ngFor="let image of job.images">
+                                        <div *ngIf="job.images.length > 0" class="job-image" fxlayout="row"
+                                            fxLayoutAlign="center center">
+                                            <img class="media" [src]="image">
+                                            <button mat-icon-button matRipple class="remove-btn" (click) = "removeImage(image.id)"><mat-icon>delete</mat-icon></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

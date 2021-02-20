@@ -1,0 +1,74 @@
+.faq-box{
+    width: 100%;
+    margin: auto;
+    margin-top: 2rem;
+}
+
+h4{
+    font: normal normal bold 24px/29px Montserrat;
+    color: #3A3A3A;
+  }
+  .number{
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    background: transparent linear-gradient(180deg, #FFC52A 0%, #F96939 75%, #F74440 100%) 0% 0% no-repeat padding-box;
+    border-radius: 18px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .faq-container{
+      display: flex;
+      margin-bottom: 1.5rem;
+  }
+  .faq-content{
+      width: 100%;
+      margin: 2rem;
+      margin-top: 0;
+  }
+  .faq-content p{
+    font: normal normal normal 16px/26px Montserrat;
+    letter-spacing: 0px;
+    color: #949494;
+    opacity: 1;
+  }
+  .faq-content h3{
+    font: normal normal 600 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #3A3A3A;
+    opacity: 1;
+  }
+  
+ // 
+.title-section{
+  letter-spacing: 0px;
+  color: #3A3A3A;
+  opacity: 1; 
+  max-width: 1102px;
+  height: 70px;
+}
+.title-section{
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border-width: 3px;
+  border-style: solid;
+  border-image: 
+    linear-gradient(
+      to bottom, 
+      #EA4D2C, 
+      #FFA62E
+    ) 1 100%;
+    border-right: none;
+}
+
+.title-section h4{
+  font: normal normal bold 30px/37px Montserrat;
+  letter-spacing: 0px;
+  color: #3A3A3A;
+  opacity: 1;
+  padding-left: 2rem;    
+}

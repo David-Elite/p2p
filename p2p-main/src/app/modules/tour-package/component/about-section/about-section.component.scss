@@ -1,0 +1,116 @@
+section{
+    width: 90%;
+    margin:auto;
+}
+.destination{
+    height: 40px;
+}
+.destination-container{
+    width: 767px;
+}
+.para-box{
+    margin-left: 2rem;
+    margin-bottom: 3.5rem;
+ 
+}
+// .para-box:last-child{
+//     border-bottom: 1px solid #d6d1d1;
+// }
+.box-one{
+    border-bottom: 1px solid #d6d1d1;
+}
+.box-one:first-child{
+    border-top: 1px solid #d6d1d1;
+}
+.light{
+    font: normal normal normal 16px/26px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+}
+.box-one{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4rem;
+}
+.box-one span:first-child{
+    font: normal normal 600 20px/24px Montserrat;
+letter-spacing: 0px;
+color: #3A3A3A;
+opacity: 1;
+flex: 1;
+margin-bottom: 2rem;
+
+}
+.box-one span:last-child{
+    font: normal normal normal 20px/24px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+flex:1;
+margin-bottom: 2rem;
+
+}
+.boxone-span{
+    margin-top: 3rem;
+}
+.hotel-fare{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+}
+.hotel-fare span{
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #949494;
+    opacity: 1;
+    margin-bottom: 1.2rem;
+    display: flex;
+}
+.hotel-fare span:first-child{
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #949494;
+    opacity: 1;
+}
+.hotel-fare span p{
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #949494;
+    opacity: 1;
+    margin-bottom: 1.2rem; 
+    width: 311px;
+    height: 48px;
+}
+.hotel-fare .fa-check-circle{
+    color:#FF5300;
+    margin-right: 1rem;
+}
+.fa-times-circle{
+    color:#000000;
+    margin-right: 1rem;
+}
+
+//
+.title-section{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    border-width: 2px;
+    border-style: solid;
+    border-image: 
+      linear-gradient(
+        to bottom, 
+        #EA4D2C, 
+        #FFA62E
+      ) 1 100%;
+      border-right: none;
+}
+
+.title-section h4{
+    font: normal normal bold 30px/37px Montserrat;
+    color: #3A3A3A;
+    width: 650px;
+    padding: 1rem;
+    height: 60px;
+    padding-top: 0;
+  }

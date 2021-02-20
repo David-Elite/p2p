@@ -1,0 +1,17 @@
+<section>
+    <div class="title-section title-paradise">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="viewall-2">View All</span>
+    </div>
+    <div class="reviews-container">
+        <div class="review-container" *ngFor="let review of review">
+            <img src='assets/img/Ellipse 202.png' alt="review">
+            <p class="review-name">{{review.title}}</p>
+            <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                    class="fas fa-star white"></i><i class="fas fa-star white"></i></span>
+            <p class="review-title">{{review.subTitle}}</p>
+            <span class="review-para">{{review.para}}</span>
+            <span class="readmore">Read More</span>
+        </div>
+    </div>
+</section>

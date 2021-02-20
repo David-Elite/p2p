@@ -1,0 +1,103 @@
+<div id="adminuser" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/admin-user/list-admin-user'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{adminuser.name}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Adminuser
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Adminuser Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-adminuser-button" [disabled]="adminuserForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addAdminuser()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-adminuser-button"
+                [disabled]="adminuserForm.invalid || adminuserForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveAdminuser()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="adminuserForm" [formGroup]="adminuserForm" class="adminuser w-100-p" fxLayout="column"
+                    fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput placeholder="User Name" name="userName" formControlName="userName"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput placeholder="Email" name="email" formControlName="email" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput placeholder="Password" name="password" formControlName="password"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Role</mat-label>
+                                    <mat-select formControlName="role">
+                                        <mat-option value="Admin">Admin</mat-option>
+                                        <mat-option value="superAdmin">Super Admin</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

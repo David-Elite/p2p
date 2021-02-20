@@ -1,0 +1,19 @@
+<section>
+    <div class="title-section title-news">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="title-tours">{{subTitle}}</span>
+    </div>
+    <div class="posts-container">
+        <div class="post-container" *ngFor="let blog of blog">
+            <div class="post-img">
+                <img src='assets/img/jonathan-forage-1azAjl8FTnU-unsplash (1).png' alt="post1" />
+            </div>
+            <div class="post-title">
+                <p>{{blog.title}}</p>
+                <p><span class="calender"><i class="far fa-calendar"></i>{{blog.date}}</span>
+                    <span class="comment"><i class="far fa-comment"></i>{{blog.comments}}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

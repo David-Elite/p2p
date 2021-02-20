@@ -1,0 +1,12 @@
+<section>
+    <div class="destination-container">
+        <div class="title-section destination">
+            <h4>Itinerary</h4>
+        </div>
+        <div class="para-box" *ngFor="let i of itinerary">
+            <h3>{{i.title}}</h3>
+            <p class="light" [innerHTML]="i.details"></p>
+        </div>
+        
+    </div>
+</section>

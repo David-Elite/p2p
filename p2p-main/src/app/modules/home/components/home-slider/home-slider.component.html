@@ -1,0 +1,18 @@
+<header>
+    <div class="section_heading">
+        <div>
+            <h1>{{title}}</h1>
+            <p>{{subtitle}}</p>
+        </div>
+        <div class="input-parent">
+            <div class="input-box">
+                <i class="fal fa-search search-bar"></i>
+                <input type="text" placeholder="Search Tours, Activities" />
+            </div>
+            <div><button>Search</button></div>
+        </div>
+    </div>
+    <div class="head-footercontent">
+        <span *ngFor="let h of headerContent">{{h.title}}</span>
+    </div>
+</header>

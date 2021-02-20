@@ -1,0 +1,13 @@
+<!-- Social media Section -->
+<section>
+    <div class="title-section title-partner">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="title-tours">{{subTitle}}</span>
+    </div>
+    <div class="insta-container">
+        <div *ngFor="let insta of instagram">
+            <i class="fab fa-instagram"></i>
+            <img src={{insta.image}} alt="insta1" />
+        </div>
+    </div>
+</section>

@@ -1,0 +1,14 @@
+<div class="faq-box">
+    <div class="title-section">
+        <h4>FAQs</h4>
+    </div>
+    <div class="faq-container" *ngFor="let f of faq; let i=index">
+        <div>
+            <h5 class="number">{{ i + 1 }}</h5>
+        </div>
+        <div class="faq-content">
+            <h3>{{f.ques}}</h3>
+            <p [innerHTML]="f.ans"></p>
+        </div>
+    </div>
+</div>

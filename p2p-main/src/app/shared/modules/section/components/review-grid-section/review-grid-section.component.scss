@@ -1,0 +1,124 @@
+section{
+    width: 95%;
+    margin: auto;
+}
+.viewall-2{
+    padding-left: 1.3rem;
+     margin-bottom: 2rem;
+     font: normal normal normal 20px/24px Montserrat;
+     letter-spacing: 0px;
+     color: #F96939;
+     opacity: 1;
+ 
+ }
+ 
+ /* Review Section */
+ .reviews-container{
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-evenly;
+     padding:5rem 0;
+ }
+ .review-container{
+     width: 270px;
+     text-align: center;
+ }
+ .review-title{
+     line-height: 1.5;
+     text-align: center;
+     font: normal normal normal 11px/18px Montserrat;
+     letter-spacing: 0px;
+     color: #949494;
+     opacity: 1;
+     margin-top: 1rem;
+     margin-bottom: 1rem;
+ }
+ .review-name{
+     text-align: center;
+     line-height: 1.5;
+     font: normal normal 600 14px/18px Montserrat;
+ letter-spacing: 0px;
+ color: #3A3A3A;
+ opacity: 1;
+ }
+ 
+ .fa-star{
+     color:#FFC52A;
+     font-size: 1.5rem;
+     margin-right: .6rem;
+ }
+ .white{
+     color:#D9D9D9;
+ }
+ .review-para{
+     display: flex;
+     text-align: start;
+     margin-top: 1rem;
+     line-height: 1.5;
+     font: normal normal normal 14px/26px Montserrat;
+     letter-spacing: 0px;
+     color: #949494;
+     opacity: 1;
+ }
+ 
+ .readmore{
+     display: flex;
+     padding:1rem 0;
+     font: normal normal 600 11px/18px Montserrat;
+     letter-spacing: 0px;
+     color: #F96939;
+     opacity: 1;
+     border-bottom: 1px solid rgb(211, 210, 210);
+ }
+//  
+.title-section{
+    width:91%;
+    padding-left: 3.5rem;
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+}
+
+.head-title{
+    max-width: 544px;
+    color:rgb(66, 64, 64);
+    // margin-left: 8.5rem;
+    font-size: 32px;
+    font-weight: bold;
+    border-left: 2px solid rgb(245, 65, 33); 
+     font: normal normal bold 30px/37px Montserrat; 
+    letter-spacing: 0px;
+    color: #3A3A3A;
+    opacity: 1; 
+    padding-left: 1.3rem;
+}
+
+.title-tours{
+    padding-bottom: 2rem;
+    text-align: left;
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #969696;
+    opacity: 1;
+    padding-left: 1.3rem;
+}
+.view-alls{
+    font: normal normal normal 20px/24px Montserrat;
+    color: rgb(245, 65, 33); 
+    text-decoration: underline;
+    margin-bottom: 2rem;
+    padding-left: 1.3rem;
+}
+.title-s h1{
+    width: 311px;
+    height: 74px;
+}
+.view-all,.title-tour{
+    text-decoration: none;
+    color: rgb(245, 65, 33); 
+    margin-bottom: 2rem;
+    font: normal normal normal 20px/24px Montserrat;
+    letter-spacing: 0px;
+    color: #F96939;
+    opacity: 1;
+    padding-left: 1.3rem;
+}
