@@ -1,0 +1,15 @@
+<section>
+    <div class="title-section">
+        <h1 class="head-title">{{title}}</h1>
+        <span class="view-alls">View All</span>
+    </div>
+
+    <div class="div-container">
+        <owl-carousel-o [options]="slidertwo">
+            <ng-template carouselSlide *ngFor="let fav of favourite">
+                <p class="corporate">{{fav.title}}</p>
+                <img src="../../../assets/img/photo-1447834353189-91c48abf20e1.png" alt="slideimg1">
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</section>

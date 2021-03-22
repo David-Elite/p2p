@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 const router = express.Router();
 
 
-router.post('/user', (req, res) => {
+router.post('register', (req, res) => {
     const { username, email, password,id } = req.body;
     db.query('SELECT email FROM user_table WHERE email = ?', [email], (err, results) => {
         if (results.length == 0) {

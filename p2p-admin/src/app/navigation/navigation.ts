@@ -8,7 +8,15 @@ export const navigation: FuseNavigation[] = [
         type     : 'group',
         children : [
             {
-                id       : 'categoriess',
+                id       : 'home',
+                title    : 'Home',
+                // translate: 'NAV.SAMPLE.TITLE',
+                type     : 'item',
+                icon     : 'home',
+                url      : '/home',
+            },
+            {
+                id       : 'categories',
                 title    : 'Categories',
                 // translate: 'NAV.SAMPLE.TITLE',
                 type     : 'item',
@@ -62,6 +70,22 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 icon     : 'person',
                 url      : '/admin-user',
+            },
+            {
+                id       : 'blog',
+                title    : 'Blogs',
+                // translate: 'NAV.SAMPLE.TITLE',
+                type     : 'item',
+                icon     : 'person',
+                url      : '/blog',
+            },
+            {
+                id       : 'page',
+                title    : 'Pages',
+                // translate: 'NAV.SAMPLE.TITLE',
+                type     : 'item',
+                icon     : 'page',
+                url      : '/page',
             },
         ]
     }

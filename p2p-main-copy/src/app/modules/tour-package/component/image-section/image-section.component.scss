@@ -1,0 +1,216 @@
+.bg-img{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.bg-img img{
+    width: 100%;
+    height: 100%;
+}
+.img-container{
+    display: flex;
+    position: absolute;
+    top:25%;
+    left:12%;
+}
+.left-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.fa-images,.fa-video{
+    font-size: 1.7rem;
+    margin:0 .5rem;
+}
+.left-box h2{
+    width: 600px;
+height: 74px;
+    font: normal normal bold 28px/37px Montserrat;
+letter-spacing: 0px;
+color: #F9F9F9;
+opacity: 1;
+margin-bottom: 3.5rem;
+}
+.social-box{
+    display: flex;
+}
+.social-box div{
+   width: 120px;
+    height: 46px;
+    background: #000000 0% 0% no-repeat padding-box;
+border-radius: 5px;
+opacity: 0.8;
+margin-right: 2rem;
+}
+
+.social-box div p{
+    font: normal normal normal 16px/19px Montserrat;
+letter-spacing: 0px;
+color: #FFFFFF;
+opacity: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 0;
+height: 100%;
+cursor: pointer;
+}
+.right-box{
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+box-shadow: 0px 3px 6px #00000029;
+border-radius: 5px;
+opacity: 1; 
+padding:2rem;
+width: 400px;
+height: 390px;
+margin-left: 5rem;
+}
+.title-1 div{
+    margin-right: 1.2rem;
+}
+.title-1 div:first-child{
+    width: 90px;
+    height: 30px;
+    background: #FF5300 0% 0% no-repeat padding-box;
+border-radius: 5px;
+opacity: 1;
+}
+.title-1 div:nth-child(2){
+    width: 90px;
+    height: 30px;
+    background: #FFA62E 0% 0% no-repeat padding-box;
+border-radius: 5px;
+opacity: 1;
+}
+.title-1 div:nth-child(3){
+    width: 90px;
+    height: 30px;
+    background: #0FCB40 0% 0% no-repeat padding-box;
+border-radius: 5px;
+opacity: 1;
+}
+.title-1{
+    display: flex;
+}
+.title-1 div p{
+    font: normal normal 600 13px/16px Montserrat;
+letter-spacing: 0px;
+color: #FFFFFF;
+opacity: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 0;
+height: 100%;
+}
+.right-box-title{
+    font: normal normal 600 20px/24px Montserrat;
+letter-spacing: 0px;
+color: #3A3A3A;
+opacity: 1;
+width: 360px;
+margin-top:1rem;
+margin-bottom: 3rem;
+}
+.fa-star{
+    color:#FFC52A;
+    font-size: 1.5rem;
+    margin-right: .6rem;
+}
+
+.star {
+    font-size: 1.5rem;
+    color: #b0c4de !important;
+  }
+  .filled {
+    color: #1e90ff !important;
+  }
+  .bad {
+    color: #deb0b0 !important;
+  }
+  .filled.bad {
+    color: #ff1e1e !important;
+  }
+.review-title span{
+    font: normal normal normal 12px/15px Montserrat;
+letter-spacing: 0px;
+color: #969696;
+}
+.review-title{
+    margin-bottom: 2rem;
+}
+.fa-sun{
+    width: 1.7rem;
+    color:#949494;
+}
+.days-box{
+    margin-bottom: 3rem;
+}
+.days-box span{
+    font: normal normal normal 12px/15px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+padding-right: 1rem;
+border-right:1px solid #949494;
+}
+.days-box span:last-child{
+    border-right: 0;
+    padding: 0 1rem;
+}
+.fa-moon{
+ width: 1.7rem;
+ color:#949494;
+}
+.days-box span:nth-child(2){
+  padding: 0 1rem;
+  border-right: 1px solid #aaaaaa;
+}
+.fa-map-marker-alt{
+    width: 1.7rem;
+ color:#949494;
+}
+.city-tour-para .fa-check-circle{
+    color:#0FCB40;
+    font-size:1.5rem;
+    margin-right: 1rem;
+}
+.city-tour-para p{
+    font: normal normal normal 12px/15px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+}
+.city-tour-para{
+    margin-bottom: 3rem;
+}
+.tour-amount{
+    display: flex;
+    justify-content: space-between;
+}
+.tour-amount .compared{
+    font: normal normal normal 20px/24px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+display: flex;
+align-items: center;
+}
+.tour-amount .actual{
+    font: normal normal 600 37px/45px Montserrat;
+letter-spacing: 0px;
+color: #3A3A3A;
+opacity: 1;
+}
+
+
+
+  .crossed {
+    text-decoration: line-through;
+    font: normal normal normal 20px/24px Montserrat;
+letter-spacing: 0px;
+color: #949494;
+opacity: 1;
+display: flex;
+align-items: center;
+  }

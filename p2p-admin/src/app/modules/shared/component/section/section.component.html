@@ -1,0 +1,295 @@
+<div class="section-list">
+    <div cdkDropList class="section-list" (cdkDropListDropped)="updateSectionSequence($event)">
+        <div class="section-box" *ngFor="let sec of sections" cdkDrag>
+            <div class="title">
+                <h2>{{sec.title}}</h2>
+                <span>{{sec.subtitle ? sec.subtitle + ' - ' : '' }}{{sec.content_type}} -
+                    {{sec.display_type}}</span>
+            </div>
+            <div class="action">
+                <button mat-mini-fab (click)="editSection(sec.id, sectionEditor)" class="list-icon-button">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                &nbsp;&nbsp;
+                <button mat-mini-fab (click)="deleteSection(sec.id)" class="list-icon-button">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br>
+    <div #sectionEditor>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Section Title</mat-label>
+            <input matInput placeholder="Section Title" name="sectionTitle" [(ngModel)]="sectionTitle"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Section Sub Title</mat-label>
+            <input matInput placeholder="Section Sub Title" name="sectionsubtitle" [(ngModel)]="sectionSubtitle"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Content Type</mat-label>
+            <mat-select [(ngModel)]="sectionContentType" [ngModelOptions]="{standalone: true}">
+                <mat-option value="Package">
+                    Package
+                </mat-option>
+                <mat-option value="Link">
+                    Link
+                </mat-option>
+                <mat-option value="Zone">
+                    Zone
+                </mat-option>
+                <mat-option value="Blog">
+                    Blog
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Display Type</mat-label>
+            <mat-select [(ngModel)]="sectionDisplayType" [ngModelOptions]="{standalone: true}">
+                <mat-option value="Table" *ngIf="sectionContentType === 'Package'">
+                    Table
+                </mat-option>
+                <mat-option value="Carousel" *ngIf="sectionContentType === 'Package'
+                        || sectionContentType === 'Link'">
+                    Carousel
+                </mat-option>
+                <mat-option value="List" *ngIf="sectionContentType === 'Package'">
+                    List
+                </mat-option>
+                <mat-option value="Grid" *ngIf="sectionContentType === 'Blog' || sectionContentType === 'Zone' ">
+                    Grid
+                </mat-option>
+                <mat-option value="Link" *ngIf="sectionContentType === 'Link'">
+                    Link List
+                </mat-option>
+                <mat-option value="Title Link With Image" *ngIf="sectionContentType === 'Link'">
+                    Title Link With Image
+                </mat-option>
+                <mat-option value="Simple Link Slider" *ngIf="sectionContentType === 'Link'">
+                    Simple Link Slider
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="links" *ngIf="sectionId !== '' && sectionContentType === 'Link'">
+            <div class="grid-display" *ngIf="section && section.links && section.links.length > 0">
+                <div class="grid-det" *ngFor="let s of section?.links">
+                    <img class="grid-img" *ngIf="s.icon && s.icon !== ''" [src]="s.icon">
+                    <img class="grid-img" *ngIf="!s.icon || s.icon === ''"
+                        src="assets/images/ecommerce/product-image-placeholder.png">
+                    <span class="grid-title">
+                        <h3>{{ s.title }}</h3>
+                        <button mat-mini-fab (click)="editLink(s.id, 'section')" class="list-icon-button">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button mat-mini-fab (click)="deleteLink(s.id, 'section')" class="list-icon-button">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </span>
+                    <span class="grid-url">
+                        <h5>https://plans2pick.com/{{ s.url }}</h5>
+                    </span>
+                </div>
+            </div>
+            <h2 *ngIf="!section.links || section.links.length == 0">No Links Created</h2>
+            <div class="list-actions">
+                <button mat-raised-button class="save-list-button" (click)="openAddLink()">
+                    <span>Create New Link</span>
+                </button>
+            </div>
+        </div>
+        <div class="pkgs" *ngIf="sectionId !== '' && sectionContentType === 'Package'">
+
+            <div class="pkg-list">
+                <mat-form-field floatLabel="always" class="w-100-p">
+                    <input matInput placeholder="Search" name="searchPkg" [(ngModel)]="searchPkg"
+                        (ngModelChange)="filterPackages()" [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                <cdk-virtual-scroll-viewport itemSize="50" class="scroll-pkg-list">
+                    <div *cdkVirtualFor="let pkg of dispPkgList" class="pkg-item">
+                        <div class="pkg-img">
+                            <img *ngIf="pkg.image && pkg.image !== ''" [src]="pkg.image">
+                            <img *ngIf="!pkg.image || pkg.image === ''"
+                                src="assets/images/ecommerce/product-image-placeholder.png">
+                        </div>
+                        <div class="pkg-title">
+                            <h2>{{pkg.title}}</h2>
+                            <span>
+                                <h4>
+                                    <i class="fas fa-star"></i>
+                                    {{ pkg.reviewCount > 0 ? pkg.reviewPoints : 'No Review'
+                                    }}
+                                    {{ pkg.reviewCount > 0 ? ' |' + pkg.reviewCount + '
+                                    Reviews' : ''}}
+                                </h4>
+                                <h4>INR {{ pkg.priceWithTax }}{{pkg.priceUnit ? '/' +
+                                    pkg.priceUnit : '' }} </h4>
+                            </span>
+                        </div>
+                        <div class="pkg-action">
+                            <button *ngIf="!isSelectedPkg(pkg.id)" mat-icon-button (click)="addToSelection(pkg.id)">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                            <mat-icon *ngIf="isSelectedPkg(pkg.id)" class="active-icon green-600 s-16">check</mat-icon>
+                        </div>
+                    </div>
+                </cdk-virtual-scroll-viewport>
+            </div>
+            <div class="sel-pkg">
+                <div cdkDropList class="sel-pkg-list" (cdkDropListDropped)="updateProductSequence($event)">
+                    <div class="sel-pkg-box" *ngFor="let p of selectedPkgs" cdkDrag>
+                        <div class="title">
+                            <h4>{{p.title}}</h4>
+                        </div>
+                        <div class="action">
+                            <button mat-mini-fab (click)="removePkgFromSelection(p.id)" class="list-icon-button">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="zone" *ngIf="sectionId !== '' && sectionContentType === 'Zone'">
+            <div *ngIf="sectionDisplayType === 'carousel'">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Parent</mat-label>
+                    <mat-select formControlName="parent">
+                        <mat-option *ngFor="let z of section.zones" [value]="z.id">
+                            {{z.zone === 'Continent' ? '' :
+                            z.zone === 'Country' ? '-' :
+                            z.zone === 'State' ? '--' :
+                            z.zone === 'City' ? '---' :
+                            z.zone === 'Region' ? '----' : ''}}{{z.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="sectionDisplayType === 'Grid'">
+                <div class="grid-display" *ngIf="section && section.zones && section.zones.length > 0">
+                    <div class="grid-det" *ngFor="let s of getZoneGrid(null)">
+                        <ul>
+                            <li *ngFor="let z of getZoneGrid(s.id)">
+                                {{ z.title }}
+                            </li>
+                        </ul>
+                        <span class="grid-title">
+                            <h3>{{ s.title }}</h3>
+                            <button mat-mini-fab (click)="editZoneGrid(s.id, 'section')" class="list-icon-button">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            &nbsp;&nbsp;
+                            <button mat-mini-fab (click)="deleteZoneGrid(s.id, 'section')" class="list-icon-button">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <h2 *ngIf="!section.zones || section.zones.length == 0">No Grid Created</h2>
+                <div class="list-actions">
+                    <button mat-raised-button class="save-list-button" (click)="openAddZones()">
+                        <span>Create New Grid</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="list-actions">
+            <button mat-raised-button class="save-list-button" (click)="addSection()" [disabled]="sectionTitle === '' ||
+                            (sectionId === '' && sectionContentType === '') ||
+                            (sectionId === '' && sectionDisplayType === '')">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #addLink>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link Title</mat-label>
+            <input matInput placeholder="Link Title" name="linkTitle" [(ngModel)]="linkTitle"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="form-link-icon">
+            <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Choose Icon</mat-label>
+                <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                <button mat-icon-button matSuffix (click)="iconInput.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file" accept="image/*">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link URL</mat-label>
+            <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="linkTitle === '' && linkUrl === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addZone>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Zone Type</mat-label>
+            <mat-select [(ngModel)]="zoneType" [ngModelOptions]="{standalone: true}" [disabled]="zoneEdit">
+                <mat-option value="Continent">Continent</mat-option>
+                <mat-option value="Country">Country</mat-option>
+                <mat-option value="State">State</mat-option>
+                <mat-option value="City">City</mat-option>
+                <mat-option value="Region">Region</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Box Heading</mat-label>
+            <mat-select [(ngModel)]="zoneHead" [ngModelOptions]="{standalone: true}" [disabled]="zoneEdit">
+                <mat-option *ngFor="let c of zones | zoneFilter : zoneType" [value]="c.id">
+                    {{c.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="child-zones" *ngIf="zoneHead !== ''">
+            <mat-checkbox class="zone-checkbox" *ngFor="let z of zones | zoneFilter: 'all': zoneType.toLowerCase() : zoneHead" [value]="z.id"
+            (change)="changeZone($event)" [checked]="isZoneChecked(z.id)">
+            {{z.title}}
+        </mat-checkbox>
+        </div>
+
+        
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="zoneHeadTitle === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>

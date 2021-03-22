@@ -1,0 +1,44 @@
+<app-image-section title="Leh Ladakh Tour Packages"></app-image-section>
+<section>
+    <div class="title-section">
+        <h4>{{landingPage.title}}</h4>
+    </div>
+    <div class="para-box">
+        <p [innerHTML]="landingPage.description"></p>
+    </div>
+</section>
+<section *ngFor="let section of landingPage.section">
+    <ng-container *ngIf="section.displayType === 'Table'">
+        <app-table-section [pageId]="landingPage.id" [sectionId]="section.id"></app-table-section>
+    </ng-container>
+    <ng-container *ngIf="section.displayType === 'Carousel'">
+        <app-product-carousel-section [noOfPackages]="noOfPackages" [refId]="landingPage.id" [sectionId]="section.id"></app-product-carousel-section>
+    </ng-container>
+    <ng-container *ngIf="section.displayType === 'List'">
+        <app-packages-section pageId]="landingPage.id" [sectionId]="section.id"></app-packages-section>
+    </ng-container>
+
+</section>
+<section>
+    
+</section>
+<app-product-carousel-section [noOfPackages]="noOfPackages" title="Some Title" subtitle="sub title"
+    [packages]="homePackages"></app-product-carousel-section>
+<app-product-carousel-section [noOfPackages]="noOfPackages" title="Some Title" subtitle="sub title"
+    [packages]="homePackages"></app-product-carousel-section>
+<section>
+    <app-location-tab-section [location]="location"></app-location-tab-section>
+</section>
+<app-blog-grid-section title="Some Title" subTitle="Sub Title" [blog]="blog"></app-blog-grid-section>
+<app-blog-grid-section title="Some Title" subTitle="Sub Title" [blog]="blog"></app-blog-grid-section>
+<app-location-box-section title="Some Title" subTitle="Sub Title" [locationBox]="locationBox">
+</app-location-box-section>
+<section>
+    <app-review-section [review]="review"></app-review-section>
+</section>
+<section>
+    <app-faq-section></app-faq-section>
+</section>
+<section>
+    <app-location-tab-section [location]="location"></app-location-tab-section>
+</section>

@@ -1,0 +1,579 @@
+<div id="home" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/home/list-home'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="home-image mr-8 mr-sm-16"
+                    [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="home.sliderImages.length > 0" [src]="home.sliderImages[0].url">
+                    <img *ngIf="home.sliderImages.length === 0"
+                        [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2">
+                        Home
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Home Page Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-home-button"
+                [disabled]="homeForm.invalid || homeForm.pristine"
+                (click)="saveHome()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="home-form" [formGroup]="homeForm" class="home w-100-p"
+                    fxLayout="column" fxFlex>
+
+                    <mat-tab-group (selectedTabChange)="handleTabChange($event)">
+
+                        <mat-tab label="SEO" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Meta Title</mat-label>
+                                    <input matInput placeholder="Meta Title" name="metaTitle"
+                                        formControlName="metaTitle">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Meta Description</mat-label>
+                                    <textarea matInput placeholder="Meta Description" name="metaDesc"
+                                        formControlName="metaDesc" rows="5" maxlength="160">
+                                    </textarea>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+
+                                    <mat-label>Meta Keywords</mat-label>
+
+                                    <mat-chip-list #keyList name="metaKeywords" formControlName="metaKeywords">
+
+                                        <mat-chip *ngFor="let meta of home.metaKeywords" [removable]="true"
+                                            (removed)="home.removeKeywords(meta, homeForm.get('metaKeywords'))">
+                                            {{meta}}
+                                            <mat-icon matChipRemove>cancel</mat-icon>
+                                        </mat-chip>
+
+                                        <input [matChipInputFor]="keyList" [matChipInputAddOnBlur]="true"
+                                            (matChipInputTokenEnd)="home.addKeywords($event, homeForm.get('metaKeywords'))" />
+
+                                    </mat-chip-list>
+
+                                </mat-form-field>
+
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Slider Images">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Choose file</mat-label>
+                                    <input matInput
+                                        [value]="selectedImages.length > 0 ? selectedImages.length + ' Images Selected' : 'Choose Images'"
+                                        disabled>
+                                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                    <input hidden (change)="uploadImages($event, 'home-slider')" #fileInput type="file" id="file"
+                                        accept=".png,.jpg" multiple="true">
+                                </mat-form-field>
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                    <div *ngIf="home.sliderImages.length === 0" class="home-image"
+                                        fxlayout="row" fxLayoutAlign="center center">
+                                        <img class="media"
+                                            [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                                    </div>
+
+                                    <div *ngFor="let image of home.sliderImages">
+                                        <div class="home-image" fxlayout="row" fxLayoutAlign="center center">
+                                            <img class="media" [src]="image.url">
+                                            <button mat-icon-button matRipple class="remove-btn"
+                                                (click)="removeImage(image.id)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Sections">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <app-section [referenceId]="'home'"></app-section>
+                            </div>
+                            <!-- <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div cdkDropList class="section-list"
+                                    (cdkDropListDropped)="updateSectionSequence($event)">
+                                    <div class="section-box" *ngFor="let sec of home.section" cdkDrag>
+                                        <div class="title">
+                                            <h2>{{sec.title}}</h2>
+                                            <span>{{sec.subtitle ? sec.subtitle + ' - ' : '' }}{{sec.contentType}} -
+                                                {{sec.displayType}}</span>
+                                        </div>
+                                        <div class="action">
+                                            <button mat-mini-fab (click)="editSection(sec.id, sectionEditor)"
+                                                class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteSection(sec.id)"
+                                                class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br><br><br><br>
+                                <div #sectionEditor>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Section Title</mat-label>
+                                        <input matInput placeholder="Section Title" name="sectionTitle"
+                                            [(ngModel)]="sectionTitle" [ngModelOptions]="{standalone: true}">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Section Sub Title</mat-label>
+                                        <input matInput placeholder="Section Sub Title" name="sectionsubtitle"
+                                            [(ngModel)]="sectionSubtitle" [ngModelOptions]="{standalone: true}">
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline"
+                                        floatLabel="always" class="w-100-p">
+                                        <mat-label>Content Type</mat-label>
+                                        <mat-select [(ngModel)]="sectionContentType"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option value="Package">
+                                                Package
+                                            </mat-option>
+                                            <mat-option value="Link">
+                                                Link
+                                            </mat-option>
+                                            <mat-option value="Zone">
+                                                Zone
+                                            </mat-option>
+                                            <mat-option value="Blog">
+                                                Blog
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngIf="!sectionId || sectionId === ''" appearance="outline"
+                                        floatLabel="always" class="w-100-p">
+                                        <mat-label>Display Type</mat-label>
+                                        <mat-select [(ngModel)]="sectionDisplayType"
+                                            [ngModelOptions]="{standalone: true}">
+                                            <mat-option value="Table" *ngIf="sectionContentType === 'Package'">
+                                                Table
+                                            </mat-option>
+                                            <mat-option value="Carousel" *ngIf="sectionContentType === 'Package'
+                                                || sectionContentType === 'Link'">
+                                                Carousel
+                                            </mat-option>
+                                            <mat-option value="List" *ngIf="sectionContentType === 'Package'">
+                                                List
+                                            </mat-option>
+                                            <mat-option value="Grid" *ngIf="sectionContentType === 'Blog'">
+                                                Grid
+                                            </mat-option>
+                                            <mat-option value="Link" *ngIf="sectionContentType === 'Link'">
+                                                Link List
+                                            </mat-option>
+                                            <mat-option value="Title Link With Image" *ngIf="sectionContentType === 'Link'">
+                                                Title Link With Image
+                                            </mat-option>
+                                            <mat-option value="Simple Link Slider" *ngIf="sectionContentType === 'Link'">
+                                                Simple Link Slider
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <div class="links" *ngIf="sectionId !== '' && sectionContentType === 'Link'">
+                                        <div class="grid-display"
+                                            *ngIf="section && section.links && section.links.length > 0">
+                                            <div class="grid-det" *ngFor="let s of section?.links">
+                                                <img class="grid-img" *ngIf="s.icon && s.icon !== ''" [src]="s.icon">
+                                                <img class="grid-img" *ngIf="!s.icon || s.icon === ''"
+                                                    src="assets/images/ecommerce/product-image-placeholder.png">
+                                                <span class="grid-title">
+                                                    <h3>{{ s.title }}</h3>
+                                                    <button mat-mini-fab (click)="editLink(s.id, 'section')"
+                                                        class="list-icon-button">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                    &nbsp;&nbsp;
+                                                    <button mat-mini-fab (click)="deleteLink(s.id, 'section')"
+                                                        class="list-icon-button">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </span>
+                                                <span class="grid-url">
+                                                    <h5>https://plans2pick.com/{{ s.url }}</h5>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <h2 *ngIf="!section.links || section.links.length == 0">No Links Created</h2>
+                                        <div class="list-actions">
+                                            <button mat-raised-button class="save-list-button" (click)="openAddLink()">
+                                                <span>Create New Link</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="pkgs" *ngIf="sectionId !== '' && sectionContentType === 'Package'">
+
+                                        <div class="pkg-list">
+                                            <mat-form-field floatLabel="always" class="w-100-p">
+                                                <input matInput placeholder="Search" name="searchPkg"
+                                                    [(ngModel)]="searchPkg" (ngModelChange)="filterPackages()"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </mat-form-field>
+                                            <cdk-virtual-scroll-viewport itemSize="50" class="scroll-pkg-list">
+                                                <div *cdkVirtualFor="let pkg of dispPkgList" class="pkg-item">
+                                                    <div class="pkg-img">
+                                                        <img *ngIf="pkg.image && pkg.image !== ''" [src]="pkg.image">
+                                                        <img *ngIf="!pkg.image || pkg.image === ''"
+                                                            src="assets/images/ecommerce/product-image-placeholder.png">
+                                                    </div>
+                                                    <div class="pkg-title">
+                                                        <h2>{{pkg.title}}</h2>
+                                                        <span>
+                                                            <h4>
+                                                                <i class="fas fa-star"></i>
+                                                                {{ pkg.reviewCount > 0 ? pkg.reviewPoints : 'No Review'
+                                                                }}
+                                                                {{ pkg.reviewCount > 0 ? ' |' + pkg.reviewCount + '
+                                                                Reviews' : ''}}
+                                                            </h4>
+                                                            <h4>INR {{ pkg.priceWithTax }}{{pkg.priceUnit ? '/' +
+                                                                pkg.priceUnit : '' }} </h4>
+                                                        </span>
+                                                    </div>
+                                                    <div class="pkg-action">
+                                                        <button *ngIf="!isSelectedPkg(pkg.id)" mat-icon-button
+                                                            (click)="addToSelection(pkg.id)">
+                                                            <mat-icon>add</mat-icon>
+                                                        </button>
+                                                        <mat-icon *ngIf="isSelectedPkg(pkg.id)"
+                                                            class="active-icon green-600 s-16">check</mat-icon>
+                                                    </div>
+                                                </div>
+                                            </cdk-virtual-scroll-viewport>
+                                        </div>
+                                        <div class="sel-pkg">
+                                            <div cdkDropList class="sel-pkg-list"
+                                                (cdkDropListDropped)="updateProductSequence($event)">
+                                                <div class="sel-pkg-box" *ngFor="let p of selectedPkgs" cdkDrag>
+                                                    <div class="title">
+                                                        <h4>{{p.title}}</h4>
+                                                    </div>
+                                                    <div class="action">
+                                                        <button mat-mini-fab (click)="removePkgFromSelection(p.id)"
+                                                            class="list-icon-button">
+                                                            <mat-icon>delete</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="zone">
+
+                                    </div>
+                                    <div class="list-actions">
+                                        <button mat-raised-button class="save-list-button" (click)="addSection()"
+                                            [disabled]="sectionTitle === '' ||
+                                                    (sectionId === '' && sectionContentType === '') ||
+                                                    (sectionId === '' && sectionDisplayType === '')">
+                                            <span>SAVE</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </mat-tab>
+
+                        <!-- <mat-tab label="FAQ">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <div class="list-display">
+                                    <div class="list-det" *ngFor="let f of home.faq">
+                                        <span class="list-title">
+                                            <h2>{{ f.ques }}</h2>
+                                            <button mat-mini-fab (click)="editFAQ(f.id)" class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteFAQ(f.id)" class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </span>
+
+                                        <p [innerHTML]="f.ans"></p>
+                                    </div>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>FAQ Question</mat-label>
+                                    <input matInput placeholder="FAQ Question" name="faqQues" [(ngModel)]="faqQues"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <app-editor *ngIf="active == 8" [(ngModel)]="faqAns"
+                                    [ngModelOptions]="{standalone: true}">
+                                </app-editor>
+
+                                <div class="list-actions">
+                                    <button mat-raised-button class="clear-list-button" (click)="clearFAQ()"
+                                        *ngIf="faqId !== '' && faqId !== null">
+                                        <span>CLEAR</span>
+                                    </button>
+                                    <button mat-raised-button class="save-list-button" (click)="saveFAQ()"
+                                        [disabled]="faqQues === '' || faqAns === ''">
+                                        <span>SAVE</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Miscelaneous">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <div class="list-display">
+                                    <div class="list-det" *ngFor="let m of home.misc">
+                                        <span class="list-title">
+                                            <h2>{{ m.title }}</h2>
+                                            <button mat-mini-fab (click)="editMisc(m.id)" class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteMisc(m.id)" class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </span>
+
+                                        <p [innerHTML]="m.content"></p>
+                                    </div>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Misc Title</mat-label>
+                                    <input matInput placeholder="Title" name="miscTitle" [(ngModel)]="miscTitle"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <app-editor *ngIf="active == 9" [(ngModel)]="miscContent"
+                                    [ngModelOptions]="{standalone: true}">
+                                </app-editor>
+
+                                <div class="list-actions">
+                                    <button mat-raised-button class="clear-list-button" (click)="clearMisc()"
+                                        *ngIf="miscId !== '' && miscId !== null">
+                                        <span>CLEAR</span>
+                                    </button>
+                                    <button mat-raised-button class="save-list-button" (click)="saveMisc()"
+                                        [disabled]="miscTitle === '' || miscContent === ''">
+                                        <span>SAVE</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-tab> -->
+
+                        <mat-tab label="Slider Links">
+                            
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <div class="grid-display">
+                                    <div class="grid-det" *ngFor="let l of home.sliderLinks">
+                                        <img class="grid-img" *ngIf="l.icon && l.icon !== ''" [src]="l.icon">
+                                        <img class="grid-img" *ngIf="!l.icon || l.icon === ''"
+                                            src="assets/images/ecommerce/product-image-placeholder.png">
+                                        <span class="grid-title">
+                                            <h3>{{ l.title }}</h3>
+                                            <button mat-mini-fab (click)="editLink(l.id)" class="list-icon-button">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button mat-mini-fab (click)="deleteLink(l.id)" class="list-icon-button">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </span>
+                                        <span class="grid-url">
+                                            <h5>https://plans2pick.com/{{ l.url }}</h5>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Link Title</mat-label>
+                                    <input matInput placeholder="Link Title" name="linkTitle" [(ngModel)]="linkTitle"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <div class="form-link-icon">
+                                    <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Choose Icon</mat-label>
+                                        <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                                        <button mat-icon-button matSuffix (click)="iconInput.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                        <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file"
+                                            accept=".png,.svg">
+                                    </mat-form-field>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Link URL</mat-label>
+                                    <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                                        [ngModelOptions]="{standalone: true}">
+                                </mat-form-field>
+
+                                <div class="list-actions">
+                                    <button mat-raised-button class="clear-list-button" (click)="clearLink()"
+                                        *ngIf="linkId !== '' && linkId !== null">
+                                        <span>CLEAR</span>
+                                    </button>
+                                    <button mat-raised-button class="save-list-button" (click)="saveLink('home', 'home-slider')"
+                                        [disabled]="linkTitle === '' || linkUrl === ''">
+                                        <span>SAVE</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+
+<ng-template #addLink>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link Title</mat-label>
+            <input matInput placeholder="Link Title" name="linkTitle" [(ngModel)]="linkTitle"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="form-link-icon">
+            <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Choose Icon</mat-label>
+                <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                <button mat-icon-button matSuffix (click)="iconInput.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file" accept="image/*">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link URL</mat-label>
+            <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="linkTitle === '' && linkUrl === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #addZone>
+    <div class="tab-content p-24" fusePerfectScrollbar>
+
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Zone Type</mat-label>
+            <mat-select [(ngModel)]="zoneType" [ngModelOptions]="{standalone: true}">
+                <mat-option value="Continent">Continent</mat-option>
+                <mat-option value="Country">Country</mat-option>
+                <mat-option value="State">State</mat-option>
+                <mat-option value="City">City</mat-option>
+                <mat-option value="Region">Region</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Box Heading</mat-label>
+            <mat-select formControlName="continent">
+                <mat-option *ngFor="let c of zones | zoneFilter : zoneType" [value]="c.id">
+                    {{c.title}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="form-link-icon">
+            <img *ngIf="displayIcon && displayIcon !== ''" [src]="displayIcon">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Choose Icon</mat-label>
+                <input matInput [value]="linkIcon ? linkIcon.name  : 'Choose Images'" disabled>
+                <button mat-icon-button matSuffix (click)="iconInput.click()">
+                    <mat-icon>attach_file</mat-icon>
+                </button>
+                <input hidden (change)="uploadLinkIcon($event)" #iconInput type="file" id="file" accept="image/*">
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Link URL</mat-label>
+            <input matInput placeholder="Link URL" name="linkUrl" [(ngModel)]="linkUrl"
+                [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div class="list-actions">
+            <button mat-raised-button class="clear-list-button" mat-dialog-close (click)="clearLink()">
+                <span>CLEAR</span>
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button mat-raised-button class="save-list-button" [disabled]="linkTitle === '' || linkUrl === ''"
+                [mat-dialog-close]="true">
+                <span>SAVE</span>
+            </button>
+        </div>
+    </div>
+</ng-template>

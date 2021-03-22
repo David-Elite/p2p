@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="68" height="68" viewBox="0 0 68 68">
+  <defs>
+    <filter id="adventure" x="0" y="0" width="68" height="68" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="right" transform="translate(9 6)" opacity="0.56">
+    <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#adventure)">
+      <rect id="adventure-2" data-name="adventure" width="50" height="50" rx="25" transform="translate(9 6)"/>
+    </g>
+    <path id="left-arrow" d="M9.143,22.289H31.95l-8.733-8.318a1.143,1.143,0,0,1,1.577-1.656l9.974,9.5a2.286,2.286,0,0,1-.02,3.253l-9.954,9.481a1.143,1.143,0,1,1-1.577-1.655l8.77-8.318H9.143a1.143,1.143,0,0,1,0-2.286Z" transform="translate(3.563 2)" fill="#fff"/>
+  </g>
+</svg>

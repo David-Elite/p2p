@@ -1,0 +1,48 @@
+<section>
+
+    <div class="title-section">
+        <h1 class="head-title">{{ title }}</h1>
+        <span class="title-tours">{{ subtitle }}</span>
+    </div>
+    <div class="div-container2">
+        <owl-carousel-o [options]="sliderthree">
+            <ng-template carouselSlide *ngFor="let pack of packages">
+                <img src="../../../assets/img/shutterstock_147744218.png" alt="slideimg1">
+                <div class="img-title">
+                    <p>{{ pack.title }}</p>
+                    <div class="img-titles">
+                        <span><i class="fas fa-star yellow"></i></span>
+                        <span>{{ pack.review_points}} | {{pack.review_count}} Reviews</span>
+                        <div class="price">
+                            <span>₹ {{ pack.price_with_tax }}</span>
+                            <span>₹ {{ pack.compared_price }}</span>
+                        </div>
+                    </div>
+                    <button [routerLink]="['/package', pack.handle]" class="enquiry-btn">Enquiry Now</button>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</section>
+
+
+<!-- <owl-carousel-o [options]="sliderthree">
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+    <ng-template carouselSlide>
+        <img src="../../../assets/img/shutterstock_147744218.png" style="width: 100%;" alt="slideimg1">
+    </ng-template>
+</owl-carousel-o> -->

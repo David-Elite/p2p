@@ -1,0 +1,21 @@
+<div class="titlelinkwithimage container">
+    <div class="title">
+        <div class="title-box">
+            <div class="section-title">
+                <h1>{{ section?.title }}</h1>
+                <h3>{{ section?.subtitle }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="links">
+        <owl-carousel-o [options]="sliderConfig" class="carousel-link">
+            <ng-template carouselSlide  *ngFor="let link of section?.links">
+                <div class="link-item">
+                    <div class="link-image" [ngStyle]="{'background-image': 'url(' + link.icon + ')'}">
+                        <h2 class="link-title">{{link.title}}</h2>
+                    </div>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+</div>

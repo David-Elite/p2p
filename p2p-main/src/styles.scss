@@ -1,38 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-// @font-face {
-//     font-family: 'Gloss And Bloom Regular';
-//     font-style: normal;
-//     font-weight: normal;
-//     src: local('Gloss And Bloom Regular'), url('../src/font/Gloss_And_Bloom.woff') format('woff');
-//     }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
-}
-
-html{
-    font-size: 62.5%;
-}
-
-body{
-    font-size: 1.5rem;
-    font-family: 'Montserrat', sans-serif;
-}
-body div {
-	font-size: 1.5rem;
-}
-
-body p{
-    font-size: 1.5rem;
-}
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+@import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+
+@font-face {
+    font-family: 'Gloss And Bloom';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gloss And Bloom'), url('./assets/fonts/Gloss_And_Bloom.ttf') format('truetype'); 
+}
+
+html {
+    body { margin: 0; font-family: "Montserrat"; }
+}
+
+.container {
+    padding: 50px 0 10px 0;
+}
+
+.section-title {
+    width: 100%;
+    h1 {
+        text-align: left;
+        font: normal normal bold 30px/37px Montserrat;
+        letter-spacing: 0px;
+        color: #3A3A3A;
+        opacity: 1;
+        position: relative;
+        padding-left: 5px;
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 3px;
+            background: transparent linear-gradient(180deg, #FFA62E 0%, #EA4D2C 100%) 0% 0% no-repeat padding-box;
+            border-radius: 23px;
+            opacity: 1;
+        }
+    }
+    h3 {
+        text-align: left;
+        font: normal normal normal 20px/24px Montserrat;
+        letter-spacing: 0px;
+        color: #969696;
+        opacity: 1;
+    }
+}
+
+.carousel {
+    width: 100%;
+}
+
+.modal-class {
+    .modal-dialog {
+        width: 80%;
+        height: 90%;
+        margin: auto;
+        .modal-content {
+            background-color: transparent;
+        }
+    }
+}

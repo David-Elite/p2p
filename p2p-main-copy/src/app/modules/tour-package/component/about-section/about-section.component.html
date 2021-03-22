@@ -1,0 +1,20 @@
+<section>
+    <div class="destination-container">
+        <div class="title-section destination">
+            <h4>{{package.title}}</h4>
+        </div>
+        <div class="para-box">
+            <p class="light"[innerHTML]="package.description">
+            </p>
+            <!-- <p class="light">
+              {{para2}}
+            </p> -->
+        </div>
+        <div class="para-box">
+            <div class="box-one" *ngFor="let misc of package.misc">
+                <span class="boxone-span">{{ misc.title }}</span>
+                <span class="boxone-span" [innerHTML]="misc.content"></span>
+            </div>
+        </div>
+    </div>
+</section>

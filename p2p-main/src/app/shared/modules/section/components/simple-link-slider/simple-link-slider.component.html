@@ -1,0 +1,42 @@
+<div class="simplelinkslider container">
+    <div class="section-title">
+        <h1>{{ section?.title }}</h1>
+        <h3>{{ section?.subtitle }}</h3>
+    </div>
+    <owl-carousel-o [options]="sliderConfig" class="simple-link-carousel">
+        <ng-template [width]="280" carouselSlide>
+            <div class="carousel-link-item">
+                <div class="item half" [ngStyle]="{'background-image': 'url(' + section?.links[0]?.icon + ')'}">
+                    <h3>{{ section?.links[0]?.title }}</h3>
+                </div>
+                <div class="item half" [ngStyle]="{'background-image': 'url(' + section?.links[1]?.icon + ')'}">
+                    <h3>{{ section?.links[1]?.title }}</h3>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template [width]="280" carouselSlide>
+            <div class="carousel-link-item">
+                <div class="item" [ngStyle]="{'background-image': 'url(' + section?.links[2]?.icon + ')'}">
+                    <h3>{{ section?.links[2]?.title }}</h3>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template [width]="280" carouselSlide>
+            <div class="carousel-link-item">
+                <div class="item half" [ngStyle]="{'background-image': 'url(' + section?.links[3]?.icon + ')'}">
+                    <h3>{{ section?.links[3]?.title }}</h3>
+                </div>
+                <div class="item half" [ngStyle]="{'background-image': 'url(' + section?.links[4]?.icon + ')'}">
+                    <h3>{{ section?.links[4]?.title }}</h3>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template [width]="560" carouselSlide>
+            <div class="carousel-link-item jumbo">
+                <div class="item" [ngStyle]="{'background-image': 'url(' + section?.links[5]?.icon + ')'}">
+                    <h3>{{ section?.links[5]?.title }}</h3>
+                </div>
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>

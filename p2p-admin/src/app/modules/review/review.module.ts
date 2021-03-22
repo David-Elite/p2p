@@ -14,6 +14,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -45,6 +46,7 @@ import { NgxStarRatingModule } from 'ngx-star-rating';
     MatTableModule,
     MatTabsModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
 
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),

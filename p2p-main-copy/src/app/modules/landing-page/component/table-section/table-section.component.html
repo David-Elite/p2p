@@ -1,0 +1,20 @@
+
+<div class="title-section title-2">
+    <h4>{{section?.title}}</h4>
+</div>
+<div class="dash-table">
+    <div class="table-head">
+        <span>S.No</span>
+        <span>Package Name</span>
+        <span>Duration</span>
+        <span>Price</span>
+        <span>Details</span>
+    </div>
+    <div class="table-data" *ngFor="let pkg of section?.packages">
+        <span>{{pkg.position}}</span>
+        <p class="tabledata-red">{{pkg.title}}</p>
+        <span>{{pkg.days}}D/ {{pkg.nights}}N</span>
+        <span>INR {{pkg.price_with_tax}}</span>
+        <button class="invoice-btn">View Details</button>
+    </div>
+</div>

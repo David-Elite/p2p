@@ -1,16 +1,44 @@
-
-    <app-home-slider title="We Plan, You Pick!" subtitle="Find Excitement Wherever You May Roam" [headerContent]="headerContent" ></app-home-slider>
-    <app-home-initial-section></app-home-initial-section>
-    <app-home-carousel-section></app-home-carousel-section>     
-    <app-favourite-section title="Some Title" [favourite]="favourite"></app-favourite-section>
-    <app-product-carousel-section [noOfPackages]="noOfPackages" title="Some Title" subtitle="sub title" [packages]="homePackages"></app-product-carousel-section>
-    <app-location-carousel-section title="Some Title" [locationCarousel]="locationCarousel"></app-location-carousel-section>
-     <app-location-tabs-section [locationTab]="locationTab" title="Some Title" subTitle="sub Title" [locationDetails]="locationDetails"></app-location-tabs-section>
-     <app-location-box-section title="Some Title" subTitle="Sub Title" [locationBox]="locationBox"></app-location-box-section>
-     <app-blog-grid-section title="Some Title" subTitle="Sub Title" [blog]="blog"></app-blog-grid-section>
-     <app-home-video-section></app-home-video-section>
-     <app-review-grid-section title="Customer Review" [review]="review"></app-review-grid-section>
-     <app-partners-grid-section title="Title" subTitle="Sub Title" [partners]="partners"></app-partners-grid-section>
-     <app-instagram-section title="See Our Social" subTitle="Sub title" [instagram]="instagram"></app-instagram-section>
-
-
+<div class="home">
+    <section class="slider">
+        <ngb-carousel *ngIf="home?.slider_images" [showNavigationArrows]="false" [showNavigationIndicators]="false">
+            <ng-template ngbSlide *ngFor="let img of home.slider_images">
+                <div class="slider-image"
+                [ngStyle]="{'background-image': 'url(\''+(img.url ? img.url : '/assets/img/images/17.png')+'\')'}">
+                    <!-- <img [src]="img.url" alt="Vacation Planner"> -->
+                </div>
+            </ng-template>
+        </ngb-carousel>
+        <div class="slider-content">
+            <div class="title">
+                <h1 class="home-title">We Plan, You Pick !!</h1>
+                <p class="home-subtitle">Find Excitement Wherever you Roam</p>
+            </div>
+            <div class="search-parent">
+                <div class="search-box">
+                    <i class="fal fa-search search-bar"></i>
+                    <input class="input-box" type="text" placeholder="Search Tours, Activities" name="search" [(ngModel)]="searchText" />
+                </div>
+                <div class="search-button"><button>Search</button></div>
+            </div>
+        </div>
+        <div class="slider-links">
+            <owl-carousel-o [options]="sliderConfig" class="carousel">
+                <ng-container *ngFor="let s of home.slider_links">
+                    <ng-template carouselSlide>
+                        <a class="link" [routerLink]="'/'+s.url">
+                            <span class="link-image"><img [src]="s.icon" [alt]="s.title"></span>
+                            <span class="link-title">{{s.title}}</span>
+                        </a>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </section>
+    <section *ngFor="let sec of home.section">
+        <app-title-link-with-image *ngIf="sec.display_type === 'Title Link With Image'" [section]="sec"></app-title-link-with-image>
+        <app-simple-link-slider *ngIf="sec.display_type === 'Simple Link Slider'" [section]="sec"></app-simple-link-slider>
+        <app-package-carousel *ngIf="sec.display_type === 'Carousel' && sec.content_type === 'Package'" [section]="sec"></app-package-carousel>
+        <app-zone-list *ngIf="sec.display_type === 'Grid' && sec.content_type === 'Zone'" [section]="sec"></app-zone-list>
+        
+    </section>
+</div>

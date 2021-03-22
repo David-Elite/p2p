@@ -134,6 +134,7 @@ export class ReviewFormComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [this.review.id],
       referenceId: [this.review.referenceId],
+      reviewDate: [this.review.reviewDate],
       reviewTitle: [this.review.reviewTitle],
       reviewContent: [this.review.reviewContent],
       reviewPoints: [this.review.reviewPoints],

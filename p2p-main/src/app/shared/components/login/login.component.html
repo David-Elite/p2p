@@ -1,0 +1,61 @@
+<div class="login-container">
+    <div class="login-box">
+        <div class="left-box">
+            <div>
+                <h4 class="login-header">Log In</h4>
+                <div class="login-border"></div>
+            </div>
+            <div class="input">
+                <input type="text" placeholder="Email ID" [(ngModel)]="email">
+            </div>
+            <div class="input">
+                <input type="text" placeholder="Password" [(ngModel)]="password">
+            </div>
+            <div class="checkbox-container">
+                <div class="check-box">
+                    <input type="checkbox" name="remember-me">
+                    <label class="rem-label" for="remember-me">Remember Me</label>
+                </div> 
+                <span class="forgot-pwd" (click)="activeModal.dismiss('forgot-password')">Forgot Password?</span>
+            </div>
+            <div>
+                <button class="login-btn">Log In</button>
+            </div>
+            <div class="or-box">
+              <span class="border-width"></span>  <span class="or">OR</span> <span class="border-width"></span>
+            </div>
+            <div>
+                <p class="or">Don’t have an account? <span class="sign-up" (click)="activeModal.dismiss('sign-up')">Sign Up</span></p>
+            </div>
+            <div>
+                <p class="sign-up">or Login with</p>
+            </div>
+            <div class="login-logo">
+                <div>
+                    <span class="gmail-logo"><img src="assets/images/misc/google-icon.png" alt="google icon"></span>
+                    <p class="logo-title">Google</p>
+                </div>
+                <div>
+                    <span><img src="assets/images/misc/001-facebook.png" alt="fb"></span>
+                    <p class="fb-title">Facebook</p>
+                </div>
+            </div>
+        </div>
+        <div class="right-box">
+            <div class="logo">
+                <img src="assets/images/misc/jonathan-forage-1azAjl8FTnU-unsplash2x.png" alt="right-side-img">
+            </div>
+            <div class="logo-box"> 
+                <img src="assets/images/logo/logo-blue.png" alt="logo">
+            </div>
+            <div class="h5-title">
+                <h5>
+                    Your Adventure Starts Here
+                </h5>
+                <p>
+                    Experience 20,000+ Tours And Activities from 1,200+ Suppliers
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

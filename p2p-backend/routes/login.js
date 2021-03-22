@@ -36,7 +36,7 @@ router.get('/verify', (req, res) => {
 });
 router.get('/user', (req, res) => {
     res.send({ message: "sucessfully login" })
-})
+});
 
 router.post('/login',(req, res) => {
     try {
@@ -45,44 +45,31 @@ router.post('/login',(req, res) => {
             return res.status(400).json('plz provide email and password')
         }
 
-        db.query('SELECT * FROM admin_user WHERE email=?', [email], async (error, result) => {
-            if (result[0]) {
-                const matchPass = await bcrypt.compare(password,result[0].password)
+        db.query('SELECT * FROM admin_user WHERE email= ?', [email], async (error, result) => {
+            if(error) {
+                console.log(error);
+                res.status(401).send(error);
+            } else  if (result && result[0]) {
+                const matchPass = await bcrypt.compare(password, result[0].password);
+                console.log(matchPass);
                 if (matchPass && result[0].email) {
                     const id = result[0].id;
                     const token = jwt.sign({ id }, 'SECRET_KEY', {
                         expiresIn: '90d'
                     });
-                    return res.status(201).json({ email: result[0].email, id: result[0].id, name: result[0].user_name, token })
+                    return res.status(201).json({ ...result[0], token })
                 }
                 else if(matchPass !== password){
-                    return res.status(401).json('email or password is incorrect') 
+                    return res.status(401).json('Email or Password is incorrect') 
                 }
             } else if( result.length == 0) {
-                    return res.status(401).json('email or password is incorrect')   
+                    return res.status(401).json('Email or Password is incorrect')   
             }
         })
     } catch (error) {
-        console.log(error)
-        console.log('err')
+        console.log(error);
     }
-})
-
-// db.query('SELECT * FROM admin_user WHERE email = ? AND password = ?', [email, password], (error, result) => {
-//     // console.log(result)
-//     if (result.length == 0) {
-//         return res.status(401).json('email or password is incorrect')
-//     } else {
-//         const id = result[0].id;
-//         console.log(id)
-//         const token = jwt.sign({ id }, 'SECRET_KEY', {
-//             expiresIn: '90d'
-//         });
-
-//         return res.status(201).json({ email: result[0].email, id: result[0].id, name: result[0].user_name, token })
-
-//     }
-// })
+});
 
 
 

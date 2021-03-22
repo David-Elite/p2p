@@ -19,6 +19,7 @@ export class ReviewService {
         const cat: Review = new Review({
           id: c.id,
           referenceId: c.reference_id,
+          reviewDate: c.review_date,
           reviewTitle: c.review_title,
           reviewContent: c.review_content,
           upvoteCount: c.upvote_count,
@@ -81,13 +82,13 @@ export class ReviewService {
   }
 
   saveReview(data: any, img: File): Promise<any> {
-
     const formData = new FormData();
     formData.append('file', img, img.name);
     formData.append('referenceId', data.referenceId);
     formData.append('reviewTitle', data.reviewTitle);
     formData.append('reviewContent', data.reviewContent);
     formData.append('reviewerId', data.reviewerId);
+    formData.append('reviewDate', data.reviewDate.toString());
     formData.append('reviewPoints', data.reviewPoints.toString());
     formData.append('reviewerName', data.reviewerName);
     formData.append('reviewerTitle', data.reviewerTitle);

@@ -6,6 +6,7 @@ export class Review
 {
     id: string;
     reviewerId: string;
+    reviewDate: string;
     reviewerName: string;
     reviewerTitle: string;
     reviewTitle: string;
@@ -29,6 +30,7 @@ export class Review
         review = review || {};
         this.id = review.id || '';
         this.referenceId = review.referenceId || '';
+        this.reviewDate = review.reviewDate || '';
         this.reviewerName = review.reviewerName || '';
         this.reviewerTitle = review.reviewerTitle || '';
         this.reviewerImage = review.reviewerImage || '';

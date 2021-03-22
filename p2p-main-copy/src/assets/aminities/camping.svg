@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="camping" transform="translate(8178 18399)">
+    <rect id="Rectangle_13257" data-name="Rectangle 13257" width="24" height="24" transform="translate(-8178 -18399)" fill="none"/>
+    <g id="tent" transform="translate(-8175 -18426.453)">
+      <g id="Group_30714" data-name="Group 30714" transform="translate(6.33 41.864)">
+        <path id="Path_50473" data-name="Path 50473" d="M183.83,335.616v-5.229l-2.063,5.229Z" transform="translate(-181.767 -330.387)" fill="#f96939"/>
+        <path id="Path_50474" data-name="Path 50474" d="M271,335.616h2.063L271,330.387Z" transform="translate(-267.892 -330.387)" fill="#f96939"/>
+      </g>
+      <path id="Path_50475" data-name="Path 50475" d="M9.4,38.924l3.224,8.169h1.627a.918.918,0,0,0,.831-.532l.688-1.491.667,1.047.43.675a.6.6,0,0,0,.963-.477V43.733a.522.522,0,1,0-1.045,0v.987L9.535,33.339,9.8,32.92l.423-.664a.522.522,0,1,0-.881-.561l-.211.332-.217.34-.217-.34-.211-.332a.522.522,0,1,0-.881.561l.423.664.267.419L1.045,44.72v-.987a.522.522,0,1,0-1.045,0v2.584a.542.542,0,0,0,.963.477l.511-.8L2.107,45l.945,1.637a.918.918,0,0,0,.793.458H5.207l3.222-8.169a.521.521,0,0,1,.971,0Z" transform="translate(0 0)" fill="#f96939"/>
+    </g>
+  </g>
+</svg>

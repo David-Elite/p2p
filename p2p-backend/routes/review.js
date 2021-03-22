@@ -76,6 +76,7 @@ router.post('/review',(req,res)=>{
     var reviewerId = 0;
     var reviewerName;
     var reviewerTitle;
+    var reviewDate;
     var reviewerImage;
 
 
@@ -102,6 +103,8 @@ router.post('/review',(req,res)=>{
             reviewerTitle = val;
         } else if (fieldname == 'referenceId') {
             referenceId = val;
+        } else if (fieldname == 'reviewDate') {
+            reviewDate = val;
         }
     });
     busboy.on('finish', function () {
@@ -122,6 +125,7 @@ router.post('/review',(req,res)=>{
                 console.log(data);
                 db.query("INSERT INTO review SET ?", {
                     reference_id: referenceId,
+                    review_date: reviewDate,
                     review_title: reviewTitle,
                     review_content: reviewContent,
                     review_points: reviewPoints,

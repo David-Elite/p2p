@@ -8,6 +8,44 @@ const router = express.Router();
 
 // Main APIs
 
+router.get(`/packages`, (req, res) => {
+    const sql = `SELECT
+    tour_packages.id,
+    tour_packages.title,
+    tour_packages.price_with_tax,
+    tour_packages.compared_price,
+    tour_packages.days,
+    tour_packages.nights,
+    tour_packages.short_description,
+    tour_packages.ribbon_tag,
+    tour_packages.handle,
+    z1.title as continent,
+    z2.title as country,
+    z3.title as state,
+    z4.title as city,
+    z5.title as region,
+    AVG(review.review_points) as review_points,
+    COUNT(review.id) as review_count
+    FROM tour_packages
+    LEFT JOIN zone as z1
+    ON tour_packages.continent = z1.id
+    LEFT JOIN zone as z2
+    ON tour_packages.country = z2.id
+    LEFT JOIN zone as z3
+    ON tour_packages.state = z3.id
+    LEFT JOIN zone as z4
+    ON tour_packages.city = z4.id
+    LEFT JOIN zone as z5
+    ON tour_packages.region = z5.id
+    LEFT JOIN review
+    ON review.reference_id = tour_packages.id
+    GROUP BY tour_packages.id`;
+    db.query(sql, (error, data) => {
+        if (error) throw error;
+        res.status(201).send(data);
+    });
+});
+
 router.get('/tour_packages/handle/:handle', (req, res) => {
     const handle = req.params.handle;
     const sql = `SELECT
@@ -19,7 +57,15 @@ router.get('/tour_packages/handle/:handle', (req, res) => {
                     b.itinerary,
                     c.faq,
                     d.misc,
-                    e.link
+                    e.link,
+                    f.review_points,
+                    f.review_count,
+                    f.reviews,
+                    z1.title as continent,
+                    z2.title as country,
+                    z3.title as state,
+                    z4.title as city,
+                    z5.title as region
                     FROM tour_packages
                     LEFT JOIN seo ON seo.reference_id = tour_packages.id AND seo.handle = tour_packages.handle
                     LEFT JOIN
@@ -62,6 +108,26 @@ router.get('/tour_packages/handle/:handle', (req, res) => {
                     INNER JOIN link_list
                     ON link_list.reference_id = tour_packages.id
                     WHERE tour_packages.handle = '${handle}') AS e ON e.id = tour_packages.id
+                    LEFT JOIN
+                    (SELECT
+                        tour_packages.id,
+                        AVG(review.review_points) AS review_points,
+                        COUNT(review.id) AS review_count,
+                        JSON_ARRAYAGG(JSON_OBJECT('id', review.id, 'review_date', review.review_date, 'reviewer_name', review.reviewer_name, 'reviewer_title', review.reviewer_title, 'reviewer_image', review.reviewer_image, 'review_title', review.review_title, 'review_content', review.review_content, 'review_points', review.review_points, 'upvote_count', review.upvote_count )) as reviews
+                        FROM tour_packages LEFT JOIN review 
+                        ON tour_packages.id = review.reference_id
+                        WHERE tour_packages.handle = '${handle}'
+                        GROUP BY tour_packages.id) AS f ON f.id = tour_packages.id
+                        LEFT JOIN zone as z1
+                        ON tour_packages.continent = z1.id
+                        LEFT JOIN zone as z2
+                        ON tour_packages.country = z2.id
+                        LEFT JOIN zone as z3
+                        ON tour_packages.state = z3.id
+                        LEFT JOIN zone as z4
+                        ON tour_packages.city = z4.id
+                        LEFT JOIN zone as z5
+                        ON tour_packages.region = z5.id
                     WHERE tour_packages.handle = '${handle}'`;
     db.query(sql, (error, data) => {
         if (error) throw error;
@@ -256,10 +322,10 @@ router.put('/tour_packages/:id', (req, res) => {
     if (Object.keys(data).length == 0) {
         if (Object.keys(seoData).length > 0) {
             db.query(`UPDATE seo SET ? WHERE reference_id = '${id}'`,
-                        seoData, function (error, seoR) {
-                            if (error) throw error;
-                            res.status(201).send(seoR);
-                        });
+                seoData, function (error, seoR) {
+                    if (error) throw error;
+                    res.status(201).send(seoR);
+                });
         }
     } else {
         db.query(`UPDATE tour_packages SET ? WHERE id = '${id}'`,

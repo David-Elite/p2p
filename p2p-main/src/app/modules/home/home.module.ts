@@ -1,28 +1,33 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { BrowserModule } from '@angular/platform-browser';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
-import { HomeSliderComponent } from './components/home-slider/home-slider.component';
-import { HomeInitialSectionComponent } from './components/home-initial-section/home-initial-section.component';
-import { HomeCarouselSectionComponent } from './components/home-carousel-section/home-carousel-section.component';
-import { HomeVideoSectionComponent } from './components/home-video-section/home-video-section.component';
-import { SectionModule } from 'src/app/shared/modules/section/section.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { SectionModule } from 'src/app/shared/modules/section/section.module';
 
 
 @NgModule({
-  declarations: [HomeComponent,HomeSliderComponent, HomeInitialSectionComponent, HomeCarouselSectionComponent, HomeVideoSectionComponent],
+  declarations: [HomeComponent],
   imports: [
-    // BrowserModule.withServerTransition({ appId: 'serverApp' }),
     CommonModule,
     HomeRoutingModule,
-    SectionModule,
-    // BrowserAnimationsModule,
-    NgbModule,
-    CarouselModule
+    FormsModule,
+
+    //Http Client
+    HttpClientModule,
+
+    // Bootstrap Imports
+    NgbCarouselModule,
+
+    // Carousel Module
+    CarouselModule,
+
+    //Sections
+    SectionModule
   ]
 })
 export class HomeModule { }

@@ -1,0 +1,33 @@
+<!-- home section -->
+<section>
+  <div class="career-img">
+    <img src='assets/images/misc/brooke-cagle-JBwcenOuRCg-unsplash.png' alt="carrer-img">
+  </div>
+  <div>
+    <h1 class="careerimg-heading">We Plan , You Pick !</h1>
+    <p class="career-title">Find Excitement Wherever You May Roam.</p>
+    <button class="career-alljobs">See All Jobs</button>
+  </div>
+</section>
+<!-- Job Section -->
+<section>
+  <div class="jobtitle-c">
+    <h2 class="job-title">Current Openings</h2>
+  </div>
+  <p class="jobtitle-p">We’re always searching for amazing people to join our team. Take a look at our current opening
+    roles</p>
+  <div class="jobs-container" *ngFor = "let job of jobs">
+    <div class="job-container">
+      <div class="job-apply">
+        <h4>{{ job.job_title }}</h4>
+        <button>Apply Now</button>
+      </div>
+      <div class="location-p">
+        <p> <i class="fas fa-map-marker-alt"></i>Mumbai - Full Time</p>
+      </div>
+      <div class="job-desc">
+        <p>{{ job.job_desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>

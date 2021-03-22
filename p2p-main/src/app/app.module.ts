@@ -1,24 +1,34 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderSectionComponent } from './shared/components/header-section/header-section.component';
-import { FooterSectionComponent } from './shared/components/footer-section/footer-section.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { HomeModule } from './modules/home/home.module';
+import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { LoginComponent } from './shared/components/login/login.component';
+import { SignupComponent } from './shared/components/signup/signup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderSectionComponent,
-    FooterSectionComponent
+    HeaderComponent,
+    FooterComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
-
+    RouterModule,
+    FormsModule,
+    NgbModule,
+    HomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

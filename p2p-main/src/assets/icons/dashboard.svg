@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37" height="37" viewBox="0 0 37 37">
+  <defs>
+    <filter id="Rectangle_13119" x="0" y="0" width="25" height="25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feFlood flood-color="#fff" flood-opacity="0.341"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_13120" x="0" y="12" width="25" height="25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur-2"/>
+      <feFlood flood-color="#fff" flood-opacity="0.341"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_13121" x="12" y="0" width="25" height="25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur-3"/>
+      <feFlood flood-color="#fff" flood-opacity="0.341"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Rectangle_13122" x="12" y="12" width="25" height="25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2.5" result="blur-4"/>
+      <feFlood flood-color="#fff" flood-opacity="0.341"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="dashboard" transform="translate(21110.5 22672.5)">
+    <g transform="matrix(1, 0, 0, 1, -21110.5, -22672.5)" filter="url(#Rectangle_13119)">
+      <rect id="Rectangle_13119-2" data-name="Rectangle 13119" width="10" height="10" rx="2" transform="translate(7.5 7.5)" fill="#f96939"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -21110.5, -22672.5)" filter="url(#Rectangle_13120)">
+      <rect id="Rectangle_13120-2" data-name="Rectangle 13120" width="10" height="10" rx="2" transform="translate(7.5 19.5)" fill="#f96939"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -21110.5, -22672.5)" filter="url(#Rectangle_13121)">
+      <rect id="Rectangle_13121-2" data-name="Rectangle 13121" width="10" height="10" rx="2" transform="translate(19.5 7.5)" fill="#f96939"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -21110.5, -22672.5)" filter="url(#Rectangle_13122)">
+      <rect id="Rectangle_13122-2" data-name="Rectangle 13122" width="10" height="10" rx="5" transform="translate(19.5 19.5)" fill="#f96939"/>
+    </g>
+  </g>
+</svg>

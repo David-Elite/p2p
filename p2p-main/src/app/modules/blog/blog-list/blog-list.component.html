@@ -1,0 +1,30 @@
+<main>
+    <section>
+        <div class="title-section">
+            <h4 class="head-title">Get The Latest News From All Over The World</h4>
+            <p>Search Tours, Activities</p>
+        </div>
+        <div class="posts-container">
+            <div class="post-container" *ngFor="let blog of blogs">
+                <div class="post-img">
+                    <img src="assets/images/misc/jonathan-forage-1azAjl8FTnU-unsplash (1).png" alt="post-img">
+                </div>
+                <div class="post-title">
+                    <span>Goa</span>
+                    <h5>{{blog.title}}</h5>
+                    <p>{{blog.meta_description}}</p>
+                    <span class="comment"><i class="far fa-calendar red"></i>Aug 30, 2020</span>
+                    <span class="comment"><i class="far fa-comment red"></i>2 Comments</span>
+                </div>
+            </div>
+        </div>
+        <div class="review-list">
+            <div><span><i class="far fa-arrow-left"></i></span></div>
+            <div><span>1</span></div>
+            <div><span class="light">2</span></div>
+            <div><span class="light">3</span></div>
+            <div><span class="light">4</span></div>
+            <div><span><i class="far fa-arrow-right"></i></span></div>
+        </div>
+    </section>
+</main>

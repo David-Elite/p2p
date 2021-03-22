@@ -27,6 +27,7 @@ import { LandingPageModule } from './modules/landing-page/landing-page.module';
 import { AdminuserModule } from './modules/admin-user/admin-user.module';
 import { JobModule } from './modules/job/job.module';
 import { ReviewModule } from './modules/review/review.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -71,7 +72,8 @@ import { ReviewModule } from './modules/review/review.module';
         TourPackageModule,
         ReviewModule,
         JobModule,
-        AdminuserModule
+        AdminuserModule,
+        NgbModule
     ],
     bootstrap   : [
         AppComponent

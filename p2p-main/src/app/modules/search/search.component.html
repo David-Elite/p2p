@@ -1,0 +1,194 @@
+<div class="search container">
+    <section class="top">
+        <div class="search-box">
+            <div class="search-text">
+                <i class="fal fa-search search-icon"></i>
+                <input class="search-input" name="searchText" ([ngModel])="searchText" type="text"
+                    placeholder="Search Destinations..." />
+            </div>
+            <div class="filter">
+                <span class="filter-label">Sort By:</span>
+                <select class="filter-select" name="filterOpt" ([ngModel])="filterOpt">
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                </select>
+            </div>
+        </div>
+        <div class="result-bar">
+            <span class="search-result">Showing 1-20 of 109 results</span>
+            <div class="action">
+                <button (click)="dispType = 'grid'"><img src="assets/images/misc/Group 30467.png" alt="menu-logo">
+                </button>
+                <button (click)="dispType = 'list'"><img src="assets/images/misc/Group 30466.png"
+                        alt="menu2-logo"></button>
+            </div>
+        </div>
+    </section>
+    <section class="package-list">
+        <aside class="filter-sidebar">
+            <div class="head">
+                <h5>Filter</h5>
+                <button *ngIf="isReset" class="reset-button">Reset</button>
+                <button *ngIf="!isReset" class="apply-button">Apply</button>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Destination</span>
+                <div class="filter-val" *ngFor="let z of zones">
+                    <input type="checkbox" [name]="z.title" [value]="z.id">
+                    <label for="Mumbai">{{z.title}}</label>
+                </div>
+                <div class="filter-action">
+                    <button class="view-more">View More</button>
+                </div>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Tour Type</span>
+                <div class="filer-val">
+                    <input type="checkbox" name="SoloTrip">
+                    <label for="SoloTrip">Solo Trip</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="GroupTrip">
+                    <label for="GroupTrip">Group Trip</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="Familytrip">
+                    <label for="Familytrip">Family trip</label>
+                </div>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Duration</span>
+                <div class="filer-val">
+                    <input type="checkbox" name="Any">
+                    <label for="Any">Any</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="2-5Hour">
+                    <label for="2-5Hour">2 - 5 Hour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="1DayTour">
+                    <label for="1DayTour">1 Day Tour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="1WeekTour">
+                    <label for="1WeekTour">1 Week Tour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="7+DaysTour">
+                    <label for="7+DaysTour">7+ Days Tour</label>
+                </div>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Categories</span>
+                <div class="filer-val">
+                    <input type="checkbox" name="2-5Hour">
+                    <label for="2-5Hour">2 - 5 Hour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="1DayTour">
+                    <label for="1DayTour">1 Day Tour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="1WeekTour">
+                    <label for="1WeekTour">1 Week Tour</label>
+                </div>
+                <div class="filer-val">
+                    <input type="checkbox" name="7+DaysTour">
+                    <label for="7+DaysTour">7+ Days Tour</label>
+                </div>
+                <div class="filter-action">
+                    <button class="view-more">View More</button>
+                </div>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Price</span>
+                <div>
+                    <!-- <ngx-slider ></ngx-slider> -->
+                </div>
+                <div class="range-box">
+                    <!-- <span>Min : ₹ {{priceMin}}</span>
+                    <span>Max : ₹ {{priceMax}}</span> -->
+                    <ngx-slider [(value)]="priceMin" [(highValue)]="priceMax" [options]="{floor: 1, ceil: 500000}"></ngx-slider>
+                </div>
+            </div>
+            <div class="filter-option">
+                <span class="filter-heading">Rating</span>
+                <div class="rates">
+                    <ngb-rating [(rate)]="rate" [max]="5">
+                        <ng-template let-fill="fill" let-index="index">
+                            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                        </ng-template>
+                    </ngb-rating>
+                </div>
+            </div>
+        </aside>
+        <div class="package-disp">
+            <div class="package" *ngFor="let pack of packages">
+                <div class="package-item" *ngIf="dispType === 'grid'">
+                    <div class="pkg">
+                        <img [src]="pack.images && pack.images.length > 0 ? pack.cover_image ? pack.images[pack.cover_image].url : pack.images[0].url : '/assets/images/package_dummy.png'"
+                            [alt]="pack.title">
+                        <div class="package-box">
+                            <h3>{{ pack.title }}</h3>
+                            <div class="package-details">
+                                <div class="review">
+                                    <span *ngIf="!pack.review_count || pack.review_count === 0">&nbsp;</span>
+                                    <span *ngIf="pack.review_count > 0"><i class="fas fa-star yellow"></i></span>
+                                    <span *ngIf="pack.review_count > 0">{{ pack.review_points | number : '1.1-1'}} |
+                                        {{pack.review_count}} Reviews</span>
+                                </div>
+                                <div class="price-box">
+                                    <span class="price">₹ {{ pack.price_with_tax }}</span>
+                                    <span class="compared-price">₹ {{ pack.compared_price }}</span>
+                                </div>
+                            </div>
+                            <button [routerLink]="['/package', pack.handle]" class="enquiry-btn">Enquiry Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="package-det-item" *ngIf="dispType === 'list'">
+                    <div class="pack-image">
+                        <img [src]="pack.images && pack.images.length > 0 ? pack.cover_image ? pack.images[pack.cover_image].url : pack.images[0].url : '/assets/images/package_dummy.png'"
+                            [alt]="pack.title">
+                    </div>
+                    <div class="pack-det">
+                        <h5 class="pack-title">{{ pack.title }}</h5>
+
+                        <div class="pack-info">
+                            <span class="duration"><i class="far fa-clock"></i>{{pack.days}} Days {{pack.nights}}
+                                Nights</span>
+                            <span class="location"><i class="fas fa-map-marker-alt"></i>Mumbai</span>
+                        </div>
+                        <div class="pack-desc">
+                            <p>
+                                Maximum altitude: 5,130 mTemperature Range: Day is 25-30 degrees and night is 04-15
+                                degreesOne of the most popular trekking route in Ladakh, the Kang Yatse Trek with Markha
+                                Valley Trek is a heaven for nature enthusiasts. Walking on the banks of beautiful
+                                Markh...
+                            </p>
+                        </div>
+                        <!-- <div>
+                            <span class="red">Read Less</span>
+                        </div> -->
+                    </div>
+                    <div class="pack-price">
+                        <div class="compared-price">From ₹ <span>{{ pack.compared_price }}</span></div>
+                        <div class="price"><span>₹ 15,999</span></div>
+                        <!-- <div class="review-points"> <span><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                    class="fas fa-star"></i></span>
+                        </div> -->
+                        <div class="review">
+                            <span *ngIf="!pack.review_count || pack.review_count === 0">&nbsp;</span>
+                            <span *ngIf="pack.review_count > 0"><i class="fas fa-star yellow"></i></span>
+                            <span *ngIf="pack.review_count > 0">{{ pack.review_points | number : '1.1-1'}} |
+                                {{pack.review_count}} Reviews</span>
+                        </div>
+                        <div class="inquiry"><button>Send Enquiry</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

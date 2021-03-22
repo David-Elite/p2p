@@ -1,55 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FavouriteSectionComponent } from './components/favourite-section/favourite-section.component';
-import { ProductCarouselSectionComponent } from './components/product-carousel-section/product-carousel-section.component';
-import { LocationCarouselSectionComponent } from './components/location-carousel-section/location-carousel-section.component';
-import { LocationTabsSectionComponent } from './components/location-tabs-section/location-tabs-section.component';
-import { LocationBoxSectionComponent } from './components/location-box-section/location-box-section.component';
-import { BlogGridSectionComponent } from './components/blog-grid-section/blog-grid-section.component';
-import { ReviewGridSectionComponent } from './components/review-grid-section/review-grid-section.component';
-import { PartnersGridSectionComponent } from './components/partners-grid-section/partners-grid-section.component';
-import { InstagramSectionComponent } from './components/instagram-section/instagram-section.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TitleLinkWithImageComponent } from './components/title-link-with-image/title-link-with-image.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { SimpleLinkSliderComponent } from './components/simple-link-slider/simple-link-slider.component';
+import { PackageCarouselComponent } from './components/package-carousel/package-carousel.component';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { FaqSectionComponent } from './components/faq-section/faq-section.component';
-import { LocationTabSectionComponent } from './components/location-tab-section/location-tab-section.component';
+import { ZoneListComponent } from './components/zone-list/zone-list.component';
+
 
 
 @NgModule({
-  declarations: [
-    FavouriteSectionComponent,
-    ProductCarouselSectionComponent,
-    LocationCarouselSectionComponent,
-    LocationTabsSectionComponent,
-    LocationBoxSectionComponent,
-    BlogGridSectionComponent,
-    ReviewGridSectionComponent,
-    PartnersGridSectionComponent,
-    InstagramSectionComponent,
-    FaqSectionComponent,
-    LocationTabsSectionComponent,
-    LocationTabSectionComponent
-  ],
+  declarations: [TitleLinkWithImageComponent, SimpleLinkSliderComponent, PackageCarouselComponent, ZoneListComponent],
   imports: [
     CommonModule,
-    NgbModule,
     CarouselModule,
+    FormsModule,
     RouterModule
   ],
   exports: [
-    FavouriteSectionComponent,
-    ProductCarouselSectionComponent,
-    LocationCarouselSectionComponent,
-    LocationTabsSectionComponent,
-    LocationBoxSectionComponent,
-    BlogGridSectionComponent,
-    ReviewGridSectionComponent,
-    PartnersGridSectionComponent,
-    InstagramSectionComponent,
-    FaqSectionComponent,
-    LocationTabsSectionComponent,
-    LocationTabSectionComponent
+    TitleLinkWithImageComponent,
+    SimpleLinkSliderComponent,
+    PackageCarouselComponent,
+    ZoneListComponent
   ]
 })
 export class SectionModule { }

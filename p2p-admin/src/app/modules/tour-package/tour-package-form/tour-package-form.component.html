@@ -193,9 +193,9 @@
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Aminities</mat-label>
-                                    <mat-select formControlName="aminities">
-                                        <mat-option *ngFor="let a of aminities" [value]="a.id">
-                                            {{a.title}}
+                                    <mat-select formControlName="aminities" multiple>
+                                        <mat-option *ngFor="let a of aminities" [value]="a.toLowerCase()">
+                                            {{ a }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>

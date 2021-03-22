@@ -11,6 +11,7 @@ router.get('/jobs' ,(req, res) => {
        jobs.id,
        jobs.job_title,
        jobs.job_desc,
+       jobs.job_location,
        jobs.job_overview,
        jobs.job_rnr,
        JSON_ARRAYAGG(JSON_OBJECT('id', images.id, 'url', images.image_url)) as images
@@ -30,6 +31,7 @@ router.get('/jobs/:id', (req, res) => {
        jobs.id,
        jobs.job_title,
        jobs.job_desc,
+       jobs.job_location,
        jobs.job_overview,
        jobs.job_rnr,
        JSON_ARRAYAGG(JSON_OBJECT('id', images.id, 'url', images.image_url)) as images

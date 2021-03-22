@@ -23,7 +23,6 @@ router.get('/zone',(req,res)=>{
 db.query(sql, (error, data) => {
     if (error) throw error;
     res.status(201).send(data);
-    console.log(data);
 });
 });
 
@@ -140,14 +139,93 @@ router.post('/zone/image', (req, res) => {
 });
 
 router.delete('/zone/image/:id',(req,res)=>{
-    const id = req.params/id;
+    const id = req.params.id;
     db.query("DELETE FROM images WHERE id=?",id,(err,result)=>{
      if(err){
          console.log(err)
      }else{
-         console.log(result)
          res.status(201).send(result)
      }
     })
-   })
+   });
+
+router.post('/zone/section/title/:sectionId/:zoneId', (req, res) => {
+    const sectionId = req.params.sectionId;
+    const zoneId = req.params.zoneId;
+    db.query("INSERT INTO section_zones SET ?", {section_id: sectionId, zone_id: zoneId}, (err, result) => {
+        if(err){
+            console.log(err)
+            res.status(500).send(err);
+        }else{
+            res.status(201).send(result);
+        }
+    })
+});
+
+router.post('/zone/section/child/:sectionId/:gridId', (req, res) => {
+    const sectionId = req.params.sectionId;
+    const gridId = req.params.gridId;
+    const insert = req.body.zoneList.map(z => ([sectionId, z, gridId]));
+    console.log(insert);
+    db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (err, result) => {
+        if(err){
+            console.log(err)
+            res.status(500).send(err);
+        }else{
+            res.status(201).send(result);
+        }
+    })
+});
+
+router.put('/zone/section/child/:sectionId/:gridId', (req, res) => {
+    const sectionId = req.params.sectionId;
+    const gridId = req.params.gridId;
+    const zoneList = req.body.zoneList;
+    const insert = [];
+    const del = [];
+    db.query("SELECT * FROM section_zones WHERE parent = ?", gridId, (e, r) => {
+        if (e) {
+            console.log(e);
+            res.status(500).send(e);
+        }
+        r.forEach(z => {
+            if (zoneList.findIndex( a => a === z.zone_id) === -1) {
+                del.push(z.id);
+            }
+        });
+        zoneList.forEach(z => {
+            if (r.findIndex(a => a.zone_id === z) === -1) {
+                insert.push([sectionId, z, gridId]);
+            }
+        })
+        db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (er, result) => {
+            if(er){
+                console.log(er);
+                res.status(500).send(er);
+            }else{
+                db.query("DELETE FROM section_zones WHERE id = ?", [del], (err, re) => {
+                    if(err){
+                        console.log(err);
+                        res.status(500).send(err);
+                    }else{
+                        res.send(re)
+                    }
+                })
+            }
+        })
+    });
+    
+});
+
+router.delete('/zone/section/:gridId', (req, res) => {
+    const gridId = req.params.gridId;
+    db.query(`DELETE FROM section_zones WHERE id = ${gridId} OR parent = ${gridId}`, (err, result) => {
+        if(err){
+            console.log(err)
+            res.status(500).send(err);
+        }else{
+            res.status(201).send(result);
+        }
+    })
+})
 module.exports = router;

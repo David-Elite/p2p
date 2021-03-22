@@ -11,7 +11,11 @@ export class ZoneFilterPipe implements PipeTransform {
       return value;
     }
     if (args.length > 2) {
-      return value.filter(z => (z.zoneType === args[0] && z[args[1]] === args[2]));
+      if (args[0] === 'all') {
+        return value.filter(z => z[args[1]] === args[2]);
+      } else {
+        return value.filter(z => (z.zoneType === args[0] && z[args[1]] === args[2]));
+      }
     } else {
       return value.filter(z => (z.zoneType === args[0]));
     }

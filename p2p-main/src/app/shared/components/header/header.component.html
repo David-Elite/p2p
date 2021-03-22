@@ -1,0 +1,28 @@
+<div class="fixed header" [class.transparent]="transparent && onTop">
+    <div class="flex-box">
+        <div class="menu">
+            <i class="fal fa-bars"></i>
+        </div>
+        <div class="header-logo">
+            <img *ngIf="transparent && onTop" src="assets/images/logo/logo-blue.png" alt="Plans2Pick">
+            <img *ngIf="!transparent || !onTop" src="assets/images/logo/logo-orange.png" alt="Plans2Pick">
+        </div>
+        <form class="header-search" (ngSubmit)="search()">    
+             <i class="fal fa-search"></i>
+            <input type="text" placeholder="Search Tours Activities" name="searchText" [(ngModel)]="searchText"/>
+        </form>
+        <div class="search">
+            <i class="fal fa-search"></i>
+        </div>
+        <div class="header-options">
+            <div class="option-list">
+                <span class="option categories"><i class="fas fa-hiking"></i><span class="content">All categories</span></span>
+                <span class="option adventure"><i class="fal fa-hiking"></i><span class="content">Adventure</span></span>
+            </div>
+            <div class="option-list">
+                <span (click)="openLogin()" class="option login"><i class="fal fa-user"></i><span class="content">Login</span></span>
+            </div> 
+        </div>
+
+    </div>
+</div>

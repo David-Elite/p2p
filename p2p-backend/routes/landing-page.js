@@ -11,7 +11,7 @@ const router = express.Router();
 // Main APIs
 
 router.get('/landing_page/handle/:handle', (req, res) => {
-    let id = req.params.handle;
+    let handle = req.params.handle;
     const sql = `SELECT
                     landing_page.*,
                     seo.title AS meta_title,
@@ -31,7 +31,8 @@ router.get('/landing_page/handle/:handle', (req, res) => {
                     FROM landing_page
                     INNER JOIN images
                     ON images.reference_id = landing_page.id
-                    WHERE landing_page.id = '${id}') AS a ON a.id = landing_page.id
+                    WHERE landing_page.handle = '${handle}'
+                    GROUP BY landing_page.id) AS a ON a.id = landing_page.id
                     LEFT JOIN
                     (SELECT
                     landing_page.id,
@@ -39,7 +40,8 @@ router.get('/landing_page/handle/:handle', (req, res) => {
                     FROM landing_page
                     INNER JOIN section
                     ON section.reference_id = landing_page.id
-                    WHERE landing_page.id = '${id}' ORDER BY section.position) AS b ON b.id = landing_page.id
+                    WHERE landing_page.handle = '${handle}'
+                    GROUP BY landing_page.id) AS b ON b.id = landing_page.id
                     LEFT JOIN
                     (SELECT
                     landing_page.id,
@@ -47,7 +49,8 @@ router.get('/landing_page/handle/:handle', (req, res) => {
                     FROM landing_page
                     INNER JOIN faq
                     ON faq.reference_id = landing_page.id
-                    WHERE landing_page.id = '${id}') AS c ON c.id = landing_page.id
+                    WHERE landing_page.handle = '${handle}'
+                    GROUP BY landing_page.id) AS c ON c.id = landing_page.id
                     LEFT JOIN
                     (SELECT
                     landing_page.id,
@@ -55,7 +58,8 @@ router.get('/landing_page/handle/:handle', (req, res) => {
                     FROM landing_page
                     INNER JOIN package_misc
                     ON package_misc.package_id = landing_page.id
-                    WHERE landing_page.id = '${id}') AS d ON d.id = landing_page.id
+                    WHERE landing_page.handle = '${handle}'
+                    GROUP BY landing_page.id) AS d ON d.id = landing_page.id
                     LEFT JOIN
                     (SELECT
                     landing_page.id,
@@ -63,8 +67,9 @@ router.get('/landing_page/handle/:handle', (req, res) => {
                     FROM landing_page
                     INNER JOIN link_list
                     ON link_list.reference_id = landing_page.id
-                    WHERE landing_page.id = '${id}') AS e ON e.id = landing_page.id
-                    WHERE landing_page.id = '${id}'`;
+                    WHERE landing_page.handle = '${handle}'
+                    GROUP BY landing_page.id) AS e ON e.id = landing_page.id
+                    WHERE landing_page.handle = '${handle}'`;
     db.query(sql, (error, data) => {
         if (error) throw error;
         res.status(201).send(data[0]);
@@ -274,12 +279,31 @@ router.get('/landing_page/:id/section/:secId', (req, res) => {
                 res.send(result[0]);
             });
         } else if(result[0].content_type === 'Package') {
-            db.query(`SELECT * FROM section_packages WHERE section_id = ?`, secId, (e, r) => {
+            db.query(`SELECT
+            section_packages.package_id,
+            section_packages.position,
+            tour_packages.title,
+            tour_packages.price_with_tax,
+            tour_packages.compared_price,
+            tour_packages.days,
+            tour_packages.nights,
+            tour_packages.ribbon_tag,
+            tour_packages.handle,
+            AVG(review.review_points) as review_points,
+            COUNT(review.id) as review_count
+            FROM section_packages
+            INNER JOIN tour_packages
+            ON section_packages.package_id = tour_packages.id
+            LEFT JOIN review
+            ON review.reference_id = section_packages.package_id
+            WHERE section_id = ${secId}
+            GROUP BY section_packages.package_id`, (e, r) => {
                 if(e) {
                     throw error;
                 }
                 console.log(r);
                 result[0].packages = r;
+                console.log(result[0]);
                 res.send(result[0]);
             });
         } else {

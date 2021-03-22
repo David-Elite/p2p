@@ -9,6 +9,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'home',
+    loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule),
+    canActivate: [AdminAuthGuard]
+  },
+  {
     path: 'categories',
     loadChildren: () => import('./modules/category/category.module').then(m => m.CategoryModule),
     canActivate: [AdminAuthGuard]
@@ -26,6 +31,16 @@ const routes: Routes = [
   {
     path: 'zone',
     loadChildren: () => import('./modules/zone/zone.module').then(m => m.ZoneModule),
+    canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'blog',
+    loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule),
+    canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'page',
+    loadChildren: () => import('./modules/page/page.module').then(m => m.PageModule),
     canActivate: [AdminAuthGuard]
   },
   {

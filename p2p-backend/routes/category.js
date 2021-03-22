@@ -20,7 +20,6 @@ router.get('/category' ,(req, res) => {
     db.query(sql, (error, data) => {
         if (error) throw error;
         res.status(201).send(data);
-        console.log(data);
     });
 });
 
@@ -77,11 +76,9 @@ router.post('/category/image', (req, res) => {
                     res.send(result);
                 }
             })
-            console.log(data.Location);
         });
     });
     busboy.on('finish', function() {
-        console.log("A");
         // console.log(fileToUpload);
         const params = {
             Bucket: 'p2p-admin-angular-app',
@@ -114,13 +111,10 @@ router.get('/category/:id', (req, res) => {
         JSON_ARRAYAGG(JSON_OBJECT('id', images.id, 'url', images.image_url)) as images
      FROM category LEFT JOIN images
      ON category.id = images.reference_id
-      WHERE category.id=?`;
-     
-    console.log(id);
+      WHERE category.id=?`
     db.query(sql, id, (error, data) => {
         if (error) throw error;
         res.status(201).send(data[0]);
-        console.log(data);
     });
 });
 
@@ -138,7 +132,6 @@ router.post('/category', (req, res) => {
 router.put('/category/:id', (req, res) => {
     const { name, handle, description, tags } = req.body;
     const id = req.params.id;
-    console.log(id)
     db.query('UPDATE category SET name=?, handle=?,description=?,tags=? where id=?', [name, handle, description, tags, id], function (error, results) {
         if (error) throw error;
         res.status(201).send(results);
@@ -151,7 +144,6 @@ router.delete('/category/images/:id',(req,res)=>{
   if(err){
       console.log(err)
   }else{
-      console.log(result)
       res.status(201).send(result)
   }
  })

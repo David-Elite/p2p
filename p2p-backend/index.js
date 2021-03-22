@@ -23,6 +23,14 @@ app.use('/', require('./routes/zone'));
 app.use('/', require('./routes/review'));
 app.use('/', require('./routes/jobs'));
 app.use('/', require('./routes/admin-user'));
+app.use('/', require('./routes/home'));
+app.use('/', require('./routes/blog'));
+app.use('/', require('./routes/page'));
+
+app.use('/', require('./routes/image'));
+app.use('/', require('./routes/editor'));
+app.use('/', require('./routes/links'));
+app.use('/', require('./routes/section'));
 
 
 

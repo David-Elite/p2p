@@ -1,0 +1,185 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    opacity: 1;
+    z-index: 111;
+    color: #949494;
+
+    &.transparent {
+        background-color: transparent;
+        color: #FFFFFF;
+        input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: #949494;
+            opacity: 1; /* Firefox */
+        }
+    }
+
+    .flex-box {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        padding: 10px 30px;
+        .menu, .search {
+            font-size: 22px;
+            padding: 7px;
+            display: none;
+        }
+        .header-logo {
+            width: 20%;
+        }
+        .header-search {
+            width: 35%;
+            border: 1px solid #949494;
+            border-radius: 5px;
+            margin: 5px 50px 5px 20px;
+            padding: 0 10px;
+            font-size: 20px;
+            display: flex;
+            i {
+                padding-top: 5px;
+
+            }
+            input {
+                flex: 1;
+                border: none;
+                padding: 0 10px;
+                background-color: transparent;
+                &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                    color: white;
+                    opacity: 1; /* Firefox */
+                }
+            }
+        }
+        .header-options {
+            width: 45%;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            font-size: 20px;
+            margin: 5px;
+            .option-list {
+                padding: 5px;
+                .option {
+                    padding-left: 10px;
+                    .content {
+                        font-size: 12px;
+                        padding-left: 5px;
+                    }
+                }
+                
+            } 
+        }
+        @media screen and (max-width: 575px) {
+            padding: 10px 10px;
+            .menu, .search {
+                display: block;
+            }
+            .header-logo {
+                width: 70%;
+            }
+            .header-search {
+                display: none;
+            }
+            .header-options {
+                display: none;
+            }
+        }
+    }
+}
+
+.back {
+    height: 65px;
+}
+
+
+
+// .white{
+//     position: fixed;
+//     top:0px;
+//     width:100%;
+//     background: #FFFFFF 0% 0% no-repeat padding-box;
+//     box-shadow: 0px 3px 6px #00000029;
+//     opacity: 1;
+//     z-index: 111;
+    
+//     &.transparent {
+//         background-color: transparent;
+//     }
+    
+//     .container{
+//         height: 6rem;
+//         display:flex;
+//         align-items: center;
+//         justify-content: center;
+//         padding-top: .7rem;
+//         // display: none;
+//     }
+    
+//     .header-logo img{
+//         width: 197px;
+//         height: 40px;
+//     }
+    
+//     ::-webkit-input-placeholder{
+//       font: normal normal normal 12px/15px Montserrat;
+//       letter-spacing: 0px;
+//       color: #949494;
+//       opacity: 1;  
+//     }
+    
+//     input[type="text"]{
+//             width: 300px;
+//             height: 35px;
+//             border-radius: .5rem;
+//             box-shadow: 0px 0px 5px #FFFFFF57;
+//             border: 1px solid #949494;
+//             opacity: 1;
+//             padding-left: 3rem;
+//             outline: none;
+//         }
+    
+//      .fa-search{
+//         padding: 1rem;
+//         color: #949494;
+//         font-size: 1.5rem;
+//         position: absolute;
+//         top:1px;
+//         left:0;
+//         z-index: 11;
+//     }
+    
+//     .header-searchbox{
+//         width: 40%;
+//         position: relative;
+//         margin-left: 2rem;
+//         z-index: 11;
+//     }
+    
+//     .right_head span{
+//         text-align: left;
+//         font: normal normal normal 12px/15px Montserrat;
+//         letter-spacing: 0px;
+//         color: #949494;
+//         opacity: 1;
+//     }
+    
+//     .right_head{
+//         display: flex;
+//         align-items: center;
+//         flex-basis: 60%;
+//         flex-direction: row;
+//         justify-content: space-evenly;
+//     }
+    
+//     .fa-user{
+//         margin-right: 1rem;
+//         color: #949494;
+//         font-size: 1.5rem;
+//     }
+    
+// }

@@ -70,7 +70,9 @@
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Package</mat-label>
                                     <mat-select formControlName="referenceId">
-                                        <mat-select-search [(ngModel)]="packageFilter" (ngModelChange)="filterPackages()" [ngModelOptions]="{standalone: true}"></mat-select-search>
+                                        <mat-select-search [(ngModel)]="packageFilter"
+                                            (ngModelChange)="filterPackages()" [ngModelOptions]="{standalone: true}">
+                                        </mat-select-search>
                                         <mat-option *ngFor="let p of dispPkg" [value]="p.id">{{p.title}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -84,7 +86,14 @@
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                     <mat-label>Review Content</mat-label>
                                     <textarea matInput placeholder="Review Content" name="reviewContent"
-                                    formControlName="reviewContent" required></textarea>
+                                        formControlName="reviewContent" required></textarea>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Review Date</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="reviewDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
@@ -103,16 +112,17 @@
                                     <img *ngIf="reviewerImageUrl && reviewerImageUrl !== ''" [src]="reviewerImageUrl">
                                     <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
                                         <mat-label>Reviewer Image</mat-label>
-                                        <input matInput [value]="reviewerImage ? reviewerImage.name  : 'Choose Image'" disabled>
+                                        <input matInput [value]="reviewerImage ? reviewerImage.name  : 'Choose Image'"
+                                            disabled>
                                         <button mat-icon-button matSuffix (click)="imgInput.click()">
                                             <mat-icon>attach_file</mat-icon>
                                         </button>
-                                        <input hidden (change)="uploadReviewerImage($event)" #imgInput type="file" id="file"
-                                            accept=".png,.jpg">
+                                        <input hidden (change)="uploadReviewerImage($event)" #imgInput type="file"
+                                            id="file" accept=".png,.jpg">
                                     </mat-form-field>
                                 </div>
 
-                    
+
                             </div>
 
                         </mat-tab>

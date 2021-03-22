@@ -1,0 +1,75 @@
+
+section{
+    padding-top: 8rem;
+    margin-bottom: 5rem;
+  }
+  .left-border{
+      /* border-left:2px solid #FFA62E; */
+      height: 74px;
+      margin: 5rem;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      border-width: 2px;
+      border-style: solid;
+      border-image: 
+        linear-gradient(
+          to bottom, 
+          #EA4D2C, 
+          #FFA62E
+        ) 1 100%;
+        padding-left: 1.5rem;
+        border-right: none;
+  }
+  .heading{
+       font: normal normal bold 30px/37px Montserrat;
+       letter-spacing: 0px;
+       color: #3A3A3A;
+       opacity: 1;
+       width: 170px;
+       height: 74px;
+  }
+  
+  .heading-two{
+      width: 250px;
+      height: 24px;
+      margin-left: 5rem;
+      font: normal normal 600 20px/24px Montserrat;
+      letter-spacing: 0px;
+      color: #3A3A3A;
+      opacity: 1;
+  }
+  
+  .paragraph{
+  max-width: 1200px;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-top: 2rem;
+  line-height: 1.4;
+  margin-bottom: 0;
+  font: normal normal normal 16px/26px Montserrat;
+  }
+  @media(max-width:500px){
+    .heading{
+      font: normal normal bold 28px/34px Montserrat;
+  }
+    .left-border{
+      height: 67px;
+      margin: 2rem;
+  }
+  .heading-two{
+    width: 250px;
+    height: 24px;
+    margin-left: 2rem;
+    font: normal normal 600 16px/20px Montserrat;
+    letter-spacing: 0px;
+    color: #3A3A3A;
+    opacity: 1;
+  }
+  .paragraph{
+    max-width: 1200px;
+    margin:2rem 2rem;
+    margin-bottom: 0;
+    font: normal normal normal 14px/22px Montserrat;
+  }
+  
+  }

@@ -30,7 +30,15 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
   selectedImages: any = [];
   categories: Category[] = [];
   zones: Zone[] = [];
-  aminities = [];
+  aminities = [
+    'Activities',
+    'Bonfire',
+    'Camping',
+    'Days',
+    'Meals',
+    'Pickup',
+    'Wifi'
+  ];
   active = 0;
 
   // Itinerary Vars
@@ -224,13 +232,15 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
     // data.handle = FuseUtils.handleize(data.title);
 
     const data = this.getDirtyValues(this.tourPackageForm);
-    console.log(data);
+    if (data.aminities) {
+      data.aminities = data.aminities.toString();
+    }
 
     this.tourPackageService.saveTourPackage(this.tourPackage.id, data)
       .then(() => {
 
         // Trigger the subscription with new data
-        this.tourPackageFormResolver.onTourPackageChanged.next(data);
+        this.tourPackageFormResolver.onTourPackageChanged.next(this.tourPackageForm.getRawValue());
 
         // Show the success message
         this.matSnackBar.open('Package saved', 'OK', {
@@ -246,7 +256,7 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
   addTourPackage(): void {
     const data = this.tourPackageForm.getRawValue();
     data.handle = FuseUtils.handleize(data.title);
-
+    data.aminities = data.aminities.toString();
     this.tourPackageService.addTourPackage(data)
       .then((id) => {
 

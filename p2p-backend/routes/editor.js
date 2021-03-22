@@ -5,15 +5,16 @@ const Busboy = require('busboy');
 
 const router = express.Router();
 
+const bucket = new S3(
+    {
+        secretAccessKey: '+saPvs5PPR6At6Adf6dHfWmJh6nAYOs9QHjMA40L',
+        accessKeyId: 'AKIA2AFEKM2Z2U2TWRCE',
+        region: 'ap-south-1'
+    }
+);
+
 router.post('/editor/image', (req, res) => {
     // const contentType = req.body.file.type;
-    const bucket = new S3(
-        {
-            secretAccessKey: 'iSpTp41mJg7kJUb1KaJtftawAfMlkq3axK0+/Nf9',
-            accessKeyId: 'AKIAJLXGSMNKDM5WJ4YQ',
-            region: 'ap-south-1'
-        }
-    );
     var busboy = new Busboy({ headers: req.headers });
     var fileToUpload;
     var fileName;
@@ -26,7 +27,7 @@ router.post('/editor/image', (req, res) => {
         contentType = mimetype;
 
         const params = {
-            Bucket: 'p2p-admin-angular-app',
+            Bucket: 'plans2pick-demo',
             Key: 'editor/' + fileName,
             Body: fileToUpload,
             ACL: 'public-read',
