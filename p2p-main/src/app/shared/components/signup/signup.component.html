@@ -20,14 +20,16 @@
             <div>
                 <input type="text" placeholder="Confirm Password" [(ngModel)]="confirmPass">
             </div>
+            <span *ngIf="noMatch">Passwords Does not Match</span>
             <div class="checkbox-container">
                 <div class="check-box">
                 <input type="checkbox" name="terms">
                 <label for="terms">By joining, you agree to the Terms and Privacy Policy.</label>
             </div>
             </div>
+            {{noMatch}}
             <div>
-                <button class="login-btn">Sign Up</button>
+                <button (click)="signup()" class="login-btn">Sign Up</button>
             </div>
             <div class="or-box">
               <span class="border-width"></span>  <span class="or">OR</span> <span class="border-width"></span>

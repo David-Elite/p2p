@@ -13,6 +13,8 @@ export class SignupComponent implements OnInit {
   mobile = '';
   password = '';
   confirmPass = '';
+
+  noMatch = false;
   constructor(
     private userService: UserService,
     public activeModel: NgbActiveModal
@@ -22,9 +24,14 @@ export class SignupComponent implements OnInit {
   }
 
   signup(){
-    this.userService.signup(this.name, this.email, this.mobile, this.password, this.confirmPass).then(() => {
-
-    });
+    if (this.password === this.confirmPass) {
+      this.userService.signup(this.name, this.email, this.mobile, this.password, this.confirmPass).then(res => {
+        console.log(res);
+        
+      });
+    } else {
+      this.noMatch = true;
+    }
   }
 
 }

@@ -14,11 +14,11 @@ export class AdminuserService {
   ) { }
 
   getAdminuser(adminuserId: string): Observable<Adminuser> {
-    return this.httpClient.get<{ id: any; user_name: string; email: string; password: string; role: string }>(`${this.host}/admin-user/${adminuserId}`)
+    return this.httpClient.get<{ id: any; name: string; email: string; password: string; role: string }>(`${this.host}/admin-user/${adminuserId}`)
       .pipe<Adminuser>(map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
-          userName: c.user_name,
+          userName: c.name,
           email: c.email,
           password: c.password,
           role: c.role,
@@ -32,11 +32,11 @@ export class AdminuserService {
 
   getAdminusers(): Observable<Adminuser[]> {
     return this.httpClient
-      .get<{ id: any; user_name: string; email: string; password: string; role: string }[]>(`${this.host}/admin-user`)
+      .get<{ id: any; name: string; email: string; password: string; role: string }[]>(`${this.host}/admin-user`)
       .pipe<Adminuser[]>(map(ca => ca.map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
-          userName: c.user_name,
+          userName: c.name,
           email: c.email,
           password: c.password,
           role: c.role,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user/user.service';
 
@@ -12,10 +13,25 @@ export class LoginComponent implements OnInit {
   password: string = '';
   constructor(
     private userService: UserService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+  }
+
+  login(): void {
+    this.userService.login(this.email, this.password).then(res => {
+      this.router.navigate(['..']);
+    });
+  }
+
+  googleSignin(): void {
+    this.userService.googleSignIn();
+  }
+
+  facebookLogin(): void {
+    this.userService.facebookLogin();
   }
 
 }

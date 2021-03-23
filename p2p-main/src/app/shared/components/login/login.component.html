@@ -19,7 +19,7 @@
                 <span class="forgot-pwd" (click)="activeModal.dismiss('forgot-password')">Forgot Password?</span>
             </div>
             <div>
-                <button class="login-btn">Log In</button>
+                <button (click)="login()" class="login-btn">Log In</button>
             </div>
             <div class="or-box">
               <span class="border-width"></span>  <span class="or">OR</span> <span class="border-width"></span>
@@ -31,11 +31,11 @@
                 <p class="sign-up">or Login with</p>
             </div>
             <div class="login-logo">
-                <div>
+                <div (click)="googleSignin()">
                     <span class="gmail-logo"><img src="assets/images/misc/google-icon.png" alt="google icon"></span>
                     <p class="logo-title">Google</p>
                 </div>
-                <div>
+                <div (click)="facebookLogin()">
                     <span><img src="assets/images/misc/001-facebook.png" alt="fb"></span>
                     <p class="fb-title">Facebook</p>
                 </div>

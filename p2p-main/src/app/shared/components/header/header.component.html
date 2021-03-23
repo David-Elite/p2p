@@ -20,7 +20,8 @@
                 <span class="option adventure"><i class="fal fa-hiking"></i><span class="content">Adventure</span></span>
             </div>
             <div class="option-list">
-                <span (click)="openLogin()" class="option login"><i class="fal fa-user"></i><span class="content">Login</span></span>
+                <span *ngIf="!user" (click)="openLogin()" class="option login"><i class="fal fa-user"></i><span class="content">Login</span></span>
+                <span *ngIf="user" class="option login"><i class="fal fa-user"></i><span class="content">Welcome {{user?.name}}</span></span>
             </div> 
         </div>
 

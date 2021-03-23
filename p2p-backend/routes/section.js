@@ -27,7 +27,6 @@ router.get('/section/:secId', (req, res) => {
                 if(e) {
                     throw error;
                 }
-                console.log(r);
                 result[0].links = r;
                 res.send(result[0]);
             });
@@ -54,9 +53,7 @@ router.get('/section/:secId', (req, res) => {
                 if(e) {
                     throw error;
                 }
-                console.log(r);
                 result[0].packages = r;
-                console.log(result[0]);
                 res.send(result[0]);
             });
         } else if(result[0].content_type === 'Zone') {
@@ -75,7 +72,6 @@ router.get('/section/:secId', (req, res) => {
                 if(e) {
                     throw e;
                 }
-                console.log(r);
                 result[0].zones = r;
                 res.send(result[0]);
             });

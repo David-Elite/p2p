@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserService } from '../../services/user/user.service';
 import { LoginComponent } from '../login/login.component';
 import { SignupComponent } from '../signup/signup.component';
 
@@ -13,12 +14,24 @@ export class HeaderComponent implements OnInit {
   transparent!: boolean;
   onTop = true;
   searchText: string = '';
+  user: any;
   constructor(
-    private ngbModal: NgbModal
+    private ngbModal: NgbModal,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.transparent);
+    this.userService.user.subscribe({
+      next: user => {
+        console.log(user);
+        if (user) {
+          this.user = user;
+        }
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 
   search(): void {

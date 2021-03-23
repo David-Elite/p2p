@@ -97,9 +97,9 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy
     {
         this.userService.user.subscribe(user => {
             if (user) {
-                this.userName = user.displayName;
+                this.userName = user.name;
                 this.userEmail = user.email;
-                this.userImage = user.photoURL;
+                this.userImage = user.image;
             }
         });
         this._router.events

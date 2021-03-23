@@ -94,8 +94,8 @@ export class ToolbarComponent implements OnInit, OnDestroy
 
         userService.user.subscribe(usr => {
             if (usr) {
-                this.userName = usr.displayName;
-                this.userImage = usr.photoURL;
+                this.userName = usr.name;
+                this.userImage = usr.image;
             }
         });
 
@@ -175,7 +175,7 @@ export class ToolbarComponent implements OnInit, OnDestroy
     }
 
     logout(): void {
-        this.userService.logout()
+        this.userService.logout();
         this.router.navigate(['/login']);
     }
 }

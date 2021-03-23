@@ -18,7 +18,6 @@ export class ListCategoryResolver implements Resolve<boolean> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise<boolean>((res, rej) => {
       this.categoryService.getCategories().subscribe( cats => {
-        console.log(cats);
         if (cats) {
           this.categories = cats;
           this.onCategoriesChanged.next(cats);
