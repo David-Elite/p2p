@@ -2,27 +2,23 @@ import { DataSource } from '@angular/cdk/table';
 import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 import { FuseUtils } from '@fuse/utils';
 import { Subject, fromEvent, BehaviorSubject, Observable, merge } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { TourPackageService } from '../tour-package.service';
-import { ListTourPackageResolver } from './list-tour-package.resolver';
+import { ListUserResolver } from './list-user.resolver';
 
 @Component({
-  selector: 'app-list-tour-package',
-  templateUrl: './list-tour-package.component.html',
-  styleUrls: ['./list-tour-package.component.scss'],
+  selector: 'app-list-user',
+  templateUrl: './list-user.component.html',
+  styleUrls: ['./list-user.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class ListTourPackageComponent implements OnInit {
+export class ListUserComponent implements OnInit {
 
   dataSource: FilesDataSource | null;
-  displayedColumns = ['id', 'image', 'title', 'duration', 'category', 'place', 'priceWithTax', 'active', 'more'];
-  actionColumn = ['more'];
+  displayedColumns = ['id', 'name', 'email', 'mobile', 'gender', 'country'];
 
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator;
@@ -37,10 +33,7 @@ export class ListTourPackageComponent implements OnInit {
   private unsubscribeAll: Subject<any>;
 
   constructor(
-    private listTourPackageResolver: ListTourPackageResolver,
-    private fuseProgressBarService: FuseProgressBarService,
-    private tourPackageService: TourPackageService,
-    private router: Router
+    private listUserResolver: ListUserResolver
   ) {
     // Set the private defaults
     this.unsubscribeAll = new Subject();
@@ -54,7 +47,7 @@ export class ListTourPackageComponent implements OnInit {
    * On init
    */
   ngOnInit(): void {
-    this.dataSource = new FilesDataSource(this.listTourPackageResolver, this.paginator, this.sort);
+    this.dataSource = new FilesDataSource(this.listUserResolver, this.paginator, this.sort);
 
     fromEvent(this.filter.nativeElement, 'keyup')
       .pipe(
@@ -70,17 +63,6 @@ export class ListTourPackageComponent implements OnInit {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
   }
-
-  copyTourPackage(id: string): void {
-    this.fuseProgressBarService.show();
-    this.tourPackageService.copyTourPackage(id).then(res => {
-      this.fuseProgressBarService.hide();
-      this.router.navigate(['/tour-package/tour-package-form/', res.id]);
-    }).catch(err => {
-      console.log(err);
-      this.fuseProgressBarService.hide();
-    });
-  }
 }
 
 export class FilesDataSource extends DataSource<any>
@@ -91,21 +73,19 @@ export class FilesDataSource extends DataSource<any>
   /**
    * Constructor
    *
-   * @param {TourPackagesService} TourPackageService
+   * @param {UsersService} UsersService
    * @param {MatPaginator} matPaginator
    * @param {MatSort} matSort
    */
   constructor(
-    private listTourPackageResolver: ListTourPackageResolver,
+    private listUserResolver: ListUserResolver,
     private matPaginator: MatPaginator,
     private matSort: MatSort
   ) {
     super();
 
-    this.filteredData = this.listTourPackageResolver.tourPackages;
+    this.filteredData = this.listUserResolver.users;
   }
-
-  
 
   /**
    * Connect function called by the table to retrieve one stream containing the data to render.
@@ -114,7 +94,7 @@ export class FilesDataSource extends DataSource<any>
    */
   connect(): Observable<any[]> {
     const displayDataChanges = [
-      this.listTourPackageResolver.onTourPackagesChanged,
+      this.listUserResolver.onUsersChanged,
       this.matPaginator.page,
       this.filterChange,
       this.matSort.sortChange
@@ -123,7 +103,7 @@ export class FilesDataSource extends DataSource<any>
     return merge(...displayDataChanges)
       .pipe(
         map(() => {
-          let data = this.listTourPackageResolver.tourPackages.slice();
+          let data = this.listUserResolver.users.slice();
 
           data = this.filterData(data);
 
@@ -196,11 +176,17 @@ export class FilesDataSource extends DataSource<any>
         case 'id':
           [propertyA, propertyB] = [a.id, b.id];
           break;
-        case 'title':
-          [propertyA, propertyB] = [a.title, b.title];
+        case 'name':
+          [propertyA, propertyB] = [a.name, b.name];
           break;
-        case 'priceWithTax':
-          [propertyA, propertyB] = [a.priceWithTax, b.priceWithTax];
+        case 'users':
+          [propertyA, propertyB] = [a.users[0], b.users[0]];
+          break;
+        case 'price':
+          [propertyA, propertyB] = [a.priceTaxIncl, b.priceTaxIncl];
+          break;
+        case 'quantity':
+          [propertyA, propertyB] = [a.quantity, b.quantity];
           break;
         case 'active':
           [propertyA, propertyB] = [a.active, b.active];

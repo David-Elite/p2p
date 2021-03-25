@@ -250,6 +250,7 @@ router.post('/tour_packages', (req, res) => {
             handle: req.body.handle,
             days: req.body.days,
             nights: req.body.nights,
+            short_description: req.body.shortDescription,
             description: req.body.description,
             category: req.body.category,
             continent: req.body.continent,
@@ -257,6 +258,7 @@ router.post('/tour_packages', (req, res) => {
             state: req.body.state,
             city: req.body.city,
             region: req.body.region,
+            video_url: req.body.videoUrl,
             price: req.body.price,
             tax_percent: req.body.taxPercent,
             price_with_tax: req.body.priceWithTax,
@@ -268,7 +270,8 @@ router.post('/tour_packages', (req, res) => {
             booking_form: req.body.bookingForm,
             inquiry_form: req.body.inquiryForm,
             active: req.body.active,
-            aminities: req.body.aminities
+            aminities: req.body.aminities,
+            trip_type: req.body.tripType
         }, (error, result) => {
             if (error) {
                 res.status(400).send(error);
@@ -289,6 +292,12 @@ router.put('/tour_packages/:id', (req, res) => {
     for (const key in req.body) {
         if (key == 'taxPercent') {
             data.tax_percent = req.body[key] || 0;
+        } else if (key == 'shortDescription') {
+            data.short_description = req.body[key];
+        } else if (key == 'videoUrl') {
+            data.video_url = req.body[key];
+        } else if (key == 'tripType') {
+            data.trip_type = req.body[key];
         } else if (key == 'priceWithTax') {
             data.price_with_tax = req.body[key];
         } else if (key == 'comparedPrice') {
@@ -342,6 +351,52 @@ router.put('/tour_packages/:id', (req, res) => {
                 }
             });
     }
+});
+
+router.post('/tour_packages/copy/:id/:newId', (req, res) => {
+    const packageId = req.params.id;
+    const newId = req.params.newId;
+    db.query(`INSERT INTO tour_packages SELECT '${newId}' as id,
+        title,
+        handle,
+        days,
+        nights,
+        short_description,
+        description,
+        category,
+        continent,
+        country,
+        state,
+        city,
+        region,
+        video_url,
+        price,
+        tax_percent,
+        price_with_tax,
+        compared_price,
+        price_unit,
+        tags,
+        trip_type,
+        highlights,
+        ribbon_tag,
+        booking_form,
+        inquiry_form,
+        active,
+        aminities,
+        null as cover_image
+    FROM tour_packages WHERE id = '${packageId}'`, (err, result) => {
+        if (err) {
+            throw err;
+        } else {
+            db.query(`INSERT INTO itinerary (package_id, title, details) SELECT '${newId}' as package_id, title, details from itinerary WHERE package_id = '${packageId}'`, (e, r) => {
+                if (e) {
+                    throw e;
+                } else {
+                    res.status(201).send({id: newId});
+                }
+            })
+        }
+    });
 });
 
 router.post('/tour_packages/:id/itinerary', (req, res) => {

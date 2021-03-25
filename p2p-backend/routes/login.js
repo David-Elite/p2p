@@ -63,6 +63,50 @@ router.post('/login', async (req, res) => {
     })
 });
 
+router.get('/user', (req, res) => {
+    var sql = 'SELECT * FROM user';
+    db.query(sql, (error, data) => {
+        if (error) throw error;
+        else {
+            const result = data.map(d => {
+                d.password = 'Encrypted Password';
+                return d;
+            });
+            res.status(201).send(result);
+        }
+    });
+});
+
+router.get('/user/:id', (req, res) => {
+    let id = req.params.id;
+    var sql = 'SELECT * FROM user WHERE id=?';
+    db.query(sql, id, (error, data) => {
+        if (error) throw error;
+        res.status(201).send(data[0]);
+    });
+});
+
+
+router.post('/user', async (req, res) => {
+    const hash = await bcrypt.hash(req.body.password, hashKey);
+    db.query('INSERT INTO user SET ?', { name: req.body.userName, email: req.body.email, mobile: req.body.mobile, gender: req.body.gender, country: req.body.country, password: hash }, (error, result) => {
+        if (error) {
+            res.send(error);
+        } else {
+            res.status(201).send(result);
+        }
+    });
+});
+
+router.put('/user/:id', (req, res) => {
+    const id = req.params.id;
+    // const hash = await bcrypt.hash(req.body.password, hashKey);
+    console.log(id);
+    db.query('UPDATE user SET name=?, email=?, mobile=?, gender=?, country=? WHERE id=?', [req.body.userName, req.body.email, req.body.mobile, req.body.gender, req.body.country, id], function (error, results) {
+        if (error) throw error;
+        res.status(201).send(results);
+    });
+});
 
 
 module.exports = router;

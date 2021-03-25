@@ -5,7 +5,7 @@ import { AdminAuthGuard } from './guard/admin-auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/categories/list-category',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   {
@@ -59,8 +59,17 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard]
   },
   {
+    path: 'user',
+    loadChildren: () => import('./modules/user/user.module').then(m => m.UserModule),
+    canActivate: [AdminAuthGuard]
+  },
+  {
     path: 'login',
     loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule)
+  },
+  {
+    path: 'order',
+    loadChildren: () => import('./modules/order/order.module').then(m => m.OrderModule)
   }
 ];
 

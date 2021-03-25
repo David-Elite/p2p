@@ -202,11 +202,11 @@ export class HomeFormComponent implements OnInit, OnDestroy {
    * Save home
    */
   saveHome(): void {
-    // const data = this.homeForm.getRawValue();
+    const data = this.homeForm.getRawValue();
+    data.metaKeywords = data.metaKeywords.toString();
     // data.handle = FuseUtils.handleize(data.title);
 
-    const data = this.getDirtyValues(this.homeForm);
-    console.log(data);
+    // const data = this.getDirtyValues(this.homeForm);
 
     this.homeService.saveHome(data)
       .then(() => {
@@ -215,7 +215,7 @@ export class HomeFormComponent implements OnInit, OnDestroy {
         this.homeFormResolver.onHomeChanged.next(data);
 
         // Show the success message
-        this.matSnackBar.open('Package saved', 'OK', {
+        this.matSnackBar.open('Home saved', 'OK', {
           verticalPosition: 'top',
           duration: 2000
         });

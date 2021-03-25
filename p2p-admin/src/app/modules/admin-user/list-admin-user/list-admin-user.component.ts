@@ -18,7 +18,7 @@ import { ListAdminuserResolver } from './list-admin-user.resolver';
 export class ListAdminuserComponent implements OnInit {
 
   dataSource: FilesDataSource | null;
-  displayedColumns = ['id', 'active'];
+  displayedColumns = ['id', 'name', 'role', 'active'];
 
   @ViewChild(MatPaginator, { static: true })
   paginator: MatPaginator;

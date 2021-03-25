@@ -72,6 +72,14 @@ export const navigation: FuseNavigation[] = [
                 url      : '/admin-user',
             },
             {
+                id       : 'user',
+                title    : 'User',
+                // translate: 'NAV.SAMPLE.TITLE',
+                type     : 'item',
+                icon     : 'person',
+                url      : '/user',
+            },
+            {
                 id       : 'blog',
                 title    : 'Blogs',
                 // translate: 'NAV.SAMPLE.TITLE',
@@ -86,6 +94,14 @@ export const navigation: FuseNavigation[] = [
                 type     : 'item',
                 icon     : 'page',
                 url      : '/page',
+            },
+            {
+                id       : 'order',
+                title    : 'Order',
+                // translate: 'NAV.SAMPLE.TITLE',
+                type     : 'item',
+                icon     : 'shopping_cart',
+                url      : '/order',
             },
         ]
     }

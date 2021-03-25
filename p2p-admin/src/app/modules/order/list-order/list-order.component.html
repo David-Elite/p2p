@@ -1,0 +1,109 @@
+<div id="orders" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    order
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                  Orders
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Search for a order">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <!-- <button mat-raised-button
+                    [routerLink]="'/order/order-form/new'"
+                    class="add-order-button fuse-white mt-24 mt-md-0">
+                <span>ADD NEW REVIEW</span>
+            </button> -->
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="orders-table"
+                       #table [dataSource]="dataSource"
+                       matSort
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar>
+
+                <!-- Customer Id Column -->
+                <ng-container matColumnDef="customerId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Customer ID</mat-header-cell>
+                    <mat-cell *matCellDef="let order">
+                        <p class="text-truncate">{{order.customerId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Title Column -->
+                <ng-container matColumnDef="customerName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</mat-header-cell>
+                    <mat-cell *matCellDef="let order">
+                        <p class="text-truncate">{{order.customerName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Package Name Column -->
+                <ng-container matColumnDef="packageName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Package Name</mat-header-cell>
+                    <mat-cell *matCellDef="let order">
+                        <p class="text-truncate">{{order.packageName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Order Date Column -->
+                <ng-container matColumnDef="orderDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</mat-header-cell>
+                    <mat-cell *matCellDef="let order">
+                        <p class="text-truncate">{{order.orderDate}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let order; columns: displayedColumns;"
+                         class="order"
+                         matRipple
+                         [routerLink]="'/order/order-form/'+order.id">
+                </mat-row>
+
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="dataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

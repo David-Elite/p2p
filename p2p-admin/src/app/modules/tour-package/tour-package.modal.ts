@@ -10,6 +10,7 @@ export class TourPackage
     handle: string;
     days: number;
     nights: number;
+    shortDescription: string;
     description: string;
     category: string;
     continent: string;
@@ -17,6 +18,7 @@ export class TourPackage
     state: string;
     city: string;
     region: string;
+    videoUrl: string;
     price: number;
     taxPercent: number;
     priceWithTax: number;
@@ -28,6 +30,7 @@ export class TourPackage
     bookingForm: boolean;
     inquiryForm: boolean;
     aminities: string[];
+    tripType: string;
     metaTitle: string;
     metaDesc: string;
     metaKeywords: string[];
@@ -72,6 +75,7 @@ export class TourPackage
         this.handle = tourPackage.handle || FuseUtils.handleize(this.title);
         this.days = tourPackage.days || null;
         this.nights = tourPackage.nights || null;
+        this.shortDescription = tourPackage.shortDescription || '';
         this.description = tourPackage.description || '';
         this.category = tourPackage.category || '';
         this.continent = tourPackage.continent || '';
@@ -79,6 +83,7 @@ export class TourPackage
         this.state = tourPackage.state || '';
         this.city = tourPackage.city || '';
         this.region = tourPackage.region || '';
+        this.videoUrl = tourPackage.videoUrl || '';
         this.price = tourPackage.price || null;
         this.priceWithTax = tourPackage.priceWithTax || null;
         this.taxPercent = tourPackage.taxPercent || null;
@@ -91,6 +96,7 @@ export class TourPackage
         this.inquiryForm = tourPackage.inquiryForm || true;
         this.aminities = tourPackage.aminities || [];
         this.metaTitle = tourPackage.metaTitle || '';
+        this.tripType = tourPackage.tripType || '';
         this.metaDesc = tourPackage.metaDesc || '';
         this.metaKeywords = tourPackage.metaKeywords || [];
         this.images = tourPackage.images || [];

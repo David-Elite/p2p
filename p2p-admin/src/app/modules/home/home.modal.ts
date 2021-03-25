@@ -1,4 +1,4 @@
-import { FormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 
 import { FuseUtils } from '@fuse/utils';
@@ -44,4 +44,44 @@ export class Home
         this.sliderLinks = home.sliderLinks || [];
         this.section = home.section || [];
     }
+
+    /**
+     * Add Meta Keywords
+     *
+     * @param {MatChipInputEvent} event
+     */
+     addKeywords(event: MatChipInputEvent, control: FormControl | AbstractControl): void
+     {
+         const input = event.input;
+         const value = event.value;
+ 
+         // Add tag
+         if ( value )
+         {
+             this.metaKeywords.push(value);
+             control.markAsDirty();
+         }
+ 
+         // Reset the input value
+         if ( input )
+         {
+             input.value = '';
+         }
+     }
+ 
+     /**
+      * Remove keywords
+      *
+      * @param tag
+      */
+     removeKeywords(tag, control: FormControl | AbstractControl): void
+     {
+         const index = this.metaKeywords.indexOf(tag);
+ 
+         if ( index >= 0 )
+         {
+             this.metaKeywords.splice(index, 1);
+             control.markAsDirty();
+         }
+     }
 }

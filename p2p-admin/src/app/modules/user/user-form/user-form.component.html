@@ -1,0 +1,115 @@
+<div id="user" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/user/list-user'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{user.userName}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New User
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>User Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-user-button" [disabled]="userForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addUser()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-user-button"
+                [disabled]="userForm.invalid || userForm.pristine" *ngIf="pageType ==='edit'"
+                (click)="saveUser()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="userForm" [formGroup]="userForm" class="user w-100-p" fxLayout="column"
+                    fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput placeholder="User Name" name="userName" formControlName="userName"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Email</mat-label>
+                                    <input type="email" matInput placeholder="Email" name="email" formControlName="email" required>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Mobile</mat-label>
+                                    <input type="tel" matInput placeholder="Mobile No." name="mobile" formControlName="mobile" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Gender</mat-label>
+                                    <mat-select formControlName="gender">
+                                        <mat-option value="M">Male</mat-option>
+                                        <mat-option value="F">Female</mat-option>
+                                        <mat-option value="T">Transgender</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Country</mat-label>
+                                    <input matInput placeholder="Country" name="country" formControlName="country"
+                                        required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" *ngIf="pageType === 'new'">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput placeholder="Password" name="password" formControlName="password"
+                                        required>
+                                </mat-form-field>
+                            </div>
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

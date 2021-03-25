@@ -39,6 +39,18 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
     'Pickup',
     'Wifi'
   ];
+  tripType = [
+    'Corporate',
+    'Solo',
+    'Family',
+    'Friends',
+    'Couple',
+    'Adventure',
+    'Nature',
+    'Religious',
+    'Wildlife',
+    'Water'
+  ];
   active = 0;
 
   // Itinerary Vars
@@ -174,13 +186,13 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
    * @returns {FormGroup}
    */
   createTourPackageForm(): FormGroup {
-    console.log(this.tourPackage);
     return this.formBuilder.group({
       id: [this.tourPackage.id],
       title: [this.tourPackage.title],
       handle: [this.tourPackage.handle],
       days: [this.tourPackage.days],
       nights: [this.tourPackage.nights],
+      shortDescription: [this.tourPackage.shortDescription],
       description: [this.tourPackage.description],
       category: [this.tourPackage.category],
       continent: [this.tourPackage.continent],
@@ -188,6 +200,7 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
       state: [this.tourPackage.state],
       city: [this.tourPackage.city],
       region: [this.tourPackage.region],
+      videoUrl: [this.tourPackage.videoUrl],
       price: [this.tourPackage.price],
       taxPercent: [this.tourPackage.taxPercent],
       priceWithTax: [{value: this.tourPackage.priceWithTax, disabled: true}],
@@ -199,6 +212,7 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
       bookingForm: [this.tourPackage.bookingForm],
       inquiryForm: [this.tourPackage.inquiryForm],
       aminities: [this.tourPackage.aminities],
+      tripType: [this.tourPackage.tripType],
       metaTitle: [this.tourPackage.metaTitle],
       metaDesc: [this.tourPackage.metaDesc],
       metaKeywords: [this.tourPackage.metaKeywords],
@@ -236,6 +250,10 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
       data.aminities = data.aminities.toString();
     }
 
+    if (data.tripType) {
+      data.tripType = data.tripType.toString();
+    }
+
     this.tourPackageService.saveTourPackage(this.tourPackage.id, data)
       .then(() => {
 
@@ -270,7 +288,7 @@ export class TourPackageFormComponent implements OnInit, OnDestroy {
         });
 
         // Change the Location with new one
-        this.location.replaceState('tourPackages/' + id);
+        this.location.replaceState('tour-packages/tour-package-form' + id);
       });
   }
 

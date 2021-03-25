@@ -127,7 +127,7 @@
                     <mat-cell *matCellDef="let tourPackage">
                         <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
                         <mat-menu #menu="matMenu">
-                            <button mat-menu-item>Copy</button>
+                            <button (click)="copyTourPackage(tourPackage.id)" mat-menu-item>Copy</button>
                             <button mat-menu-item>Delete</button>
                         </mat-menu>
                     </mat-cell>

@@ -16,10 +16,11 @@ export class HomeService {
   getHome(): Observable<Home> {
     return this.httpClient.get<any>(`${this.host}/home`)
       .pipe<Home>(map(c => {
+        console.log(c);
         const cat: Home = new Home({
-          metaTitle: c.meta_title,
-          metaDesc: c.meta_description,
-          metaKeywords: c.meta_keywords ? c.meta_keywords.split(',') : [],
+          metaTitle: c.title,
+          metaDesc: c.description,
+          metaKeywords: c.keywords ? c.keywords.split(',') : [],
           sliderImages: c.slider_images ? c.slider_images : [],
           sliderLinks: c.slider_links ? c.slider_links : [],
           section: c.section ? c.section.sort((a, b) => a.position - b.position) : []

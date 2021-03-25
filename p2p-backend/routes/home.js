@@ -2,7 +2,6 @@ const express = require('express');
 const db = require('../db');
 const S3 = require('aws-sdk/clients/s3');
 const Busboy = require('busboy');
-const { title, nextTick } = require('process');
 
 const router = express.Router();
 
@@ -50,6 +49,13 @@ router.get('/home', (req, res) => {
 
 
 // Admin APIs
+
+router.put('/home', (req, res) => {
+    db.query(`UPDATE seo SET ? WHERE reference_id = 'home'`, {title: req.body.metaTitle, description: req.body.metaDesc,keywords: req.body.metaKeywords}, (error, data) => {
+        if (error) throw error;
+        res.status(201).send(true);
+    });
+});
 
 router.get('/home/packages', (req, res) => {
     var sql = `SELECT

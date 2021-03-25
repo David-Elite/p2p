@@ -1,4 +1,4 @@
-<div id="adminUsers" class="page-layout carded fullwidth inner-scroll">
+<div id="users" class="page-layout carded fullwidth inner-scroll">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -19,7 +19,7 @@
                     person
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Admin Users
+                    Users
                 </span>
             </div>
             <!-- / APP TITLE -->
@@ -28,17 +28,17 @@
             <div class="search-wrapper mx-32 mx-md-0">
                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon>search</mat-icon>
-                    <input #filter placeholder="Search for a admin user">
+                    <input #filter placeholder="Search for a user">
                 </div>
             </div>
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <button mat-raised-button
-                    [routerLink]="'/admin-user/admin-user-form/new'"
-                    class="add-adminUser-button fuse-white mt-24 mt-md-0">
+            <!-- <button mat-raised-button
+                    [routerLink]="'/user/user-form/new'"
+                    class="add-user-button fuse-white mt-24 mt-md-0">
                 <span>ADD NEW ADMINUSER</span>
-            </button>
+            </button> -->
             <!-- / ADD BUTTON -->
 
         </div>
@@ -47,7 +47,7 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <mat-table class="adminUsers-table"
+            <mat-table class="users-table"
                        #table [dataSource]="dataSource"
                        matSort
                        [@animateStagger]="{value:'50'}"
@@ -56,35 +56,57 @@
                 <!-- ID Column -->
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser">
-                        <p class="text-truncate">{{adminUser.id}}</p>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.id}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser">
-                        <p class="text-truncate">{{adminUser.userName}}</p>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.userName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- Adminuser Column -->
-                <ng-container matColumnDef="role">
-                    <mat-header-cell *matHeaderCellDef fxHide mat-sort-header fxShow.gt-md>Admin Role</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser" fxHide fxShow.gt-md>
-                        <p class="adminUser text-truncate">
-                            {{adminUser.role | titlecase}}
-                        </p>
+                <!-- E-Mail Column -->
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>E-Mail</mat-header-cell>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.email}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="mobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</mat-header-cell>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.mobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Gender</mat-header-cell>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Country Column -->
+                <ng-container matColumnDef="country">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Country</mat-header-cell>
+                    <mat-cell *matCellDef="let user">
+                        <p class="text-truncate">{{user.country}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- Price Column -->
                 <!-- <ng-container matColumnDef="price">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Price</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser" fxHide fxShow.gt-xs>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
                         <p class="price text-truncate">
-                            {{adminUser.priceTaxIncl | currency:'USD':'symbol'}}
+                            {{user.priceTaxIncl | currency:'USD':'symbol'}}
                         </p>
                     </mat-cell>
                 </ng-container> -->
@@ -92,13 +114,13 @@
                 <!-- Quantity Column -->
                 <!-- <ng-container matColumnDef="quantity">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-sm>Quantity</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser" fxHide fxShow.gt-sm>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-sm>
 
                         <span class="quantity-indicator text-truncate"
-                              [ngClass]="{'red-500':adminUser.quantity <= 5, 'amber-500':adminUser.quantity > 5 && adminUser.quantity <= 25,'green-600':adminUser.quantity > 25}">
+                              [ngClass]="{'red-500':user.quantity <= 5, 'amber-500':user.quantity > 5 && user.quantity <= 25,'green-600':user.quantity > 25}">
                         </span>
                         <span>
-                            {{adminUser.quantity}}
+                            {{user.quantity}}
                         </span>
 
                     </mat-cell>
@@ -107,18 +129,18 @@
                 <!-- Active Column -->
                 <ng-container matColumnDef="active">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Active</mat-header-cell>
-                    <mat-cell *matCellDef="let adminUser" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="adminUser.active" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!adminUser.active" class="active-icon red-500 s-16">close</mat-icon>
+                    <mat-cell *matCellDef="let user" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="user.active" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!user.active" class="active-icon red-500 s-16">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
-                <mat-row *matRowDef="let adminUser; columns: displayedColumns;"
-                         class="adminUser"
+                <mat-row *matRowDef="let user; columns: displayedColumns;"
+                         class="user"
                          matRipple
-                         [routerLink]="'/admin-user/admin-user-form/'+adminUser.id">
+                         [routerLink]="'/user/user-form/'+user.id">
                 </mat-row>
 
             </mat-table>

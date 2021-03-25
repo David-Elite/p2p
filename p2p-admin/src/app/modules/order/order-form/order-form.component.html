@@ -1,0 +1,179 @@
+<div id="order" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/order/list-order'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <!-- <div class="order-image mr-8 mr-sm-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    <img *ngIf="order.images[0]" [src]="order.images[0].url">
+                    <img *ngIf="!order.images[0]" [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                </div> -->
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        {{order.orderTitle}}
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='new'">
+                        New Order
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Order Detail</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="save-order-button" [disabled]="orderForm.invalid"
+                *ngIf="pageType ==='new'" (click)="addOrder()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-order-button" [disabled]="orderForm.invalid || orderForm.pristine"
+                *ngIf="pageType ==='edit'" (click)="saveOrder()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="orderForm" [formGroup]="orderForm" class="order w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Basic Info">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="rate">
+                                    <ngx-star-rating formControlName="orderPoints" [id]="'rating'"></ngx-star-rating>
+                                </div>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Package</mat-label>
+                                    <mat-select formControlName="referenceId">
+                                        <mat-select-search [(ngModel)]="packageFilter"
+                                            (ngModelChange)="filterPackages()" [ngModelOptions]="{standalone: true}">
+                                        </mat-select-search>
+                                        <mat-option *ngFor="let p of dispPkg" [value]="p.id">{{p.title}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Order Title</mat-label>
+                                    <input matInput placeholder="Order Title" name="orderTitle"
+                                        formControlName="orderTitle" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Order Content</mat-label>
+                                    <textarea matInput placeholder="Order Content" name="orderContent"
+                                        formControlName="orderContent" required></textarea>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Order Date</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="orderDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Orderer Name</mat-label>
+                                    <input matInput placeholder="Orderer Name" name="ordererName"
+                                        formControlName="ordererName" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Orderer Title</mat-label>
+                                    <input matInput placeholder="Orderer Title" name="ordererTitle"
+                                        formControlName="ordererTitle" required>
+                                </mat-form-field>
+
+                                <div class="form-link-icon">
+                                    <img *ngIf="ordererImageUrl && ordererImageUrl !== ''" [src]="ordererImageUrl">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Orderer Image</mat-label>
+                                        <input matInput [value]="ordererImage ? ordererImage.name  : 'Choose Image'"
+                                            disabled>
+                                        <button mat-icon-button matSuffix (click)="imgInput.click()">
+                                            <mat-icon>attach_file</mat-icon>
+                                        </button>
+                                        <input hidden (change)="uploadOrdererImage($event)" #imgInput type="file"
+                                            id="file" accept=".png,.jpg">
+                                    </mat-form-field>
+                                </div>
+
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Order Images" *ngIf="pageType === 'edit'">
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+                                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                    <mat-label>Choose file</mat-label>
+                                    <input matInput
+                                        [value]="selectedImages.length > 0 ? selectedImages.length + ' Images Selected' : 'Choose Images'"
+                                        disabled>
+                                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                        <mat-icon>attach_file</mat-icon>
+                                    </button>
+                                    <input hidden (change)="uploadImages($event)" #fileInput type="file" id="file"
+                                        accept=".png,.jpg" multiple="true">
+                                </mat-form-field>
+                                <div fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                    <div *ngIf="order.images.length === 0" class="order-image" fxlayout="row"
+                                        fxLayoutAlign="center center">
+                                        <img class="media"
+                                            [src]="'assets/images/ecommerce/product-image-placeholder.png'">
+                                    </div>
+
+                                    <div *ngFor="let image of order.images">
+                                        <div *ngIf="order.images.length > 0" class="order-image" fxlayout="row"
+                                            fxLayoutAlign="center center">
+                                            <img class="media" [src]="image">
+                                            <button mat-icon-button matRipple class="remove-btn"
+                                                (click)="removeImage(image.id)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -21,7 +21,6 @@ router.get('/admin-user/verify', (req, res) => {
         return res.status(401).send('Unauthorized Request'); // if there is no token
     } else {
         db.query('SELECT * FROM admin_user WHERE id = ?', [payload.id], (err, result) => {
-            console.log(result);
             if (err) {
                 console.log(err);
                 return res.status(401).send("Unauthorized Request");

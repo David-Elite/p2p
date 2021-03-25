@@ -3,6 +3,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { TourPackage } from './tour-package.modal';
 import { HttpClient } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
+import { FuseUtils } from '@fuse/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class TourPackageService {
           handle: c.handle,
           days: c.days,
           nights: c.nights,
+          shortDescription: c.short_description,
           description: c.description,
           category: c.category,
           continent: c.continent,
@@ -29,6 +31,7 @@ export class TourPackageService {
           state: c.state,
           city: c.city,
           region: c.region,
+          videoUrl: c.video_url,
           price: c.price,
           taxPercent: c.tax_percent,
           priceWithTax: c.price_with_tax,
@@ -40,6 +43,7 @@ export class TourPackageService {
           bookingForm: c.booking_form ? c.booking_form : false,
           inquiryForm: c.inquiry_form ? c.inquiry_form : false,
           aminities: c.aminities ? c.aminities.split(',') : [],
+          ripType: c.trip_type ? c.trip_type.split(',') : [],
           metaTitle: c.meta_title,
           metaDesc: c.meta_description,
           metaKeywords: c.meta_keywords ? c.meta_keywords.split(',') : [],
@@ -67,6 +71,7 @@ export class TourPackageService {
           handle: c.handle,
           days: c.days,
           nights: c.nights,
+          shortDescription: c.short_description,
           description: c.description,
           category: c.category,
           continent: c.continent,
@@ -74,6 +79,7 @@ export class TourPackageService {
           state: c.state,
           city: c.city,
           region: c.region,
+          videoUrl: c.video_url,
           price: c.price,
           taxPercent: c.tax_percent,
           priceWithTax: c.price_with_tax,
@@ -85,6 +91,7 @@ export class TourPackageService {
           bookingForm: c.booking_form ? c.booking_form : false,
           inquiryForm: c.inquiry_form ? c.inquiry_form : false,
           aminities: c.aminities ? c.aminities.split(',') : [],
+          tripType: c.trip_type ? c.trip_type.split(',') : [],
           metaTitle: c.meta_title,
           metaDesc: c.meta_description,
           metaKeywords: c.meta_keywords ? c.meta_keywords.split(',') : [],
@@ -130,6 +137,7 @@ export class TourPackageService {
         handle: data.handle,
         days: data.days,
         nights: data.nights,
+        shortDescription: data.shortDescription,
         description: data.description,
         category: data.category,
         continent: data.continent,
@@ -137,6 +145,7 @@ export class TourPackageService {
         state: data.country,
         city: data.city,
         region: data.region,
+        videoUrl: data.videoUrl,
         price: data.price,
         taxPercent: data.taxPercent,
         priceWithTax: data.priceWithTax,
@@ -148,6 +157,7 @@ export class TourPackageService {
         bookingForm: data.bookingForm,
         inquiryForm: data.inquiryForm,
         aminities: data.aminities.toString(),
+        tripType: data.tripType.toString(),
         active: data.active,
         metaTitle: data.metaTitle,
         metaDesc: data.metaDesc,
@@ -163,6 +173,18 @@ export class TourPackageService {
     ).subscribe(result => res(data.id),
                 err => rej(err))
     );
+  }
+
+  copyTourPackage(id: string): Promise<any> {
+    return new Promise((res, rej) => {
+      this.httpClient.post(`${this.host}/tour_packages/copy/${id}/${FuseUtils.generateGUID()}`, {}).subscribe({
+        next: result => {
+          console.log(result);
+          res(result);
+        },
+        error: err => rej(err)
+      });
+    });
   }
 
   deleteTourPackage(tourPackageId: string): Promise<void> {
