@@ -16,7 +16,7 @@ export class JobService {
   ) { }
 
   getJob(jobId: string): Observable<Job> {
-    return this.httpClient.get<{ id: string; job_title: string; job_desc: string; job_overview: string; job_rnr: string; images: string }>(`${environment.host}/jobs/${jobId}`)
+    return this.httpClient.get<any>(`${environment.host}/jobs/${jobId}`)
       .pipe<Job>(map(c => {
         const cat: Job = new Job({
           id: c.id,
@@ -35,14 +35,14 @@ export class JobService {
 
   getJobs(): Observable<Job[]> {
     return this.httpClient
-      .get<{ id: any; title: string; desc: string; overview: string; rnr: string; images: string }[]>(`${environment.host}/jobs`)
+      .get<any[]>(`${environment.host}/jobs`)
       .pipe<Job[]>(map(ca => ca.map(c => {
         const cat: Job = new Job({
           id: c.id,
-          title: c.title,
-          desc: c.desc,
-          overview: c.overview,
-          rnr: c.rnr,
+          title: c.job_title,
+          desc: c.job_desc,
+          overview: c.job_overview,
+          rnr: c.job_rnr,
           images: c.images ? c.images : [],
           active: true
         });
