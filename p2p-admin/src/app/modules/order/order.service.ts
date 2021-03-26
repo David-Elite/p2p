@@ -3,6 +3,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { Order } from './order.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class OrderService {
   ) { }
 
   getOrder(orderId: string): Observable<Order> {
-    return this.httpClient.get<any>(`${this.host}/order/${orderId}`)
+    return this.httpClient.get<any>(`${environment.host}/order/${orderId}`)
       .pipe<Order>(map(c => {
         const cat: Order = new Order({
           id: c.id,
@@ -34,7 +35,7 @@ export class OrderService {
 
   getOrders(): Observable<any[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/order`)
+      .get<any[]>(`${environment.host}/order`)
       .pipe<any[]>(map(ca => ca.map(c => {
         const rev = {
           id: c.id,
@@ -52,7 +53,7 @@ export class OrderService {
   }
 
   getPackagesForOrder(): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.get(`${this.host}/order/packages`)
+    return new Promise((res, rej) => this.httpClient.get(`${environment.host}/order/packages`)
       .subscribe(result => res(result),
                   err => rej(err))
     );
@@ -68,7 +69,7 @@ export class OrderService {
     formData.append('adults', data.adults.toString());
     formData.append('childens', data.childrens.toString());
 
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/order`, formData)
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/order`, formData)
       .subscribe(result => {
         res();
       },
@@ -87,7 +88,7 @@ export class OrderService {
     formData.append('adults', data.adults.toString());
     formData.append('childens', data.childrens.toString());
 
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/order/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/order/${data.id}`,
       formData
     ).subscribe(result => res(data.id))
     );
@@ -108,13 +109,13 @@ export class OrderService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/order/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/order/image`, formData));
     }
     return forkJoin(observables).toPromise();
   }
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/order/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/order/images/${imageId}`)
         .subscribe(
           () => res(),
           err => rej(err)

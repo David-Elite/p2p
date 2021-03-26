@@ -4,6 +4,8 @@ import { Job } from './job.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+import { environment } from 'environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +16,7 @@ export class JobService {
   ) { }
 
   getJob(jobId: string): Observable<Job> {
-    return this.httpClient.get<{ id: string; job_title: string; job_desc: string; job_overview: string; job_rnr: string; images: string }>(`${this.host}/jobs/${jobId}`)
+    return this.httpClient.get<{ id: string; job_title: string; job_desc: string; job_overview: string; job_rnr: string; images: string }>(`${environment.host}/jobs/${jobId}`)
       .pipe<Job>(map(c => {
         const cat: Job = new Job({
           id: c.id,
@@ -33,7 +35,7 @@ export class JobService {
 
   getJobs(): Observable<Job[]> {
     return this.httpClient
-      .get<{ id: any; title: string; desc: string; overview: string; rnr: string; images: string }[]>(`${this.host}/jobs`)
+      .get<{ id: any; title: string; desc: string; overview: string; rnr: string; images: string }[]>(`${environment.host}/jobs`)
       .pipe<Job[]>(map(ca => ca.map(c => {
         const cat: Job = new Job({
           id: c.id,
@@ -50,7 +52,7 @@ export class JobService {
   }
 
   addJob(data: Job): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/jobs`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/jobs`,
       {
         id: data.id,
         title: data.title,
@@ -63,7 +65,7 @@ export class JobService {
   }
 
   saveJob(data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/jobs/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/jobs/${data.id}`,
       {
         id: data.id,
         title: data.title,
@@ -90,14 +92,14 @@ export class JobService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/jobs/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/jobs/image`, formData));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/jobs/images${imageId}`)
+      this.httpClient.delete(`${environment.host}/jobs/images${imageId}`)
         .subscribe(
           () => res(),
           err => console.log(err)

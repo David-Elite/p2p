@@ -3,6 +3,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { User } from './user.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class UserService {
 
   getUser(userId: string): Observable<User> {
     console.log(userId);
-    return this.httpClient.get<any>(`${this.host}/user/${userId}`)
+    return this.httpClient.get<any>(`${environment.host}/user/${userId}`)
       .pipe<User>(map(c => {
         const cat: User = new User({
           id: c.id,
@@ -35,7 +36,7 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/user`)
+      .get<any[]>(`${environment.host}/user`)
       .pipe<User[]>(map(ca => ca.map(c => {
         const cat: User = new User({
           id: c.id,
@@ -53,7 +54,7 @@ export class UserService {
   }
 
   addUser(data: User): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/user`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/user`,
       {
         userName: data.userName,
         email: data.email,
@@ -67,7 +68,7 @@ export class UserService {
   }
 
   saveUser(data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/user/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/user/${data.id}`,
       {
         userName: data.userName,
         email: data.email,

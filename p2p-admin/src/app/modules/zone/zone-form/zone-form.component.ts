@@ -81,7 +81,7 @@ export class ZoneFormComponent implements OnInit, OnDestroy {
         }
 
         this.zoneForm = this.createZoneForm();
-        this.zoneValue = zone.zoneType;
+        this.zoneValue = this.zone.zoneType;
         this.zoneForm.get('zoneType').valueChanges.subscribe(val => this.zoneValue = val);
       });
     // this.zoneForm.get('zone').valueChanges.subscribe( val => {
@@ -189,7 +189,7 @@ export class ZoneFormComponent implements OnInit, OnDestroy {
    */
   addZone(): void {
     const data = this.zoneForm.getRawValue();
-    data.handle = FuseUtils.handleize(data.zone);
+    data.handle = FuseUtils.handleize(data.title);
 
     this.zoneService.addZone(data)
       .then((id) => {

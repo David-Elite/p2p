@@ -58,7 +58,7 @@ router.get('/page', (req, res) => {
                 LEFT JOIN seo
                 ON page.id = seo.reference_id AND page.handle = seo.handle
                 LEFT JOIN images
-                ON page.id = images.reference_id LIMIT 1`;
+                ON page.id = images.reference_id`;
     db.query(sql, (error, result) => {
         if (error) throw error;
         res.status(201).send(result);

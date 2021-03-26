@@ -3,6 +3,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { Review } from './review.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ReviewService {
   ) { }
 
   getReview(reviewId: string): Observable<Review> {
-    return this.httpClient.get<any>(`${this.host}/review/${reviewId}`)
+    return this.httpClient.get<any>(`${environment.host}/review/${reviewId}`)
       .pipe<Review>(map(c => {
         const cat: Review = new Review({
           id: c.id,
@@ -37,7 +38,7 @@ export class ReviewService {
 
   getReviews(): Observable<any[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/review`)
+      .get<any[]>(`${environment.host}/review`)
       .pipe<any[]>(map(ca => ca.map(c => {
         const rev = {
           id: c.id,
@@ -55,7 +56,7 @@ export class ReviewService {
   }
 
   getPackagesForReview(): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.get(`${this.host}/review/packages`)
+    return new Promise((res, rej) => this.httpClient.get(`${environment.host}/review/packages`)
       .subscribe(result => res(result),
                   err => rej(err))
     );
@@ -72,7 +73,7 @@ export class ReviewService {
     formData.append('reviewerName', data.reviewerName);
     formData.append('reviewerTitle', data.reviewerTitle);
 
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/review`, formData)
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/review`, formData)
       .subscribe(result => {
         res();
       },
@@ -93,7 +94,7 @@ export class ReviewService {
     formData.append('reviewerName', data.reviewerName);
     formData.append('reviewerTitle', data.reviewerTitle);
 
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/review/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/review/${data.id}`,
       formData
     ).subscribe(result => res(data.id))
     );
@@ -114,13 +115,13 @@ export class ReviewService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/review/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/review/image`, formData));
     }
     return forkJoin(observables).toPromise();
   }
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/review/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/review/images/${imageId}`)
         .subscribe(
           () => res(),
           err => rej(err)

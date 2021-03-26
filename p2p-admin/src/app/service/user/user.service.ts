@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class UserService {
 
   login(userName: string, password: string): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/admin-user/login`, { email: userName, password: password }).subscribe(result => {
+      this.httpClient.post(`${environment.host}/admin-user/login`, { email: userName, password: password }).subscribe(result => {
         console.log(result);
         localStorage.setItem('token', result['token'].toString());
         this.user.next(result);
@@ -41,7 +42,7 @@ export class UserService {
     };
     return new Promise((res, rej) => {
       if (token) {
-        this.httpClient.get<any>(`${this.host}/admin-user/verify`, { headers: header }).subscribe(
+        this.httpClient.get<any>(`${environment.host}/admin-user/verify`, { headers: header }).subscribe(
           result => {
             if (result) {
               this.user.next(result);

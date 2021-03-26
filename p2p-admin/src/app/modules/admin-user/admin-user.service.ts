@@ -3,6 +3,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { Adminuser } from './admin-user.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AdminuserService {
   ) { }
 
   getAdminuser(adminuserId: string): Observable<Adminuser> {
-    return this.httpClient.get<{ id: any; name: string; email: string; password: string; role: string }>(`${this.host}/admin-user/${adminuserId}`)
+    return this.httpClient.get<{ id: any; name: string; email: string; password: string; role: string }>(`${environment.host}/admin-user/${adminuserId}`)
       .pipe<Adminuser>(map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
@@ -32,7 +33,7 @@ export class AdminuserService {
 
   getAdminusers(): Observable<Adminuser[]> {
     return this.httpClient
-      .get<{ id: any; name: string; email: string; password: string; role: string }[]>(`${this.host}/admin-user`)
+      .get<{ id: any; name: string; email: string; password: string; role: string }[]>(`${environment.host}/admin-user`)
       .pipe<Adminuser[]>(map(ca => ca.map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
@@ -48,7 +49,7 @@ export class AdminuserService {
   }
 
   addAdminuser(data: Adminuser): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/admin-user`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/admin-user`,
       {
         userName: data.userName,
         email: data.email,
@@ -60,7 +61,7 @@ export class AdminuserService {
   }
 
   saveAdminuser(data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/admin-user/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/admin-user/${data.id}`,
       {
         userName: data.userName,
         email: data.email,

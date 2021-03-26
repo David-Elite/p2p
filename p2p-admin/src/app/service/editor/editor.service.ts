@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class EditorService {
     return new Promise((res, rej) => {
       const formData = new FormData();
       formData.append('file', image, image.name);
-      this.httpClient.post(`${this.host}/editor/image`, formData).subscribe(
+      this.httpClient.post(`${environment.host}/editor/image`, formData).subscribe(
       url => {
         console.log(url);
         res(url);

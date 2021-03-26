@@ -1,5 +1,5 @@
 export const environment = {
-    host: 'http://localhost:8080',
+    host: 'http://15.206.0.90:8080',
     production: true,
     hmr       : false
 };

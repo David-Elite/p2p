@@ -16,12 +16,12 @@ export class TourPackageService {
 
   getCompleteTourPackages(): Observable<any>{
     return this.httpClient
-      .get<any[]>(`${this.host}/tour_packages`)
+      .get<any[]>(`${environment.host}/tour_packages`)
   }
 
   getTourPackageByHandle(handle: string): Promise<TourPackage> {
     return new Promise((res, rej) => {
-      this.httpClient.get(`${this.host}/tour_packages/handle/${handle}`)
+      this.httpClient.get(`${environment.host}/tour_packages/handle/${handle}`)
       .subscribe( result => {
         console.log(result);
         res(result);

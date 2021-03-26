@@ -4,6 +4,7 @@ import { Zone } from './zone.modal';
 
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ZoneService {
   ) { }
 
   getZone(zoneId: string): Observable<Zone> {
-    return this.httpClient.get<any>(`${this.host}/zone/${zoneId}`)
+    return this.httpClient.get<any>(`${environment.host}/zone/${zoneId}`)
       .pipe<Zone>(map(c => {
         const cat: Zone = new Zone({
           id: c.id,
@@ -39,7 +40,7 @@ export class ZoneService {
 
   getZones(): Observable<Zone[]> {
     return this.httpClient
-      .get<{ id: any; zone_type: any; title: any; handle: any; tags: string; continent: any; country: string; state: string; city: string; images: string }[]>(`${this.host}/zone`)
+      .get<{ id: any; zone_type: any; title: any; handle: any; tags: string; continent: any; country: string; state: string; city: string; images: string }[]>(`${environment.host}/zone`)
       .pipe<Zone[]>(map(ca => ca.map(c => {
         const cat: Zone = new Zone({
           id: c.id,
@@ -60,7 +61,7 @@ export class ZoneService {
   }
 
   addZone(data: Zone): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/zone`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/zone`,
       {
         id: data.id,
         zoneType: data.zoneType,
@@ -77,7 +78,7 @@ export class ZoneService {
   }
 
   saveZone(data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/zone/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/zone/${data.id}`,
       {
         id: data.id,
         zoneType: data.zoneType,
@@ -108,14 +109,14 @@ export class ZoneService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/zone/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/zone/image`, formData));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/zone/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/zone/images/${imageId}`)
         .subscribe(
           () => res(),
           err => rej(err)

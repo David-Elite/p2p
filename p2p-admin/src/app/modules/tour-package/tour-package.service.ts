@@ -4,6 +4,7 @@ import { TourPackage } from './tour-package.modal';
 import { HttpClient } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
 import { FuseUtils } from '@fuse/utils';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class TourPackageService {
   ) { }
 
   getTourPackage(tourPackageId: string): Observable<TourPackage> {
-    return this.httpClient.get<any>(`${this.host}/tour_packages/${tourPackageId}`)
+    return this.httpClient.get<any>(`${environment.host}/tour_packages/${tourPackageId}`)
       .pipe<TourPackage>(map(c => {
         const cat: TourPackage = new TourPackage({
           id: c.id,
@@ -63,7 +64,7 @@ export class TourPackageService {
 
   getCompleteTourPackages(): Observable<TourPackage[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/tour_packages`)
+      .get<any[]>(`${environment.host}/tour_packages`)
       .pipe<TourPackage[]>(map(ca => ca.map(c => {
         const cat: TourPackage = new TourPackage({
           id: c.id,
@@ -109,7 +110,7 @@ export class TourPackageService {
 
   getTourPackages(): Observable<any[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/tour_packages`)
+      .get<any[]>(`${environment.host}/tour_packages`)
       .pipe<any[]>(map(ca => ca.map(c => {
         const cat = {
           id: c.id,
@@ -130,7 +131,7 @@ export class TourPackageService {
   }
 
   addTourPackage(data: TourPackage): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/tour_packages`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/tour_packages`,
       {
         id: data.id,
         title: data.title,
@@ -168,7 +169,7 @@ export class TourPackageService {
   }
 
   saveTourPackage(id: string, data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/tour_packages/${id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/tour_packages/${id}`,
       data
     ).subscribe(result => res(data.id),
                 err => rej(err))
@@ -177,7 +178,7 @@ export class TourPackageService {
 
   copyTourPackage(id: string): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/tour_packages/copy/${id}/${FuseUtils.generateGUID()}`, {}).subscribe({
+      this.httpClient.post(`${environment.host}/tour_packages/copy/${id}/${FuseUtils.generateGUID()}`, {}).subscribe({
         next: result => {
           console.log(result);
           res(result);
@@ -189,7 +190,7 @@ export class TourPackageService {
 
   deleteTourPackage(tourPackageId: string): Promise<void> {
     return new Promise((req, res) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${tourPackageId}`).subscribe(() => res());
+      this.httpClient.delete(`${environment.host}/tour_packages/${tourPackageId}`).subscribe(() => res());
     });
   }
 
@@ -201,14 +202,14 @@ export class TourPackageService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/tour_packages/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/tour_packages/image`, formData));
     }
     return new Promise((res, rej) => forkJoin(observables).pipe(take(1)).subscribe(done => res(), err => rej(err)));
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${id}/images/${imageId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/images/${imageId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -217,7 +218,7 @@ export class TourPackageService {
 
   addItinerary(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/tour_packages/${id}/itinerary`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/itinerary`, data).pipe(take(1))
       .subscribe(
         iti => {
           res(iti);
@@ -231,7 +232,7 @@ export class TourPackageService {
 
   editItinerary(id: string, itiId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/tour_packages/${id}/itinerary/${itiId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -240,7 +241,7 @@ export class TourPackageService {
 
   deleteItinerary(id: string, itiId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${id}/itinerary/${itiId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -249,7 +250,7 @@ export class TourPackageService {
 
   addFAQ(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/tour_packages/${id}/faq`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/faq`, data).pipe(take(1))
       .subscribe(
         iti => {
           res(iti);
@@ -263,7 +264,7 @@ export class TourPackageService {
 
   editFAQ(id: string, faqId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/tour_packages/${id}/faq/${faqId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/faq/${faqId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -272,7 +273,7 @@ export class TourPackageService {
 
   deleteFAQ(id: string, faqId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${id}/faq/${faqId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/faq/${faqId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -281,7 +282,7 @@ export class TourPackageService {
 
   addMisc(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/tour_packages/${id}/misc`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/misc`, data).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -295,7 +296,7 @@ export class TourPackageService {
 
   editMisc(id: string, miscId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/tour_packages/${id}/misc/${miscId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/misc/${miscId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -304,7 +305,7 @@ export class TourPackageService {
 
   deleteMisc(id: string, miscId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${id}/misc/${miscId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/misc/${miscId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -322,7 +323,7 @@ export class TourPackageService {
 
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/tour_packages/${id}/link`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/link`, formData).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -342,7 +343,7 @@ export class TourPackageService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/tour_packages/${id}/link/${formData}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/link/${formData}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -351,7 +352,7 @@ export class TourPackageService {
 
   deleteLink(id: string, linkId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/tour_packages/${id}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/link/${linkId}`).subscribe(
         () => res(),
         err => rej(err)
       );

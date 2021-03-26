@@ -4,6 +4,7 @@ import { Page } from './page.modal';
 
 import { HttpClient } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PageService {
   ) { }
 
   getPage(pageId: string): Observable<Page> {
-    return this.httpClient.get<any>(`${this.host}/page/${pageId}`)
+    return this.httpClient.get<any>(`${environment.host}/page/${pageId}`)
       .pipe<Page>(map(c => {
         const cat: Page = new Page({
           id: c.id,
@@ -38,7 +39,7 @@ export class PageService {
 
   getPages(): Observable<Page[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/page`)
+      .get<any[]>(`${environment.host}/page`)
       .pipe<Page[]>(map(ca => ca.map(c => {
         const cat: Page = new Page({
           id: c.id,
@@ -60,13 +61,13 @@ export class PageService {
   }
 
   addPage(data: Page): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/page`, data
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/page`, data
     ).subscribe(result => res(data.id))
     );
   }
 
   savePage(id: string, data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/page/${id}`, data
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/page/${id}`, data
     ).subscribe(result => res(data.id))
     );
   }
@@ -86,14 +87,14 @@ export class PageService {
       // formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/image/page/${id}`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/image/page/${id}`, formData));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/image/page/${imageId}`)
+      this.httpClient.delete(`${environment.host}/image/page/${imageId}`)
         .subscribe(
           () => res(),
           err => rej(err)
@@ -112,7 +113,7 @@ export class PageService {
 
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/link/page/${id}`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/link/page/${id}`, formData).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -132,7 +133,7 @@ export class PageService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/link/page/${id}/${linkId}`, formData).subscribe(
+      this.httpClient.put(`${environment.host}/link/page/${id}/${linkId}`, formData).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -141,7 +142,7 @@ export class PageService {
 
   deleteLink(id: string, linkId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/link/${linkId}`).subscribe(
         () => res(),
         err => rej(err)
       );

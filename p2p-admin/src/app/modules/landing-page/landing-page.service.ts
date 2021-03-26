@@ -4,6 +4,8 @@ import { LandingPage } from './landing-page.modal';
 import { HttpClient } from '@angular/common/http';
 import { map, take } from 'rxjs/operators';
 
+import { environment } from 'environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +16,7 @@ export class LandingPageService {
   ) { }
 
   getLandingPage(landingPageId: string): Observable<LandingPage> {
-    return this.httpClient.get<any>(`${this.host}/landing_page/${landingPageId}`)
+    return this.httpClient.get<any>(`${environment.host}/landing_page/${landingPageId}`)
       .pipe<LandingPage>(map(c => {
         const cat: LandingPage = new LandingPage({
           id: c.id,
@@ -38,7 +40,7 @@ export class LandingPageService {
 
   getCompleteLandingPages(): Observable<LandingPage[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/landing_page`)
+      .get<any[]>(`${environment.host}/landing_page`)
       .pipe<LandingPage[]>(map(ca => ca.map(c => {
         const cat: LandingPage = new LandingPage({
           id: c.id,
@@ -60,7 +62,7 @@ export class LandingPageService {
 
   getLandingPages(): Observable<any[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/landing_page`)
+      .get<any[]>(`${environment.host}/landing_page`)
       .pipe<any[]>(map(ca => ca.map(c => {
         const cat = {
           id: c.id,
@@ -81,7 +83,7 @@ export class LandingPageService {
   }
 
   addLandingPage(data: LandingPage): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/landing_page`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/landing_page`,
       {
         id: data.id,
         title: data.title,
@@ -98,7 +100,7 @@ export class LandingPageService {
   }
 
   saveLandingPage(id: string, data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/landing_page/${id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/landing_page/${id}`,
       data
     ).subscribe(result => res(data.id),
                 err => rej(err))
@@ -107,7 +109,7 @@ export class LandingPageService {
 
   deleteLandingPage(landingPageId: string): Promise<void> {
     return new Promise((req, res) => {
-      this.httpClient.delete(`${this.host}/landing_page/${landingPageId}`).subscribe(() => res());
+      this.httpClient.delete(`${environment.host}/landing_page/${landingPageId}`).subscribe(() => res());
     });
   }
 
@@ -119,14 +121,14 @@ export class LandingPageService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/landing_page/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/landing_page/image`, formData));
     }
     return new Promise((res, rej) => forkJoin(observables).pipe(take(1)).subscribe(done => res(), err => rej(err)));
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/landing_page/${id}/images/${imageId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/landing_page/${id}/images/${imageId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -135,7 +137,7 @@ export class LandingPageService {
 
   getPackages(): Observable<any[]> {
     return this.httpClient
-      .get<any[]>(`${this.host}/landing_page/packages`)
+      .get<any[]>(`${environment.host}/landing_page/packages`)
       .pipe<any[]>(map(ca => ca.map(c => {
         const cat = {
           id: c.id,
@@ -152,7 +154,7 @@ export class LandingPageService {
 
   addSection(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/landing_page/${id}/section`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/landing_page/${id}/section`, data).pipe(take(1))
       .subscribe(
         sec => {
           console.log(sec);
@@ -167,7 +169,7 @@ export class LandingPageService {
 
   editSection(id: string, secId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/section/${secId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/landing_page/${id}/section/${secId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -176,7 +178,7 @@ export class LandingPageService {
 
   deleteSection(id: string, secId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/landing_page/${id}/section/${secId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/landing_page/${id}/section/${secId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -185,7 +187,7 @@ export class LandingPageService {
 
   updateSectionPosition(id: string, sections: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/section/position`, {sections: sections})
+      this.httpClient.put(`${environment.host}/landing_page/${id}/section/position`, {sections: sections})
       .subscribe(
         () => res(),
         err => { console.log(err); rej(err); }
@@ -195,7 +197,7 @@ export class LandingPageService {
 
   getSection(id: string, secId: string): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.get(`${this.host}/landing_page/${id}/section/${secId}`).subscribe(
+      this.httpClient.get(`${environment.host}/landing_page/${id}/section/${secId}`).subscribe(
         sec => res(sec),
         err => rej(err)
       );
@@ -204,7 +206,7 @@ export class LandingPageService {
 
   addPackageToSection(id: string, secId: string, packageId: string, position: number): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/landing_page/${id}/section/${secId}/package`, {
+      this.httpClient.post(`${environment.host}/landing_page/${id}/section/${secId}/package`, {
         sectionId: secId,
         packageId: packageId,
         position: position
@@ -222,7 +224,7 @@ export class LandingPageService {
 
   updatePackagePosition(id: string, secId: string, packages: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/section/${secId}/package/position`, {packages: packages})
+      this.httpClient.put(`${environment.host}/landing_page/${id}/section/${secId}/package/position`, {packages: packages})
       .subscribe(
         () => res(),
         err => { console.log(err); rej(err); }
@@ -232,7 +234,7 @@ export class LandingPageService {
 
   addFAQ(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/landing_page/${id}/faq`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/landing_page/${id}/faq`, data).pipe(take(1))
       .subscribe(
         iti => {
           res(iti);
@@ -246,7 +248,7 @@ export class LandingPageService {
 
   editFAQ(id: string, faqId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/faq/${faqId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/landing_page/${id}/faq/${faqId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -255,7 +257,7 @@ export class LandingPageService {
 
   deleteFAQ(id: string, faqId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/landing_page/${id}/faq/${faqId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/landing_page/${id}/faq/${faqId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -264,7 +266,7 @@ export class LandingPageService {
 
   addMisc(id: string, data: any): Promise<any> {
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/landing_page/${id}/misc`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/landing_page/${id}/misc`, data).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -278,7 +280,7 @@ export class LandingPageService {
 
   editMisc(id: string, miscId: string, data: any): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/misc/${miscId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/landing_page/${id}/misc/${miscId}`, data).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -287,7 +289,7 @@ export class LandingPageService {
 
   deleteMisc(id: string, miscId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/landing_page/${id}/misc/${miscId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/landing_page/${id}/misc/${miscId}`).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -305,7 +307,7 @@ export class LandingPageService {
 
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${this.host}/landing_page/${id}/section/${secId}/link`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/landing_page/${id}/section/${secId}/link`, formData).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -325,7 +327,7 @@ export class LandingPageService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${this.host}/landing_page/${id}/section/${secId}/link/${linkId}`, formData).subscribe(
+      this.httpClient.put(`${environment.host}/landing_page/${id}/section/${secId}/link/${linkId}`, formData).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -334,7 +336,7 @@ export class LandingPageService {
 
   deleteLink(id: string, secId: string, linkId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/landing_page/${id}/section/${secId}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/landing_page/${id}/section/${secId}/link/${linkId}`).subscribe(
         () => res(),
         err => rej(err)
       );

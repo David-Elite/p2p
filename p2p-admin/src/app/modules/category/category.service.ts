@@ -4,6 +4,8 @@ import { Category } from './category.modal';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+import { environment } from 'environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +16,7 @@ export class CategoryService {
   ) { }
 
   getCategory(categoryId: string): Observable<Category> {
-    return this.httpClient.get<{ id: string; name: string; handle: string; description: string; tags: string; images: string }>(`${this.host}/category/${categoryId}`)
+    return this.httpClient.get<{ id: string; name: string; handle: string; description: string; tags: string; images: string }>(`${environment.host}/category/${categoryId}`)
       .pipe<Category>(map(c => {
         const cat: Category = new Category({
           id: c.id,
@@ -33,7 +35,7 @@ export class CategoryService {
 
   getCategories(): Observable<Category[]> {
     return this.httpClient
-      .get<{ id: any; name: any; handle: any; description: any; tags: string, images: string }[]>(`${this.host}/category`)
+      .get<{ id: any; name: any; handle: any; description: any; tags: string, images: string }[]>(`${environment.host}/category`)
       .pipe<Category[]>(map(ca => ca.map(c => {
         const cat: Category = new Category({
           id: c.id,
@@ -50,7 +52,7 @@ export class CategoryService {
   }
 
   addCategory(data: Category): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${this.host}/category`,
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/category`,
       {
         id: data.id,
         name: data.name,
@@ -63,7 +65,7 @@ export class CategoryService {
   }
 
   saveCategory(data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${this.host}/category/${data.id}`,
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/category/${data.id}`,
       {
         id: data.id,
         name: data.name,
@@ -90,14 +92,14 @@ export class CategoryService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${this.host}/category/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/category/image`, formData));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${this.host}/category/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/category/images/${imageId}`)
       .subscribe(
         () => res(),
         err => rej(err)
