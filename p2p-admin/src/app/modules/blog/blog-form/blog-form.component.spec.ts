@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {UserService} from 'app/service/user/user.service';
 import { BlogFormComponent } from './blog-form.component';
 
 describe('BlogFormComponent', () => {

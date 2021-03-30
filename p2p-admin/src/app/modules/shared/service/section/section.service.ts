@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
+import { identity } from 'lodash';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -14,8 +15,15 @@ export class SectionService {
   ) { }
 
   getSections(refId: string): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.get(`${environment.host}/sections/${refId}`).subscribe(
+      this.httpClient.get(`${environment.host}/sections/${refId}`,{headers: header}).subscribe(
         sec => {
           res(sec);
         },
@@ -25,8 +33,15 @@ export class SectionService {
   }
 
   getPackages(): Observable<any[]> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return this.httpClient
-      .get<any[]>(`${environment.host}/home/packages`)
+      .get<any[]>(`${environment.host}/home/packages`,{headers:header})
       .pipe<any[]>(map(ca => ca.map(c => {
         const cat = {
           id: c.id,
@@ -42,8 +57,15 @@ export class SectionService {
   }
 
   addSection(data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/home/section`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/home/section`, data,{headers:header}).pipe(take(1))
       .subscribe(
         sec => {
           console.log(sec);
@@ -57,8 +79,15 @@ export class SectionService {
   }
 
   editSection(secId: string, data: any): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/home/section/${secId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/home/section/${secId}`, data,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -66,8 +95,15 @@ export class SectionService {
   }
 
   deleteSection(secId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/home/section/${secId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/home/section/${secId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -75,8 +111,15 @@ export class SectionService {
   }
 
   updateSectionPosition(sections: any): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/section/position`, {sections: sections})
+      this.httpClient.put(`${environment.host}/section/position`, {sections: sections},{headers:header})
       .subscribe(
         () => res(),
         err => { console.log(err); rej(err); }
@@ -85,8 +128,15 @@ export class SectionService {
   }
 
   getSection(secId: string): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
-      this.httpClient.get(`${environment.host}/section/${secId}`).subscribe(
+      this.httpClient.get(`${environment.host}/section/${secId}`,{headers:header}).subscribe(
         sec => res(sec),
         err => rej(err)
       );
@@ -94,12 +144,19 @@ export class SectionService {
   }
 
   addPackageToSection(secId: string, packageId: string, position: number): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token){
+      token = '';
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    };
     return new Promise((res, rej) => {
       this.httpClient.post(`${environment.host}/section/${secId}/package`, {
         sectionId: secId,
         packageId: packageId,
         position: position
-      }).pipe(take(1))
+      },{headers:header}).pipe(take(1))
       .subscribe(
         () => {
           res();
@@ -112,8 +169,15 @@ export class SectionService {
   }
 
   updatePackagePosition(secId: string, packages: any): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/section/${secId}/package/position`, {packages: packages})
+      this.httpClient.put(`${environment.host}/section/${secId}/package/position`, {packages: packages},{headers:header})
       .subscribe(
         () => res(),
         err => { console.log(err); rej(err); }
@@ -122,6 +186,13 @@ export class SectionService {
   }
 
   addLink(refId: string, data: any, icon: File): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     // formData.append('id', id);
     formData.append('title', data.title);
@@ -132,7 +203,7 @@ export class SectionService {
     }
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/link/section/${refId}`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/link/section/${refId}`, formData,{headers:header}).pipe(take(1))
       .subscribe(
         link => {
           res(link);
@@ -145,6 +216,13 @@ export class SectionService {
   }
 
   editLink(refId: string, linkId: string, data: any, icon: File): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('subtitle', data.subtitle);
@@ -153,7 +231,7 @@ export class SectionService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/link/section/${refId}/${linkId}`, formData).subscribe(
+      this.httpClient.put(`${environment.host}/link/section/${refId}/${linkId}`, formData,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -161,8 +239,15 @@ export class SectionService {
   }
 
   deleteLink(linkId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/link/${linkId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -170,11 +255,18 @@ export class SectionService {
   }
 
   addZone(refId: string, zoneId: string, zoneList: string[]): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/zone/section/title/${refId}/${zoneId}`, {}).pipe(take(1)).subscribe(
+      this.httpClient.post(`${environment.host}/zone/section/title/${refId}/${zoneId}`, {headers:header}).pipe(take(1)).subscribe(
         (result) => {
           const parent = result['insertId'];
-          this.httpClient.post(`${environment.host}/zone/section/child/${refId}/${parent}`, {zoneList}).pipe(take(1))
+          this.httpClient.post(`${environment.host}/zone/section/child/${refId}/${parent}`, {zoneList},{headers:header}).pipe(take(1))
           .subscribe(
             () => {
               res(true);
@@ -192,8 +284,15 @@ export class SectionService {
   }
 
   editZoneGrid(refId: string, gridId: string, zoneList: string[]): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/zone/section/child/${refId}/${gridId}`, {zoneList}).pipe(take(1)).subscribe(
+      this.httpClient.put(`${environment.host}/zone/section/child/${refId}/${gridId}`, {zoneList},{headers:header}).pipe(take(1)).subscribe(
         (result) => {
           res(true);
         },
@@ -205,8 +304,15 @@ export class SectionService {
   }
 
   deleteZoneGrid(gridId: string): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/zone/section/${gridId}`).pipe(take(1)).subscribe(
+      this.httpClient.delete(`${environment.host}/zone/section/${gridId}`,{headers:header}).pipe(take(1)).subscribe(
         (result) => res(true),
         (error) => rej(error)
       );

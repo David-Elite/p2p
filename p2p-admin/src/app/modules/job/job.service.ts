@@ -16,7 +16,14 @@ export class JobService {
   ) { }
 
   getJob(jobId: string): Observable<Job> {
-    return this.httpClient.get<any>(`${environment.host}/jobs/${jobId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<any>(`${environment.host}/jobs/${jobId}`,{headers:header})
       .pipe<Job>(map(c => {
         const cat: Job = new Job({
           id: c.id,
@@ -34,8 +41,15 @@ export class JobService {
 
 
   getJobs(): Observable<Job[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<any[]>(`${environment.host}/jobs`)
+      .get<any[]>(`${environment.host}/jobs`,{headers:header})
       .pipe<Job[]>(map(ca => ca.map(c => {
         const cat: Job = new Job({
           id: c.id,
@@ -52,6 +66,13 @@ export class JobService {
   }
 
   addJob(data: Job): Promise<string> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.post(`${environment.host}/jobs`,
       {
         id: data.id,
@@ -59,12 +80,19 @@ export class JobService {
         desc: data.desc,
         overview: data.overview,
         rnr: data.rnr
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
 
   saveJob(data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.put(`${environment.host}/jobs/${data.id}`,
       {
         id: data.id,
@@ -72,7 +100,7 @@ export class JobService {
         desc: data.desc,
         overview: data.overview,
         rnr: data.rnr
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
@@ -82,7 +110,13 @@ export class JobService {
   }
 
   saveImages(id: string, images: FileList): Promise<any> {
-
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const promises = [];
     // tslint:disable-next-line:prefer-for-of
     const observables = [];
@@ -92,14 +126,21 @@ export class JobService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/jobs/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/jobs/image`, formData,{headers:header}));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/jobs/images${imageId}`)
+      this.httpClient.delete(`${environment.host}/jobs/images${imageId}`,{headers:header})
         .subscribe(
           () => res(),
           err => console.log(err)

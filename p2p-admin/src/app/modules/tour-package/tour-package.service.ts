@@ -16,7 +16,14 @@ export class TourPackageService {
   ) { }
 
   getTourPackage(tourPackageId: string): Observable<TourPackage> {
-    return this.httpClient.get<any>(`${environment.host}/tour_packages/${tourPackageId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<any>(`${environment.host}/tour_packages/${tourPackageId}`,{headers:header})
       .pipe<TourPackage>(map(c => {
         const cat: TourPackage = new TourPackage({
           id: c.id,
@@ -63,8 +70,15 @@ export class TourPackageService {
 
 
   getCompleteTourPackages(): Observable<TourPackage[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<any[]>(`${environment.host}/tour_packages`)
+      .get<any[]>(`${environment.host}/tour_packages`,{headers:header})
       .pipe<TourPackage[]>(map(ca => ca.map(c => {
         const cat: TourPackage = new TourPackage({
           id: c.id,
@@ -109,8 +123,15 @@ export class TourPackageService {
   }
 
   getTourPackages(): Observable<any[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<any[]>(`${environment.host}/tour_packages`)
+      .get<any[]>(`${environment.host}/tour_packages`,{headers:header})
       .pipe<any[]>(map(ca => ca.map(c => {
         const cat = {
           id: c.id,
@@ -131,6 +152,13 @@ export class TourPackageService {
   }
 
   addTourPackage(data: TourPackage): Promise<string> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.post(`${environment.host}/tour_packages`,
       {
         id: data.id,
@@ -163,13 +191,22 @@ export class TourPackageService {
         metaTitle: data.metaTitle,
         metaDesc: data.metaDesc,
         metaKeywords: data.metaKeywords.toString(),
+      },{
+        headers:header
       }
     ).subscribe(result => res(data.id))
     );
   }
 
   saveTourPackage(id: string, data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/tour_packages/${id}`,
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/tour_packages/${id}`,{header:header},
       data
     ).subscribe(result => res(data.id),
                 err => rej(err))
@@ -177,8 +214,15 @@ export class TourPackageService {
   }
 
   copyTourPackage(id: string): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/tour_packages/copy/${id}/${FuseUtils.generateGUID()}`, {}).subscribe({
+      this.httpClient.post(`${environment.host}/tour_packages/copy/${id}/${FuseUtils.generateGUID()}`, {},{headers:header}).subscribe({
         next: result => {
           console.log(result);
           res(result);
@@ -189,12 +233,26 @@ export class TourPackageService {
   }
 
   deleteTourPackage(tourPackageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((req, res) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${tourPackageId}`).subscribe(() => res());
+      this.httpClient.delete(`${environment.host}/tour_packages/${tourPackageId}`,{headers:header}).subscribe(() => res());
     });
   }
 
   saveImages(id: string, images: FileList): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const observables = [];
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < images.length; i++) {
@@ -202,14 +260,21 @@ export class TourPackageService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/tour_packages/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/tour_packages/image`, formData,{headers:header}));
     }
     return new Promise((res, rej) => forkJoin(observables).pipe(take(1)).subscribe(done => res(), err => rej(err)));
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${id}/images/${imageId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/images/${imageId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -217,8 +282,15 @@ export class TourPackageService {
   }
 
   addItinerary(id: string, data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/tour_packages/${id}/itinerary`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/itinerary`, data,{headers:header}).pipe(take(1))
       .subscribe(
         iti => {
           res(iti);
@@ -231,8 +303,15 @@ export class TourPackageService {
   }
 
   editItinerary(id: string, itiId: string, data: any): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`, data,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -240,8 +319,15 @@ export class TourPackageService {
   }
 
   deleteItinerary(id: string, itiId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/itinerary/${itiId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -249,8 +335,15 @@ export class TourPackageService {
   }
 
   addFAQ(id: string, data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/tour_packages/${id}/faq`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/faq`, data,{headers:header}).pipe(take(1))
       .subscribe(
         iti => {
           res(iti);
@@ -263,8 +356,15 @@ export class TourPackageService {
   }
 
   editFAQ(id: string, faqId: string, data: any): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/tour_packages/${id}/faq/${faqId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/faq/${faqId}`, data,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -272,8 +372,15 @@ export class TourPackageService {
   }
 
   deleteFAQ(id: string, faqId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${id}/faq/${faqId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/faq/${faqId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -281,8 +388,15 @@ export class TourPackageService {
   }
 
   addMisc(id: string, data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/tour_packages/${id}/misc`, data).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/misc`, data,{headers:header}).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -295,8 +409,15 @@ export class TourPackageService {
   }
 
   editMisc(id: string, miscId: string, data: any): Promise<void> {
+     let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/tour_packages/${id}/misc/${miscId}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/misc/${miscId}`, data,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -304,8 +425,15 @@ export class TourPackageService {
   }
 
   deleteMisc(id: string, miscId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${id}/misc/${miscId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/misc/${miscId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -313,6 +441,13 @@ export class TourPackageService {
   }
 
   addLink(id: string, data: any, icon: File): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('id', id);
     formData.append('title', data.title);
@@ -323,7 +458,7 @@ export class TourPackageService {
 
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/tour_packages/${id}/link`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/tour_packages/${id}/link`, formData,{headers:header}).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -336,6 +471,13 @@ export class TourPackageService {
   }
 
   editLink(id: string, linkId: string, data: any, icon: File): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('url', data.url);
@@ -343,7 +485,7 @@ export class TourPackageService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/tour_packages/${id}/link/${formData}`, data).subscribe(
+      this.httpClient.put(`${environment.host}/tour_packages/${id}/link/${formData}`, data,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -351,8 +493,15 @@ export class TourPackageService {
   }
 
   deleteLink(id: string, linkId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/tour_packages/${id}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/tour_packages/${id}/link/${linkId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );

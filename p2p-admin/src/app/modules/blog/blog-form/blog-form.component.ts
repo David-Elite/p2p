@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +11,9 @@ import { BlogFormResolver } from './blog-form.resolver';
 import { Location } from '@angular/common';
 import { FuseProgressBarService } from '@fuse/components/progress-bar/progress-bar.service';
 import { fuseAnimations } from '@fuse/animations';
+import { UserService } from 'app/service/user/user.service';
+import { promises } from 'dns';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-blog-form',
@@ -40,6 +44,7 @@ export class BlogFormComponent implements OnInit, OnDestroy {
 
   // Private
   private unsubscribeAll: Subject<any>;
+  user: any;
 
   /**
    * Constructor
@@ -56,7 +61,9 @@ export class BlogFormComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private location: Location,
     private matSnackBar: MatSnackBar,
-    private fuseProgressBarService: FuseProgressBarService
+    private fuseProgressBarService: FuseProgressBarService,
+    private userService : UserService,
+    private HttpClient : HttpClient
   ) {
 
     this.getBlogs();
@@ -352,5 +359,12 @@ export class BlogFormComponent implements OnInit, OnDestroy {
   handleTabChange(event: any): void {
     this.active = event.index;
   }
+
+
+
 }
 
+ 
+
+
+ 

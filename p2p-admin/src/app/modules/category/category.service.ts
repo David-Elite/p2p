@@ -16,7 +16,14 @@ export class CategoryService {
   ) { }
 
   getCategory(categoryId: string): Observable<Category> {
-    return this.httpClient.get<{ id: string; name: string; handle: string; description: string; tags: string; images: string }>(`${environment.host}/category/${categoryId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<{ id: string; name: string; handle: string; description: string; tags: string; images: string }>(`${environment.host}/category/${categoryId}`,{headers:header})
       .pipe<Category>(map(c => {
         const cat: Category = new Category({
           id: c.id,
@@ -34,8 +41,15 @@ export class CategoryService {
 
 
   getCategories(): Observable<Category[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<{ id: any; name: any; handle: any; description: any; tags: string, images: string }[]>(`${environment.host}/category`)
+      .get<{ id: any; name: any; handle: any; description: any; tags: string, images: string }[]>(`${environment.host}/category`,{headers:header})
       .pipe<Category[]>(map(ca => ca.map(c => {
         const cat: Category = new Category({
           id: c.id,
@@ -52,6 +66,13 @@ export class CategoryService {
   }
 
   addCategory(data: Category): Promise<string> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.post(`${environment.host}/category`,
       {
         id: data.id,
@@ -59,12 +80,19 @@ export class CategoryService {
         handle: data.handle,
         description: data.description,
         tags: data.tags.toString()
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
 
   saveCategory(data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.put(`${environment.host}/category/${data.id}`,
       {
         id: data.id,
@@ -72,7 +100,7 @@ export class CategoryService {
         handle: data.handle,
         description: data.description,
         tags: data.tags.toString()
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
@@ -82,7 +110,13 @@ export class CategoryService {
   }
 
   saveImages(id: string, images: FileList): Promise<any> {
-
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const promises = [];
     // tslint:disable-next-line:prefer-for-of
     const observables = [];
@@ -92,14 +126,21 @@ export class CategoryService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/category/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/category/image`, formData,{headers:header}));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/category/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/category/images/${imageId}`,{headers:header})
       .subscribe(
         () => res(),
         err => rej(err)

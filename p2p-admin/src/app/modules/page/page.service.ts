@@ -17,7 +17,14 @@ export class PageService {
   ) { }
 
   getPage(pageId: string): Observable<Page> {
-    return this.httpClient.get<any>(`${environment.host}/page/${pageId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<any>(`${environment.host}/page/${pageId}`,{headers:header})
       .pipe<Page>(map(c => {
         const cat: Page = new Page({
           id: c.id,
@@ -38,8 +45,15 @@ export class PageService {
 
 
   getPages(): Observable<Page[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<any[]>(`${environment.host}/page`)
+      .get<any[]>(`${environment.host}/page`,{headers:header})
       .pipe<Page[]>(map(ca => ca.map(c => {
         const cat: Page = new Page({
           id: c.id,
@@ -61,13 +75,27 @@ export class PageService {
   }
 
   addPage(data: Page): Promise<string> {
-    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/page`, data
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/page`, data,{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
 
   savePage(id: string, data: any): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/page/${id}`, data
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return new Promise((res, rej) => this.httpClient.put(`${environment.host}/page/${id}`, data,{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
@@ -77,6 +105,13 @@ export class PageService {
   }
 
   saveImages(id: string, images: FileList): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
 
     const promises = [];
     // tslint:disable-next-line:prefer-for-of
@@ -87,14 +122,21 @@ export class PageService {
       // formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/image/page/${id}`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/image/page/${id}`, formData,{headers:header}));
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/image/page/${imageId}`)
+      this.httpClient.delete(`${environment.host}/image/page/${imageId}`,{headers:header})
         .subscribe(
           () => res(),
           err => rej(err)
@@ -104,6 +146,13 @@ export class PageService {
 
   addLink(id: string, data: any, icon: File): Promise<any> {
     const formData = new FormData();
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     formData.append('id', id);
     formData.append('title', data.title);
     formData.append('url', data.url);
@@ -113,7 +162,7 @@ export class PageService {
 
     
     return new Promise((res, rej) => {
-      this.httpClient.post(`${environment.host}/link/page/${id}`, formData).pipe(take(1))
+      this.httpClient.post(`${environment.host}/link/page/${id}`, formData,{headers:header}).pipe(take(1))
       .subscribe(
         msc => {
           res(msc);
@@ -126,6 +175,13 @@ export class PageService {
   }
 
   editLink(id: string, linkId: string, data: any, icon: File): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('url', data.url);
@@ -133,7 +189,7 @@ export class PageService {
       formData.append('file', icon, icon.name);
     }
     return new Promise((res, rej) => {
-      this.httpClient.put(`${environment.host}/link/page/${id}/${linkId}`, formData).subscribe(
+      this.httpClient.put(`${environment.host}/link/page/${id}/${linkId}`, formData,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );
@@ -141,8 +197,15 @@ export class PageService {
   }
 
   deleteLink(id: string, linkId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/link/${linkId}`).subscribe(
+      this.httpClient.delete(`${environment.host}/link/${linkId}`,{headers:header}).subscribe(
         () => res(),
         err => rej(err)
       );

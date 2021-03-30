@@ -15,7 +15,14 @@ export class AdminuserService {
   ) { }
 
   getAdminuser(adminuserId: string): Observable<Adminuser> {
-    return this.httpClient.get<{ id: any; name: string; email: string; password: string; role: string }>(`${environment.host}/admin-user/${adminuserId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<{ id: any; name: string; email: string; password: string; role: string }>(`${environment.host}/admin-user/${adminuserId}`,{headers:header})
       .pipe<Adminuser>(map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
@@ -32,8 +39,15 @@ export class AdminuserService {
 
 
   getAdminusers(): Observable<Adminuser[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<{ id: any; name: string; email: string; password: string; role: string }[]>(`${environment.host}/admin-user`)
+      .get<{ id: any; name: string; email: string; password: string; role: string }[]>(`${environment.host}/admin-user`,{headers:header})
       .pipe<Adminuser[]>(map(ca => ca.map(c => {
         const cat: Adminuser = new Adminuser({
           id: c.id,
@@ -49,25 +63,39 @@ export class AdminuserService {
   }
 
   addAdminuser(data: Adminuser): Promise<string> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.post(`${environment.host}/admin-user`,
       {
         userName: data.userName,
         email: data.email,
         password: data.password,
         role: data.role
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
-    );
+   , );
   }
 
   saveAdminuser(data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.put(`${environment.host}/admin-user/${data.id}`,
       {
         userName: data.userName,
         email: data.email,
         password: data.password,
         role: data.role
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }

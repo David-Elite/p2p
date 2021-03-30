@@ -9,6 +9,10 @@ import { environment } from 'environments/environment';
   providedIn: 'root'
 })
 export class UserService {
+  subscribe: any;
+  on() {
+    throw new Error('Method not implemented.');
+  }
 
   user: BehaviorSubject<any> = new BehaviorSubject(null);
   host = 'http://localhost:8080';

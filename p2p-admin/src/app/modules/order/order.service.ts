@@ -15,7 +15,14 @@ export class OrderService {
   ) { }
 
   getOrder(orderId: string): Observable<Order> {
-    return this.httpClient.get<any>(`${environment.host}/order/${orderId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<any>(`${environment.host}/order/${orderId}`,{headers:header})
       .pipe<Order>(map(c => {
         const cat: Order = new Order({
           id: c.id,
@@ -34,8 +41,15 @@ export class OrderService {
 
 
   getOrders(): Observable<any[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<any[]>(`${environment.host}/order`)
+      .get<any[]>(`${environment.host}/order`,{headers:header})
       .pipe<any[]>(map(ca => ca.map(c => {
         const rev = {
           id: c.id,
@@ -53,13 +67,27 @@ export class OrderService {
   }
 
   getPackagesForOrder(): Promise<any> {
-    return new Promise((res, rej) => this.httpClient.get(`${environment.host}/order/packages`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return new Promise((res, rej) => this.httpClient.get(`${environment.host}/order/packages`,{headers:header})
       .subscribe(result => res(result),
                   err => rej(err))
     );
   }
 
   addOrder(data: Order, img: File): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('file', img, img.name);
     formData.append('referenceId', data.referenceId);
@@ -69,7 +97,7 @@ export class OrderService {
     formData.append('adults', data.adults.toString());
     formData.append('childens', data.childrens.toString());
 
-    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/order`, formData)
+    return new Promise((res, rej) => this.httpClient.post(`${environment.host}/order`, formData,{headers:header})
       .subscribe(result => {
         res();
       },
@@ -79,6 +107,13 @@ export class OrderService {
   }
 
   saveOrder(data: any, img: File): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const formData = new FormData();
     formData.append('file', img, img.name);
     formData.append('referenceId', data.referenceId);
@@ -89,7 +124,7 @@ export class OrderService {
     formData.append('childens', data.childrens.toString());
 
     return new Promise((res, rej) => this.httpClient.put(`${environment.host}/order/${data.id}`,
-      formData
+      formData,{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
@@ -99,6 +134,13 @@ export class OrderService {
   }
 
   saveImages(id: string, images: FileList): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
 
     const promises = [];
     // tslint:disable-next-line:prefer-for-of
@@ -109,13 +151,20 @@ export class OrderService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/order/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/order/image`, formData,{headers:header}));
     }
     return forkJoin(observables).toPromise();
   }
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/order/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/order/images/${imageId}`,{headers:header})
         .subscribe(
           () => res(),
           err => rej(err)

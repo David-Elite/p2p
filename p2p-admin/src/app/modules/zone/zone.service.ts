@@ -17,7 +17,14 @@ export class ZoneService {
   ) { }
 
   getZone(zoneId: string): Observable<Zone> {
-    return this.httpClient.get<any>(`${environment.host}/zone/${zoneId}`)
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
+    return this.httpClient.get<any>(`${environment.host}/zone/${zoneId}`,{headers:header})
       .pipe<Zone>(map(c => {
         const cat: Zone = new Zone({
           id: c.id,
@@ -39,8 +46,15 @@ export class ZoneService {
 
 
   getZones(): Observable<Zone[]> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return this.httpClient
-      .get<{ id: any; zone_type: any; title: any; handle: any; tags: string; continent: any; country: string; state: string; city: string; images: string }[]>(`${environment.host}/zone`)
+      .get<{ id: any; zone_type: any; title: any; handle: any; tags: string; continent: any; country: string; state: string; city: string; images: string }[]>(`${environment.host}/zone`,{headers:header})
       .pipe<Zone[]>(map(ca => ca.map(c => {
         const cat: Zone = new Zone({
           id: c.id,
@@ -61,6 +75,13 @@ export class ZoneService {
   }
 
   addZone(data: Zone): Promise<string> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.post(`${environment.host}/zone`,
       {
         id: data.id,
@@ -72,12 +93,21 @@ export class ZoneService {
         country: data.country,
         state: data.state,
         city: data.city,
+      },{
+        headers:header
       }
     ).subscribe(result => res(data.id))
     );
   }
 
   saveZone(data: any): Promise<any> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => this.httpClient.put(`${environment.host}/zone/${data.id}`,
       {
         id: data.id,
@@ -89,17 +119,31 @@ export class ZoneService {
         country: data.country,
         state: data.state,
         city: data.city,
-      }
+      },{headers:header}
     ).subscribe(result => res(data.id))
     );
   }
 
   deleteZone(zoneId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return Promise.resolve();
+
   }
 
   saveImages(id: string, images: FileList): Promise<any> {
-
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     const promises = [];
     // tslint:disable-next-line:prefer-for-of
     const observables = [];
@@ -109,14 +153,21 @@ export class ZoneService {
       formData.append('id', id);
       formData.append('file', images[i], images[i].name);
 
-      observables.push(this.httpClient.post(`${environment.host}/zone/image`, formData));
+      observables.push(this.httpClient.post(`${environment.host}/zone/image`, formData,{headers:header}),{headers:header});
     }
     return forkJoin(observables).toPromise();
   }
 
   removeImage(id: string, imageId: string): Promise<void> {
+    let token = localStorage.getItem('token');
+    if(!token) {
+   token='';      
+    }
+    const header = {
+      'Authorization': `bearer ${token}` 
+    }
     return new Promise((res, rej) => {
-      this.httpClient.delete(`${environment.host}/zone/images/${imageId}`)
+      this.httpClient.delete(`${environment.host}/zone/images/${imageId}`,{headers:header})
         .subscribe(
           () => res(),
           err => rej(err)
