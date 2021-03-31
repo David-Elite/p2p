@@ -58,15 +58,28 @@ router.post('/image/:type/:reference', (req, res) => {
                 res.status(401).send(err);
             }
             console.log('Successfully uploaded file.');
-            db.query('INSERT INTO images SET ?', { reference_id: reference, type: type, image_url: data.Location }, (err, result) => {
-                if (err) {
-                    console.log(err);
-                    res.status(401).send(err);
-                } else {
-                    console.log("DB Updated");
-                    res.send(data);
-                }
-            });
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
+                db.query('INSERT INTO images SET ?', { reference_id: reference, type: type, image_url: data.Location }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(401).send(err);
+                    } else {
+                        console.log("DB Updated");
+                        res.send(data);
+                    }
+                });
+            }
         });
 
     });
@@ -76,11 +89,24 @@ router.post('/image/:type/:reference', (req, res) => {
 router.delete('/image/:img', (req, res) => {
     const img = req.params.img;
     console.log(img);
-    db.query('DELETE FROM images WHERE id = ?', img, function (error, results) {
-        if (error) throw error;
-        console.log('Deleted Successfully');
-        res.status(201).send(results);
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('DELETE FROM images WHERE id = ?', img, function (error, results) {
+            if (error) throw error;
+            console.log('Deleted Successfully');
+            res.status(201).send(results);
+        });
+    }
 });
 
 module.exports = router;

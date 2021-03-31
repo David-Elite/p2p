@@ -17,7 +17,7 @@ router.post('/link/:type/:referenceId', (req, res) => {
     var url;
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-        file.on('data', function(data) {
+        file.on('data', function (data) {
             if (fileToUpload == null) {
                 fileToUpload = data;
             } else {
@@ -26,7 +26,7 @@ router.post('/link/:type/:referenceId', (req, res) => {
             fileName = filename;
             contentType = mimetype;
         });
-        file.on('end', function() {
+        file.on('end', function () {
         })
     });
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
@@ -55,12 +55,52 @@ router.post('/link/:type/:referenceId', (req, res) => {
                     res.status(401).send(err);
                 }
                 console.log('Successfully uploaded file.');
+                if (!req.headers.authorization) {
+                    return res.send(401).send('Unauthorized Request')
+                }
+                let token = req.headers.authorization.split(' ')[1];
+                if (token === 'null') {
+                    return res.status(401).send('Unauthorized Request')
+                }
+
+                let payload = jwt.verify(token, 'SECRET_KEY');
+                if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                    return res.status(401).send('Unauthorized Request'); // if there is no token
+                } else {
+                    db.query("INSERT INTO link_list SET ?", {
+                        // id: id,
+                        reference_id: referenceId,
+                        title: title,
+                        subtitle: subtitle,
+                        icon: data.Location,
+                        url: url,
+                        type: type
+                    }, function (error, results) {
+                        if (error) throw error;
+                        console.log('Inserted');
+                        res.status(201).send(results);
+                    })
+                }
+            });
+        } else {
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
                 db.query("INSERT INTO link_list SET ?", {
                     // id: id,
                     reference_id: referenceId,
                     title: title,
                     subtitle: subtitle,
-                    icon: data.Location,
+                    icon: null,
                     url: url,
                     type: type
                 }, function (error, results) {
@@ -68,21 +108,7 @@ router.post('/link/:type/:referenceId', (req, res) => {
                     console.log('Inserted');
                     res.status(201).send(results);
                 })
-            });
-        } else {
-            db.query("INSERT INTO link_list SET ?", {
-                // id: id,
-                reference_id: referenceId,
-                title: title,
-                subtitle: subtitle,
-                icon: null,
-                url: url,
-                type: type
-            }, function (error, results) {
-                if (error) throw error;
-                console.log('Inserted');
-                res.status(201).send(results);
-            })
+            }
         }
     });
     req.pipe(busboy);
@@ -90,10 +116,23 @@ router.post('/link/:type/:referenceId', (req, res) => {
 
 router.delete('/link/:linkId', (req, res) => {
     const id = req.params.linkId;
-    db.query('DELETE FROM link_list WHERE id = ?', id, function (error, results) {
-        if (error) throw error;
-        res.status(201).send(results);
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('DELETE FROM link_list WHERE id = ?', id, function (error, results) {
+            if (error) throw error;
+            res.status(201).send(results);
+        });
+    }
 });
 
 router.put('/link/:type/:referenceId/:linkId', (req, res) => {
@@ -108,7 +147,7 @@ router.put('/link/:type/:referenceId/:linkId', (req, res) => {
     var url;
 
     busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-        file.on('data', function(data) {
+        file.on('data', function (data) {
             if (fileToUpload == null) {
                 fileToUpload = data;
             } else {
@@ -117,7 +156,7 @@ router.put('/link/:type/:referenceId/:linkId', (req, res) => {
             fileName = filename;
             contentType = mimetype;
         });
-        file.on('end', function() {
+        file.on('end', function () {
         })
     });
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
@@ -146,25 +185,51 @@ router.put('/link/:type/:referenceId/:linkId', (req, res) => {
                     res.status(401).send(err);
                 }
                 console.log('Successfully uploaded file.');
+                if (!req.headers.authorization) {
+                    return res.send(401).send('Unauthorized Request')
+                }
+                let token = req.headers.authorization.split(' ')[1];
+                if (token === 'null') {
+                    return res.status(401).send('Unauthorized Request')
+                }
+
+                let payload = jwt.verify(token, 'SECRET_KEY');
+                if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                    return res.status(401).send('Unauthorized Request'); // if there is no token
+                } else {
+                    db.query(`UPDATE link_list SET ? WHERE id = ${linkId}`, {
+                        title: title,
+                        subtitle: subtitle,
+                        icon: data.Location,
+                        url: url
+                    }, function (error, results) {
+                        if (error) throw error;
+                        res.status(201).send(results);
+                    });
+                }
+            });
+        } else {
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
                 db.query(`UPDATE link_list SET ? WHERE id = ${linkId}`, {
                     title: title,
                     subtitle: subtitle,
-                    icon: data.Location,
                     url: url
                 }, function (error, results) {
                     if (error) throw error;
                     res.status(201).send(results);
                 });
-            });
-        } else {
-            db.query(`UPDATE link_list SET ? WHERE id = ${linkId}`, {
-                title: title,
-                subtitle: subtitle,
-                url: url
-            }, function (error, results) {
-                if (error) throw error;
-                res.status(201).send(results);
-            });
+            }
         }
 
     });

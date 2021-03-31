@@ -1,9 +1,10 @@
 const db = require('mysql2');
 
+
 let connection = db.createConnection({
     host     : 'localhost',
-    user     : 'plans2pick',
-    password : 'p2p@123',
+    user     : 'root',
+    password : '',
     database : 'plans2pick'
   });
 

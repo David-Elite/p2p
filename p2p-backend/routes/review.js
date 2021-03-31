@@ -5,7 +5,7 @@ const Busboy = require('busboy');
 
 const router = express.Router();
 
-router.get('/review',(req,res)=>{
+router.get('/review', (req, res) => {
     var sql = `SELECT
     review.id,
     tour_packages.title AS package_name,
@@ -20,10 +20,10 @@ router.get('/review',(req,res)=>{
     LEFT JOIN images
     ON review.id = images.reference_id
     GROUP BY review.id`;
-db.query(sql, (error, data) => {
-    if (error) throw error;
-    res.status(201).send(data);
-});
+    db.query(sql, (error, data) => {
+        if (error) throw error;
+        res.status(201).send(data);
+    });
 });
 
 router.get('/review/packages', (req, res) => {
@@ -40,7 +40,7 @@ router.get('/review/users', (req, res) => {
     });
 });
 
-router.get('/review/:id', (req, res) => { 
+router.get('/review/:id', (req, res) => {
     let id = req.params.id;
     var sql = `SELECT
     review.*,
@@ -48,14 +48,14 @@ router.get('/review/:id', (req, res) => {
     FROM review LEFT JOIN images
     ON review.id = images.reference_id
     WHERE review.id=?`;
-db.query(sql,id, (error, data) => {
-    if (error) throw error;
-    res.status(201).send(data[0]);
-});
+    db.query(sql, id, (error, data) => {
+        if (error) throw error;
+        res.status(201).send(data[0]);
+    });
 });
 
 
-router.post('/review',(req,res)=>{
+router.post('/review', (req, res) => {
     const packageId = req.params.id;
     const bucket = new S3(
         {
@@ -68,7 +68,7 @@ router.post('/review',(req,res)=>{
     var fileToUpload;
     var fileName;
     var contentType;
-    
+
     var referenceId;
     var reviewTitle;
     var reviewContent;
@@ -122,37 +122,63 @@ router.post('/review',(req,res)=>{
                     res.status(401).send(err);
                 }
                 console.log('Successfully uploaded file.');
-                console.log(data);
+                console.log(data); if (!req.headers.authorization) {
+                    return res.send(401).send('Unauthorized Request')
+                }
+                let token = req.headers.authorization.split(' ')[1];
+                if (token === 'null') {
+                    return res.status(401).send('Unauthorized Request')
+                }
+
+                let payload = jwt.verify(token, 'SECRET_KEY');
+                if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                    return res.status(401).send('Unauthorized Request'); // if there is no token
+                } else {
+
+                    db.query("INSERT INTO review SET ?", {
+                        reference_id: referenceId,
+                        review_date: reviewDate,
+                        review_title: reviewTitle,
+                        review_content: reviewContent,
+                        review_points: reviewPoints,
+                        reviewer_id: 0,
+                        reviewer_name: reviewerName,
+                        reviewer_title: reviewerTitle,
+                        reviewer_image: data.Location,
+                        upvote_count: 0
+                    }, function (error, results) {
+                        if (error) throw error;
+                        res.status(201).send(results);
+                    });
+                }
+            });
+        } else {
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
                 db.query("INSERT INTO review SET ?", {
                     reference_id: referenceId,
-                    review_date: reviewDate,
                     review_title: reviewTitle,
                     review_content: reviewContent,
                     review_points: reviewPoints,
                     reviewer_id: 0,
                     reviewer_name: reviewerName,
                     reviewer_title: reviewerTitle,
-                    reviewer_image: data.Location,
                     upvote_count: 0
                 }, function (error, results) {
                     if (error) throw error;
                     res.status(201).send(results);
-                });
-            });
-        } else {
-            db.query("INSERT INTO review SET ?", {
-                reference_id: referenceId,
-                review_title: reviewTitle,
-                review_content: reviewContent,
-                review_points: reviewPoints,
-                reviewer_id: 0,
-                reviewer_name: reviewerName,
-                reviewer_title: reviewerTitle,
-                upvote_count: 0
-            }, function (error, results) {
-                if (error) throw error;
-                res.status(201).send(results);
-            })
+                })
+            }
         }
     });
     req.pipe(busboy);
@@ -173,8 +199,8 @@ router.post('/review/reviewer-image', (req, res) => {
     var fileToUpload;
     var fileName;
     var contentType;
-    
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         // console.log(id);
         fileToUpload = file;
         fileName = filename;
@@ -196,7 +222,7 @@ router.post('/review/reviewer-image', (req, res) => {
             // res.send(data);
         });
     });
-    busboy.on('finish', function() {
+    busboy.on('finish', function () {
         console.log("A");
         // console.log(fileToUpload);
         const params = {
@@ -219,15 +245,28 @@ router.post('/review/reviewer-image', (req, res) => {
 
 });
 
-router.delete('/review/reviewer-image/:id',(req,res)=>{
-    const id = req.params/id;
-    db.query("DELETE FROM images WHERE id=?",id,(err,result)=>{
-     if(err){
-         console.log(err)
-     }else{
-         console.log(result)
-         res.status(201).send(result)
-     }
-    })
-   })
+router.delete('/review/reviewer-image/:id', (req, res) => {
+    const id = req.params / id;
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("DELETE FROM images WHERE id=?", id, (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(result)
+                res.status(201).send(result)
+            }
+        })
+    }
+})
 module.exports = router;

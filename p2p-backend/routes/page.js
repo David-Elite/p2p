@@ -105,22 +105,35 @@ router.get('/page/:id', (req, res) => {
 
 
 router.post('/page', (req, res) => {
-    db.query('INSERT INTO page SET ?',
-        {
-            id: req.body.id,
-            title: req.body.title,
-            handle: req.body.handle,
-            content: req.body.content,
-            tags: req.body.tags.toString(),
-            active: req.body.active
-        }, (error, result) => {
-            if (error) {
-                console.log(error);
-                res.status(400).send(error);
-            } else {
-                res.status(201).send(result);
-            }
-        });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('INSERT INTO page SET ?',
+            {
+                id: req.body.id,
+                title: req.body.title,
+                handle: req.body.handle,
+                content: req.body.content,
+                tags: req.body.tags.toString(),
+                active: req.body.active
+            }, (error, result) => {
+                if (error) {
+                    console.log(error);
+                    res.status(400).send(error);
+                } else {
+                    res.status(201).send(result);
+                }
+            });
+    }
 });
 
 router.put('/page/:id', (req, res) => {
@@ -141,29 +154,55 @@ router.put('/page/:id', (req, res) => {
     }
     if (Object.keys(data).length == 0) {
         if (Object.keys(seoData).length > 0) {
-            db.query(`UPDATE seo SET ? WHERE reference_id = '${id}'`,
-                seoData, function (error, seoR) {
-                    if (error) throw error;
-                    res.status(201).send(seoR);
-                });
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
+                db.query(`UPDATE seo SET ? WHERE reference_id = '${id}'`,
+                    seoData, function (error, seoR) {
+                        if (error) throw error;
+                        res.status(201).send(seoR);
+                    });
+            }
         }
     } else {
         console.log(data);
         console.log(id);
-        db.query(`UPDATE page SET ? WHERE id = '${id}'`,
-            data, function (error, results) {
-                
-                if (error) throw error;
-                if (Object.keys(seoData).length == 0) {
-                    res.status(201).send(results);
-                } else {
-                    db.query(`UPDATE seo SET ? WHERE reference_id = '${id}'`,
-                        seoData, function (error, seoR) {
-                            if (error) throw error;
-                            res.status(201).send(seoR);
-                        });
-                }
-            });
+        if (!req.headers.authorization) {
+            return res.send(401).send('Unauthorized Request')
+        }
+        let token = req.headers.authorization.split(' ')[1];
+        if (token === 'null') {
+            return res.status(401).send('Unauthorized Request')
+        }
+
+        let payload = jwt.verify(token, 'SECRET_KEY');
+        if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+            return res.status(401).send('Unauthorized Request'); // if there is no token
+        } else {
+            db.query(`UPDATE page SET ? WHERE id = '${id}'`,
+                data, function (error, results) {
+
+                    if (error) throw error;
+                    if (Object.keys(seoData).length == 0) {
+                        res.status(201).send(results);
+                    } else {
+                        db.query(`UPDATE seo SET ? WHERE reference_id = '${id}'`,
+                            seoData, function (error, seoR) {
+                                if (error) throw error;
+                                res.status(201).send(seoR);
+                            });
+                    }
+                });
+        }
     }
 });
 

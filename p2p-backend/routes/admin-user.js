@@ -95,6 +95,18 @@ router.get('/admin-user/:id', (req, res) => {
 router.post('/admin-user', async (req, res) => {
     const { userName, email, password, role } = req.body;
     const hash = await bcrypt.hash(password, hashKey);
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+    
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role!= 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else{
     db.query('INSERT INTO admin_user SET ?', { name: userName, email: email, password: hash, role: role }, (error, result) => {
         if (error) {
             res.send(error);
@@ -102,6 +114,7 @@ router.post('/admin-user', async (req, res) => {
             res.status(201).send(result);
         }
     });
+    }
 });
 
 router.put('/admin-user/:id', async (req, res) => {
@@ -109,10 +122,23 @@ router.put('/admin-user/:id', async (req, res) => {
     const id = req.params.id;
     const hash = await bcrypt.hash(password, hashKey);
     console.log(id);
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+    
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role!= 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else{
     db.query('UPDATE admin_user SET name=?, email=?, password=?, role=? WHERE id=?', [userName, email, hash, role, id], function (error, results) {
         if (error) throw error;
         res.status(201).send(results);
     });
+    }
 });
 
 

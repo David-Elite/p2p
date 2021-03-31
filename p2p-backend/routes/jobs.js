@@ -5,7 +5,7 @@ const Busboy = require('busboy');
 
 const router = express.Router();
 
-router.get('/jobs' ,(req, res) => {
+router.get('/jobs', (req, res) => {
 
     var sql = `SELECT
        jobs.id,
@@ -37,7 +37,7 @@ router.get('/jobs/:id', (req, res) => {
        JSON_ARRAYAGG(JSON_OBJECT('id', images.id, 'url', images.image_url)) as images
      FROM jobs LEFT JOIN images
      ON jobs.id = images.reference_id
-      WHERE jobs.id=?`; 
+      WHERE jobs.id=?`;
     console.log(id);
     db.query(sql, id, (error, data) => {
         if (error) throw error;
@@ -59,11 +59,10 @@ router.post('/jobs/image', (req, res) => {
     var fileToUpload;
     var fileName;
     var contentType;
-    
-    busboy.on('field', function(fieldname, val) {
+    busboy.on('field', function (fieldname, val) {
         id = val;
     });
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         // console.log(id);
         fileToUpload = file;
         fileName = filename;
@@ -83,17 +82,30 @@ router.post('/jobs/image', (req, res) => {
             }
             console.log('Successfully uploaded file.', data);
             // res.send(data);
-            db.query('INSERT INTO images SET ?',{reference_id:id,type:'jobs',image_url:data.Location},(err,result)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.send(result);
-                }
-            })
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
+                db.query('INSERT INTO images SET ?', { reference_id: id, type: 'jobs', image_url: data.Location }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send(result);
+                    }
+                })
+            }
             console.log(data.Location);
         });
     });
-    busboy.on('finish', function() {
+    busboy.on('finish', function () {
         console.log("A");
         // console.log(fileToUpload);
         const params = {
@@ -117,36 +129,75 @@ router.post('/jobs/image', (req, res) => {
 });
 
 router.post('/jobs', (req, res) => {
-    const {id, title, desc, overview, rnr } = req.body;
-    db.query('INSERT INTO jobs SET ?', { id:id, job_title: title, job_desc: desc, job_overview: overview, job_rnr: rnr }, (error, result) => {
-        if (error) {
-            res.send(error);
-        } else {
-            res.status(201).send(result);
-        }
-    });
+    const { id, title, desc, overview, rnr } = req.body;
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('INSERT INTO jobs SET ?', { id: id, job_title: title, job_desc: desc, job_overview: overview, job_rnr: rnr }, (error, result) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.status(201).send(result);
+            }
+        });
+    }
 });
 
 router.put('/jobs/:id', (req, res) => {
-    const { title, desc, description, overview, rnr} = req.body;
+    const { title, desc, description, overview, rnr } = req.body;
     const id = req.params.id;
     console.log(id)
-    db.query('UPDATE jobs SET job_title=?, job_desc=?, job_overview=?, job_rnr=? WHERE id=?', [title, desc, overview, rnr, id], function (error, results) {
-        if (error) throw error;
-        res.status(201).send(results);
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('UPDATE jobs SET job_title=?, job_desc=?, job_overview=?, job_rnr=? WHERE id=?', [title, desc, overview, rnr, id], function (error, results) {
+            if (error) throw error;
+            res.status(201).send(results);
+        });
+    }
 });
 
-router.delete('/jobs/image/:id',(req,res)=>{
-    const id = req.params/id;
-    db.query("DELETE FROM images WHERE id=?",id,(err,result)=>{
-     if(err){
-         console.log(err)
-     }else{
-         console.log(result)
-         res.status(201).send(result)
-     }
-    })
-   })
-   
+router.delete('/jobs/image/:id', (req, res) => {
+    const id = req.params / id;
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("DELETE FROM images WHERE id=?", id, (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(result)
+                res.status(201).send(result)
+            }
+        })
+    }
+})
+
 module.exports = router;

@@ -51,22 +51,48 @@ router.get('/zone/:id', (req, res) => {
 
 router.post('/zone', (req, res) => {
     const { id, zoneType, title, handle, tags, continent, country, state, city } = req.body;
-    db.query('INSERT INTO zone SET ?', { id: id, zone_type: zoneType, title: title, handle: handle, tags: tags, continent: continent, country: country, state: state, city: city }, (error, result) => {
-        if (error) {
-            res.send(error);
-        } else {
-            res.status(201).send(result);
-        }
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('INSERT INTO zone SET ?', { id: id, zone_type: zoneType, title: title, handle: handle, tags: tags, continent: continent, country: country, state: state, city: city }, (error, result) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.status(201).send(result);
+            }
+        });
+    }
 });
 
 router.put('/zone/:id', (req, res) => {
     const { zoneType, title, handle, tags, continent, country, state, city } = req.body;
     const id = req.params.id;
-    db.query(`UPDATE zone SET ? where id= '${id}'`, { id: id, zone_type: zoneType, title: title, handle: handle, tags: tags, continent: continent, country: country, state: state, city: city }, function (error, results) {
-        if (error) throw error;
-        res.status(201).send(results);
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query(`UPDATE zone SET ? where id= '${id}'`, { id: id, zone_type: zoneType, title: title, handle: handle, tags: tags, continent: continent, country: country, state: state, city: city }, function (error, results) {
+            if (error) throw error;
+            res.status(201).send(results);
+        });
+    }
 });
 
 router.post('/zone/image', (req, res) => {
@@ -107,13 +133,26 @@ router.post('/zone/image', (req, res) => {
             }
             console.log('Successfully uploaded file.', data);
             // res.send(data);
-            db.query('INSERT INTO images SET ?', { reference_id: id, type: 'category', image_url: data.Location }, (err, result) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.send(result);
-                }
-            })
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
+                db.query('INSERT INTO images SET ?', { reference_id: id, type: 'category', image_url: data.Location }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send(result);
+                    }
+                })
+            }
         });
     });
     busboy.on('finish', function () {
@@ -139,40 +178,79 @@ router.post('/zone/image', (req, res) => {
 
 router.delete('/zone/image/:id', (req, res) => {
     const id = req.params.id;
-    db.query("DELETE FROM images WHERE id=?", id, (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.status(201).send(result);
-        }
-    })
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("DELETE FROM images WHERE id=?", id, (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.status(201).send(result);
+            }
+        })
+    }
 });
 
 router.post('/zone/section/title/:sectionId/:zoneId', (req, res) => {
     const sectionId = req.params.sectionId;
     const zoneId = req.params.zoneId;
-    db.query("INSERT INTO section_zones SET ?", { section_id: sectionId, zone_id: zoneId }, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(500).send(err);
-        } else {
-            res.status(201).send(result);
-        }
-    })
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("INSERT INTO section_zones SET ?", { section_id: sectionId, zone_id: zoneId }, (err, result) => {
+            if (err) {
+                console.log(err)
+                res.status(500).send(err);
+            } else {
+                res.status(201).send(result);
+            }
+        })
+    }
 });
 
 router.post('/zone/section/child/:sectionId/:gridId', (req, res) => {
     const sectionId = req.params.sectionId;
     const gridId = req.params.gridId;
     const insert = req.body.zoneList.map(z => ([sectionId, z, gridId]));
-    db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(500).send(err);
-        } else {
-            res.status(201).send(result);
-        }
-    })
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (err, result) => {
+            if (err) {
+                console.log(err)
+                res.status(500).send(err);
+            } else {
+                res.status(201).send(result);
+            }
+        })
+    }
 });
 
 router.put('/zone/section/child/:sectionId/:gridId', (req, res) => {
@@ -181,49 +259,74 @@ router.put('/zone/section/child/:sectionId/:gridId', (req, res) => {
     const zoneList = req.body.zoneList;
     const insert = [];
     const del = [];
-    db.query("SELECT * FROM section_zones WHERE parent = ?", gridId, (e, r) => {
-        if (e) {
-            console.log(e);
-            res.status(500).send(e);
-        }
-        r.forEach(z => {
-            if (zoneList.findIndex(a => a === z.zone_id) === -1) {
-                del.push(z.id);
-            }
-        });
-        zoneList.forEach(z => {
-            if (r.findIndex(a => a.zone_id === z) === -1) {
-                insert.push([sectionId, z, gridId]);
-            }
-        })
-        db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (er, result) => {
-            if (er) {
-                console.log(er);
-                res.status(500).send(er);
-            } else {
-                db.query("DELETE FROM section_zones WHERE id = ?", [del], (err, re) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                    } else {
-                        res.send(re)
-                    }
-                })
-            }
-        })
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
 
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("SELECT * FROM section_zones WHERE parent = ?", gridId, (e, r) => {
+            if (e) {
+                console.log(e);
+                res.status(500).send(e);
+            }
+            r.forEach(z => {
+                if (zoneList.findIndex(a => a === z.zone_id) === -1) {
+                    del.push(z.id);
+                }
+            });
+            zoneList.forEach(z => {
+                if (r.findIndex(a => a.zone_id === z) === -1) {
+                    insert.push([sectionId, z, gridId]);
+                }
+            })
+            db.query("INSERT INTO section_zones (section_id, zone_id, parent) VALUES ?", [insert], (er, result) => {
+                if (er) {
+                    console.log(er);
+                    res.status(500).send(er);
+                } else {
+                    db.query("DELETE FROM section_zones WHERE id = ?", [del], (err, re) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).send(err);
+                        } else {
+                            res.send(re)
+                        }
+                    })
+                }
+            })
+        });
+    }
 });
 
 router.delete('/zone/section/:gridId', (req, res) => {
     const gridId = req.params.gridId;
-    db.query(`DELETE FROM section_zones WHERE id = ${gridId} OR parent = ${gridId}`, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.status(500).send(err);
-        } else {
-            res.status(201).send(result);
-        }
-    })
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query(`DELETE FROM section_zones WHERE id = ${gridId} OR parent = ${gridId}`, (err, result) => {
+            if (err) {
+                console.log(err)
+                res.status(500).send(err);
+            } else {
+                res.status(201).send(result);
+            }
+        })
+    }
 })
 module.exports = router;

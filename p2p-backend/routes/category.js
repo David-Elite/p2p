@@ -5,7 +5,7 @@ const Busboy = require('busboy');
 
 const router = express.Router();
 
-router.get('/category' ,(req, res) => {
+router.get('/category', (req, res) => {
 
     var sql = `SELECT
         category.id,
@@ -45,11 +45,11 @@ router.post('/category/image', (req, res) => {
     var fileToUpload;
     var fileName;
     var contentType;
-    
-    busboy.on('field', function(fieldname, val) {
+
+    busboy.on('field', function (fieldname, val) {
         id = val;
     });
-    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
         // console.log(id);
         fileToUpload = file;
         fileName = filename;
@@ -69,16 +69,29 @@ router.post('/category/image', (req, res) => {
             }
             console.log('Successfully uploaded file.', data);
             // res.send(data);
-            db.query('INSERT INTO images SET ?',{reference_id:id,type:'category',image_url:data.Location},(err,result)=>{
-                if(err){
-                    console.log(err);
-                }else{
-                    res.send(result);
-                }
-            })
+            if (!req.headers.authorization) {
+                return res.send(401).send('Unauthorized Request')
+            }
+            let token = req.headers.authorization.split(' ')[1];
+            if (token === 'null') {
+                return res.status(401).send('Unauthorized Request')
+            }
+
+            let payload = jwt.verify(token, 'SECRET_KEY');
+            if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+                return res.status(401).send('Unauthorized Request'); // if there is no token
+            } else {
+                db.query('INSERT INTO images SET ?', { reference_id: id, type: 'category', image_url: data.Location }, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        res.send(result);
+                    }
+                })
+            }
         });
     });
-    busboy.on('finish', function() {
+    busboy.on('finish', function () {
         // console.log(fileToUpload);
         const params = {
             Bucket: 'p2p-admin-angular-app',
@@ -120,33 +133,72 @@ router.get('/category/:id', (req, res) => {
 
 router.post('/category', (req, res) => {
     const { id, name, handle, description, tags } = req.body;
-    db.query(`INSERT INTO category VALUES ('${id}', '${name}', '${handle}', '${description}', '${tags}')`, (error, result) => {
-        if (error) {
-            res.send(error);
-        } else {
-            res.status(201).send(result);
-        }
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query(`INSERT INTO category VALUES ('${id}', '${name}', '${handle}', '${description}', '${tags}')`, (error, result) => {
+            if (error) {
+                res.send(error);
+            } else {
+                res.status(201).send(result);
+            }
+        });
+    }
 });
 
 router.put('/category/:id', (req, res) => {
     const { name, handle, description, tags } = req.body;
     const id = req.params.id;
-    db.query('UPDATE category SET name=?, handle=?,description=?,tags=? where id=?', [name, handle, description, tags, id], function (error, results) {
-        if (error) throw error;
-        res.status(201).send(results);
-    });
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query('UPDATE category SET name=?, handle=?,description=?,tags=? where id=?', [name, handle, description, tags, id], function (error, results) {
+            if (error) throw error;
+            res.status(201).send(results);
+        });
+    }
 });
 
-router.delete('/category/images/:id',(req,res)=>{
- const id = req.params.id;
- db.query("DELETE FROM images WHERE id=?",id,(err,result)=>{
-  if(err){
-      console.log(err)
-  }else{
-      res.status(201).send(result)
-  }
- })
+router.delete('/category/images/:id', (req, res) => {
+    const id = req.params.id;
+    if (!req.headers.authorization) {
+        return res.send(401).send('Unauthorized Request')
+    }
+    let token = req.headers.authorization.split(' ')[1];
+    if (token === 'null') {
+        return res.status(401).send('Unauthorized Request')
+    }
+
+    let payload = jwt.verify(token, 'SECRET_KEY');
+    if (!payload && payload.role != 'admin' && payload.role != 'superadmin') {
+        return res.status(401).send('Unauthorized Request'); // if there is no token
+    } else {
+        db.query("DELETE FROM images WHERE id=?", id, (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.status(201).send(result)
+            }
+        })
+    }
 })
 
 module.exports = router;
